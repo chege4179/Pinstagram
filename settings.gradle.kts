@@ -13,4 +13,9 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Pinstagram"
-include ':app'
+include (":app")
+include(":core-common")
+include(":core-model")
+include(":feature-auth")
+include(":core-network")
+include(":core-datastore")
