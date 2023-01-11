@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.peterchege.pinstagram.core.core_datastore"
-
+    compileSdk = 33
 }
 
 dependencies {

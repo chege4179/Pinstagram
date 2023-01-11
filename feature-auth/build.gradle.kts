@@ -1,11 +1,21 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+//    id ("kotlin-kapt")
+//    id ("dagger.hilt.android.plugin")
 }
 
 android {
     namespace = "com.peterchege.pinstagram.feature.feature_auth"
+    compileSdk = 33
 
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.3.2"
+    }
 }
 
 dependencies {
@@ -20,6 +30,8 @@ dependencies {
     //compose
     implementation(libs.compose.activity)
     implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.compiler)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
 
@@ -28,7 +40,16 @@ dependencies {
     implementation(libs.lifecycle.runtimeKtx)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.livedataKtx)
+
     implementation(libs.android.hilt.navigation.compose)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.foundation.layout)
+
+//    implementation(libs.hilt.android)
+//    implementation(libs.hilt.ext.work)
+//    implementation(libs.hilt.compiler)
+//    kapt(libs.hilt.compiler)
+
 
 
 }

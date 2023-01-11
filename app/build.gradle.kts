@@ -5,6 +5,8 @@
 plugins {
     id ("com.android.application")
     id ("org.jetbrains.kotlin.android")
+    id ("kotlin-kapt")
+    id ("dagger.hilt.android.plugin")
 
 }
 
@@ -42,27 +44,45 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion ="1.1.1"
+        kotlinCompilerExtensionVersion ="1.3.2"
     }
     packagingOptions {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes.add("/META-INF/**")
         }
     }
 }
 
 dependencies {
 
-    implementation ("androidx.core:core-ktx:1.9.0")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation ("androidx.activity:activity-compose:1.6.1")
-    implementation ("androidx.compose.ui:ui:1.3.2")
-    implementation ("androidx.compose.ui:ui-tooling-preview:1.3.2")
-    implementation ("androidx.compose.material:material:1.3.1")
-    testImplementation ("junit:junit:4.13.2")
-    androidTestImplementation ("androidx.test.ext:junit:1.1.4")
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.0")
-    androidTestImplementation ("androidx.compose.ui:ui-test-junit4:1.3.2")
-    debugImplementation ("androidx.compose.ui:ui-tooling:1.3.2")
-    debugImplementation ("androidx.compose.ui:ui-test-manifest:1.3.2")
+    implementation(project(":core-common"))
+    implementation(project(":feature-auth"))
+
+    implementation(libs.android.coreKtx)
+    implementation(libs.android.appCompat)
+    implementation(libs.android.material)
+    testImplementation(libs.test.junit4)
+    androidTestImplementation(libs.android.test.junit4)
+    androidTestImplementation(libs.android.test.espresso)
+    //compose
+    implementation(libs.compose.activity)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.compiler)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.ui.tooling)
+
+    //lifecycle
+
+    implementation(libs.lifecycle.runtimeKtx)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.livedataKtx)
+    implementation(libs.android.hilt.navigation.compose)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.foundation.layout)
+
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.ext.work)
+    implementation(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 }

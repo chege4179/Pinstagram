@@ -4,13 +4,14 @@ composecompiler = "1.2.0"
 coroutines = "1.6.0"
 espresso = "3.5.1"
 gradleplugin = "7.1.3"
-hilt = "2.42"
+hilt = "2.44.2"
 kotlin = "1.7.20"
 lifecycle = "2.5.0"
 room = "2.4.2"
 ktor = "2.0.3"
 exoplayer = "2.18.1"
 splash = "1.0.0-rc01"
+hiltExt = "1.0.0"
 
 [libraries]
 android-appCompat = "androidx.appcompat:appcompat:1.5.1"
@@ -35,7 +36,7 @@ coil-compose = "io.coil-kt:coil-compose:2.0.0-rc03"
 
 compose-activity = "androidx.activity:activity-compose:1.5.0"
 compose-compiler = "androidx.compose.compiler:compiler:1.2.0"
-compose-material-3 = "androidx.compose.material3:material3:1.0.0-alpha14"
+compose-material = "androidx.compose.material:material:1.4.0-alpha03"
 compose-materialIcons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 compose-runtimeLivedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
@@ -46,6 +47,15 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-preview-customview = "androidx.customview:customview:1.2.0-alpha01"
 compose-preview-customview-poolingcontainer = "androidx.customview:customview-poolingcontainer:1.0.0-rc01"
 compose-constraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02"
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
+
+hilt-android = { module = "com.google.dagger:hilt-android",  version.ref = "hilt" }
+hilt-ext-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltExt" }
+hilt-ext-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltExt" }
+hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
+
 
 
 gson-gson = "com.google.code.gson:gson:2.9.0"
@@ -85,7 +95,7 @@ exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui" , version.
 
 
 [bundles]
-compose = ["coil-compose", "compose-activity", "compose-compiler", "compose-material-3", "compose-materialIcons", "compose-runtimeLivedata", "compose-ui", "compose-ui-tooling", "compose-ui-tooling-preview", "paging-compose", "compose-preview-customview", "compose-preview-customview-poolingcontainer", "compose-constraintlayout"]
+compose = ["coil-compose", "compose-activity", "compose-compiler", "compose-material", "compose-materialIcons", "compose-runtimeLivedata", "compose-ui", "compose-ui-tooling", "compose-ui-tooling-preview", "paging-compose", "compose-preview-customview", "compose-preview-customview-poolingcontainer", "compose-constraintlayout"]
 lifecycle = ["lifecycle-livedataKtx", "lifecycle-runtimeKtx", "lifecycle-viewmodel-compose"]
 room = ["room-ktx", "room-paging", "room-runtime"]
 exoplayer = ["exoplayer-core","exoplayer-dash","exoplayer-ui"]

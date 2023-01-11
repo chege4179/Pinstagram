@@ -13,7 +13,7 @@ buildscript{
 }
 android {
     namespace = "com.peterchege.pinstagram.core.core_model"
-
+    compileSdk = 33
 
 }
 
