@@ -64,6 +64,7 @@ fun LoginScreen(
         }
     }
     Scaffold(
+        scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxSize()
     ) {
         Box(

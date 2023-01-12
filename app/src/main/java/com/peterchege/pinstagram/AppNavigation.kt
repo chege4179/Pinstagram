@@ -17,40 +17,27 @@ package com.peterchege.pinstagram
 
 
 
-import android.content.Context
-import android.provider.SyncStateContract
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
-import androidx.datastore.dataStore
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.peterchege.pinstagram.BottomNavigation
-import com.peterchege.pinstagram.BottomNavigationWrapper
-import com.peterchege.pinstagram.core.core_common.Constants
 import com.peterchege.pinstagram.core.core_common.Screens
-import com.peterchege.pinstagram.core.core_common.Screens.LOGIN_SCREEN
-import com.peterchege.pinstagram.core.core_datastore.UserInfoSerializer
 import com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen.LoginScreen
 import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.SignUpScreen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post_media_screen.ConfirmPostMediaScreen
 
-
-val Context.dataStore by dataStore("user.json",UserInfoSerializer)
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AppNavigation(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: AppNavigationViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val user = context.dataStore.data.collectAsState(
-        initial = null
-    ).value
+    val user = viewModel.loggedInUser.value
     NavHost(
         navController = navController,
         startDestination = if(user == null) Screens.LOGIN_SCREEN else Screens.BOTTOM_TAB_NAVIGATION
@@ -65,14 +52,10 @@ fun AppNavigation(
         composable(route = Screens.BOTTOM_TAB_NAVIGATION){
             BottomNavigationWrapper(navHostController = navController)
         }
+        composable(route = Screens.CONFIRM_POST_MEDIA_SCREEN){
+            ConfirmPostMediaScreen(navController = navController)
+        }
 
     }
 
 }
-
-
-//val Context.myDataStore by dataStore("filename", serializer)
-//
-//class SomeClass(val context: Context) {
-//    suspend fun update() = context.myDataStore.updateData {...}
-//}

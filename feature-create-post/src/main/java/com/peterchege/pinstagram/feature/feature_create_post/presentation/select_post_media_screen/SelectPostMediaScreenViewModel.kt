@@ -1,0 +1,4 @@
+package com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post_media_screen
+
+class SelectPostMediaScreenViewModel {
+}

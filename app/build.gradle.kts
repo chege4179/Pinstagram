@@ -71,14 +71,18 @@ android {
 dependencies {
     implementation(project(":core-datastore"))
     implementation(project(":core-common"))
+    implementation(project(":core-model"))
+
+
     implementation(project(":feature-auth"))
     implementation(project(":feature-feed"))
+    implementation(project(":feature-create-post"))
 
 
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
     implementation(libs.android.material)
-    implementation(project(mapOf("path" to ":core-model")))
+
     testImplementation(libs.test.junit4)
     androidTestImplementation(libs.android.test.junit4)
     androidTestImplementation(libs.android.test.espresso)
@@ -89,6 +93,7 @@ dependencies {
     implementation(libs.compose.compiler)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
+    implementation(libs.navigation.compose)
 
     //lifecycle
 

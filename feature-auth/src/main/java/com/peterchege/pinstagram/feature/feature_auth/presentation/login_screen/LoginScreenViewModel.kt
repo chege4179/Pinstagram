@@ -15,6 +15,7 @@
  */
 package com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen
 
+import android.util.Log
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -75,7 +76,7 @@ class LoginScreenViewModel @Inject constructor(
 
         val hasError = listOf(
             emailResult,
-            passwordResult,
+            //passwordResult,
         ).any { !it.successful }
 
         if (hasError) {
@@ -86,10 +87,12 @@ class LoginScreenViewModel @Inject constructor(
             return
         }
         val loginBody = LoginBody(email = state.email, password = state.password)
-
+        Log.e("view model","here")
         loginUseCase(loginUser = loginBody).onEach { result ->
             when (result) {
                 is Resource.Success -> {
+                    Log.e("success","success")
+                    _isLoading.value = false
                     result.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(
                             message = it
@@ -98,6 +101,8 @@ class LoginScreenViewModel @Inject constructor(
 
                 }
                 is Resource.Error -> {
+                    Log.e("error","error")
+                    _isLoading.value = false
                     result.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(
                             message = it
@@ -105,6 +110,8 @@ class LoginScreenViewModel @Inject constructor(
                     }
                 }
                 is Resource.Loading -> {
+                    Log.e("loading","loading")
+                    _isLoading.value = true
                     result.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(
                             message = it
@@ -112,7 +119,7 @@ class LoginScreenViewModel @Inject constructor(
                     }
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     sealed class ValidationEvent {

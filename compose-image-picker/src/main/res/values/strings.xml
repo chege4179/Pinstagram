@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_item_all">all</string>
+    <string name="tab_item_video">video</string>
+    <string name="tab_item_image">photo</string>
+
+    <string name="message_selected_exceed">You can only select at most 10 pictures or videos</string>
+
+    <string name="text_select_tip">You can select pictures and videos at the same time</string>
+    <string name="text_done">Sure</string>
+    <string name="text_asset_select">choose</string>
+    <string name="text_select_button">Select Next (%1$d/%2$d)</string>
+    <string name="text_gif">GIF</string>
+
+    <string name="label_camera">to shoot</string>
+    <string name="label_album">photo album</string>
+
+</resources>
