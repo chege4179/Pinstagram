@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_auth.domain
+package com.peterchege.pinstagram.feature.feature_auth.domain.validation
+
+import android.util.Patterns
+import javax.inject.Inject
 
 
-class ValidatePassword {
+class ValidateEmail {
 
-    fun execute(password: String): ValidationResult {
-        if(password.length < 8) {
+    fun execute(email: String): ValidationResult {
+        if(email.isBlank()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "The password needs to consist of at least 8 characters"
+                errorMessage = "The email can't be blank"
             )
         }
-        val containsLettersAndDigits = password.any { it.isDigit() } &&
-                password.any { it.isLetter() }
-        if(!containsLettersAndDigits) {
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "The password needs to contain at least one letter and digit"
+                errorMessage = "That's not a valid email"
             )
         }
         return ValidationResult(

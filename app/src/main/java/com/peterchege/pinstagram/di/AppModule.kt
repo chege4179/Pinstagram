@@ -15,6 +15,7 @@
  */
 package com.peterchege.pinstagram.di
 
+import com.peterchege.pinstagram.core.core_datastore.UserInfoSerializer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +25,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+
+    @Provides
+    fun provideDataStore(): UserInfoSerializer {
+        return UserInfoSerializer
+    }
 
 
 

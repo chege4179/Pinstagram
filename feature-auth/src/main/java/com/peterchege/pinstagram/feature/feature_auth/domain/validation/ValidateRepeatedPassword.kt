@@ -13,22 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.core.core_model
+package com.peterchege.pinstagram.feature.feature_auth.domain.validation
 
-import kotlinx.serialization.Serializable
+class ValidateRepeatedPassword {
 
-
-@Serializable
-data class User(
-    val bio: String?,
-    val createdAt: String,
-    val createdOn: String,
-    val email: String,
-    val followerIds: List<String>,
-    val followingIds: List<String>,
-    val fullName: String,
-    val password: String,
-    val profileImageUrl: String,
-    val userId: String,
-    val username: String
-)
+    fun execute(password: String, repeatedPassword: String): ValidationResult {
+        if(password != repeatedPassword) {
+            return ValidationResult(
+                successful = false,
+                errorMessage = "The passwords don't match"
+            )
+        }
+        return ValidationResult(
+            successful = true
+        )
+    }
+}

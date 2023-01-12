@@ -24,6 +24,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-model"))
 
     implementation(libs.android.coreKtx)
     implementation(libs.datastore)

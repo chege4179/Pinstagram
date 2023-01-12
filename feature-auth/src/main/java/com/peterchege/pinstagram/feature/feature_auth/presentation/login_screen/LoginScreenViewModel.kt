@@ -15,78 +15,103 @@
  */
 package com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen
 
+import androidx.compose.material.ScaffoldState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.peterchege.pinstagram.feature.feature_auth.domain.*
+import androidx.navigation.NavController
+import com.peterchege.pinstagram.core.core_common.Resource
+import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
+import com.peterchege.pinstagram.feature.feature_auth.domain.use_case.LoginUseCase
+import com.peterchege.pinstagram.feature.feature_auth.domain.validation.*
 import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.RegistrationFormState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.producers.Produced.successful
 //import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+
 //import javax.inject.Inject
 
+@HiltViewModel
+class LoginScreenViewModel @Inject constructor(
+    private val loginUseCase: LoginUseCase,
 
-class LoginScreenViewModel (
-    private val validateEmail: ValidateEmail = ValidateEmail(),
-    private val validatePassword: ValidatePassword = ValidatePassword(),
-    private val validateRepeatedPassword: ValidateRepeatedPassword = ValidateRepeatedPassword(),
-    private val validateTerms: ValidateTerms = ValidateTerms()
 ) : ViewModel() {
 
-    var state by mutableStateOf(RegistrationFormState())
+    var state by mutableStateOf(LoginFormState())
+
+    private val _isLoading = mutableStateOf(false)
+    val isLoading: State<Boolean> = _isLoading
 
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
 
-    fun onEvent(event: RegistrationFormEvent) {
+    fun onEvent(event: LoginFormEvent) {
         when (event) {
-            is RegistrationFormEvent.EmailChanged -> {
+            is LoginFormEvent.EmailChanged -> {
                 state = state.copy(email = event.email)
             }
-            is RegistrationFormEvent.PasswordChanged -> {
+            is LoginFormEvent.PasswordChanged -> {
                 state = state.copy(password = event.password)
             }
-            is RegistrationFormEvent.RepeatedPasswordChanged -> {
-                state = state.copy(repeatedPassword = event.repeatedPassword)
-            }
-            is RegistrationFormEvent.AcceptTerms -> {
-                state = state.copy(acceptedTerms = event.isAccepted)
-            }
-            is RegistrationFormEvent.Submit -> {
-                submitData()
-            }
+
+            else -> {}
         }
     }
 
-    private fun submitData() {
-        val emailResult = validateEmail.execute(state.email)
-        val passwordResult = validatePassword.execute(state.password)
-        val repeatedPasswordResult = validateRepeatedPassword.execute(
-            state.password, state.repeatedPassword
-        )
-        val termsResult = validateTerms.execute(state.acceptedTerms)
+    fun submitData( navController: NavController,scaffoldState: ScaffoldState) {
+        val emailResult = validateEmail(state.email)
+        val passwordResult = validatePassword(state.password)
+
 
         val hasError = listOf(
             emailResult,
             passwordResult,
-            repeatedPasswordResult,
-            termsResult
         ).any { !it.successful }
 
         if (hasError) {
             state = state.copy(
                 emailError = emailResult.errorMessage,
                 passwordError = passwordResult.errorMessage,
-                repeatedPasswordError = repeatedPasswordResult.errorMessage,
-                termsError = termsResult.errorMessage
             )
             return
         }
-        viewModelScope.launch {
-            validationEventChannel.send(ValidationEvent.Success)
+        val loginBody = LoginBody(email = state.email, password = state.password)
+
+        loginUseCase(loginUser = loginBody).onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    result.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = it
+                        )
+                    }
+
+                }
+                is Resource.Error -> {
+                    result.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = it
+                        )
+                    }
+                }
+                is Resource.Loading -> {
+                    result.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = it
+                        )
+                    }
+                }
+            }
         }
     }
 

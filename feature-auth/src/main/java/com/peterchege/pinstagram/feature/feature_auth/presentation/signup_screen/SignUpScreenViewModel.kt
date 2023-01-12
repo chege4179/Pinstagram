@@ -19,19 +19,15 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.peterchege.pinstagram.feature.feature_auth.domain.*
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.peterchege.pinstagram.feature.feature_auth.domain.validation.*
+import dagger.producers.Produced.successful
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
 class SignUpScreenViewModel (
-    private val validateEmail: ValidateEmail = ValidateEmail(),
-    private val validatePassword: ValidatePassword = ValidatePassword(),
-    private val validateRepeatedPassword: ValidateRepeatedPassword = ValidateRepeatedPassword(),
-    private val validateTerms: ValidateTerms = ValidateTerms()
+
 ) : ViewModel() {
 
     var state by mutableStateOf(RegistrationFormState())
@@ -60,12 +56,12 @@ class SignUpScreenViewModel (
     }
 
     private fun submitData() {
-        val emailResult = validateEmail.execute(state.email)
-        val passwordResult = validatePassword.execute(state.password)
-        val repeatedPasswordResult = validateRepeatedPassword.execute(
+        val emailResult = validateEmail(state.email)
+        val passwordResult = validatePassword(state.password)
+        val repeatedPasswordResult = validateRepeatedPassword(
             state.password, state.repeatedPassword
         )
-        val termsResult = validateTerms.execute(state.acceptedTerms)
+        val termsResult = validateTerms(state.acceptedTerms)
 
         val hasError = listOf(
             emailResult,

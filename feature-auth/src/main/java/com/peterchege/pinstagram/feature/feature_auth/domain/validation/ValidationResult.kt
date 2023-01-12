@@ -13,19 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_auth.domain
+package com.peterchege.pinstagram.feature.feature_auth.domain.validation
 
-class ValidateTerms {
-
-    fun execute(acceptedTerms: Boolean): ValidationResult {
-        if(!acceptedTerms) {
-            return ValidationResult(
-                successful = false,
-                errorMessage = "Please accept the terms"
-            )
-        }
-        return ValidationResult(
-            successful = true
-        )
-    }
-}
+data class ValidationResult(
+    val successful: Boolean,
+    val errorMessage: String? = null
+)

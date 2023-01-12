@@ -16,14 +16,14 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-
+    id("org.jetbrains.kotlin.plugin.serialization")
 
 }
 
 //apply (plugin = "kotlinx-serialization")
 buildscript{
     dependencies {
-
+        classpath ("org.jetbrains.kotlin:kotlin-serialization:1.8.0")
     }
 }
 android {
@@ -36,5 +36,6 @@ dependencies {
 
     implementation(libs.android.coreKtx)
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.compose.ui)
 
 }

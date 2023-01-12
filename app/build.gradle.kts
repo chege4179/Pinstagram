@@ -69,13 +69,16 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":core-datastore"))
     implementation(project(":core-common"))
     implementation(project(":feature-auth"))
+    implementation(project(":feature-feed"))
+
 
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
     implementation(libs.android.material)
+    implementation(project(mapOf("path" to ":core-model")))
     testImplementation(libs.test.junit4)
     androidTestImplementation(libs.android.test.junit4)
     androidTestImplementation(libs.android.test.espresso)
@@ -100,4 +103,8 @@ dependencies {
     implementation(libs.hilt.ext.work)
     implementation(libs.hilt.compiler)
     kapt(libs.hilt.compiler)
+
+
+    //datastore
+    implementation(libs.datastore)
 }

@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_auth.domain
+package com.peterchege.pinstagram.feature.feature_auth.domain.validation
 
-sealed class RegistrationFormEvent {
-    data class EmailChanged(val email: String) : RegistrationFormEvent()
-    data class PasswordChanged(val password: String) : RegistrationFormEvent()
-    data class RepeatedPasswordChanged(
-        val repeatedPassword: String
-    ) : RegistrationFormEvent()
+class ValidateTerms {
 
-    data class AcceptTerms(val isAccepted: Boolean) : RegistrationFormEvent()
-
-    object Submit: RegistrationFormEvent()
+    fun execute(acceptedTerms: Boolean): ValidationResult {
+        if(!acceptedTerms) {
+            return ValidationResult(
+                successful = false,
+                errorMessage = "Please accept the terms"
+            )
+        }
+        return ValidationResult(
+            successful = true
+        )
+    }
 }

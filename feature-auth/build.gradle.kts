@@ -16,8 +16,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-//    id ("kotlin-kapt")
-//    id ("dagger.hilt.android.plugin")
+    id ("kotlin-kapt")
+    //id ("dagger.hilt.android.plugin")
 }
 
 android {
@@ -34,6 +34,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-common"))
+    implementation(project(":core-model"))
+    implementation(project(":core-datastore"))
+    implementation(project(":core-network"))
+
+
+
 
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
@@ -60,11 +67,16 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.foundation.layout)
 
-//    implementation(libs.hilt.android)
-//    implementation(libs.hilt.ext.work)
-//    implementation(libs.hilt.compiler)
-//    kapt(libs.hilt.compiler)
+    //datastore
+    implementation(libs.datastore)
 
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.ext.work)
+    implementation(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
+
+
+    implementation(libs.retrofit.core)
 
 
 }

@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 //import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.peterchege.pinstagram.feature.feature_auth.domain.RegistrationFormEvent
+import com.peterchege.pinstagram.feature.feature_auth.domain.validation.RegistrationFormEvent
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
