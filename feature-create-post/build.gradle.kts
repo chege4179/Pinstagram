@@ -27,7 +27,12 @@ android {
 dependencies {
 
     implementation(project(":core-common"))
+    implementation(project(":core-model"))
+    implementation(project(":core-room"))
+    implementation(project(":core-network"))
+    implementation(project(":core-datastore"))
     implementation(project(":compose-image-picker"))
+    implementation(project(":core-ui"))
 
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
@@ -43,11 +48,16 @@ dependencies {
     implementation(libs.compose.compiler)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
+    implementation(libs.navigation.compose)
 
     implementation(libs.kotlin.serialization.json)
 
-    //lifecycle
 
+
+    // coil compose
+    implementation(libs.coil.compose)
+
+    //lifecycle
     implementation(libs.lifecycle.runtimeKtx)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.livedataKtx)
@@ -60,6 +70,14 @@ dependencies {
     implementation(libs.hilt.ext.work)
     implementation(libs.hilt.compiler)
     kapt(libs.hilt.compiler)
+
+    implementation(libs.room.compiler)
+    implementation(libs.room.ktx)
+
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicator)
 
 
 }

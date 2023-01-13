@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
+
 /*
  * Copyright 2023 PInstagram
  *
@@ -66,12 +68,21 @@ android {
             excludes.add("/META-INF/**")
         }
     }
+    configurations {
+
+
+//        implementation () {
+//            exclude(group = "org.jetbrains", module = "annotations")
+//        }
+    }
 }
 
 dependencies {
     implementation(project(":core-datastore"))
     implementation(project(":core-common"))
     implementation(project(":core-model"))
+    implementation(project(":core-network"))
+    implementation(project(":core-room"))
 
 
     implementation(project(":feature-auth"))
@@ -79,7 +90,7 @@ dependencies {
     implementation(project(":feature-create-post"))
 
 
-    implementation(libs.android.coreKtx)
+    //implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
     implementation(libs.android.material)
 
@@ -110,6 +121,6 @@ dependencies {
     kapt(libs.hilt.compiler)
 
 
-    //datastore
-    implementation(libs.datastore)
+
+
 }

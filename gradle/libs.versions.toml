@@ -37,6 +37,9 @@ androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.re
 
 coil-compose = "io.coil-kt:coil-compose:2.0.0-rc03"
 
+accompanist-pager = "com.google.accompanist:accompanist-pager:0.24.3-alpha"
+accompanist-pager-indicator = "com.google.accompanist:accompanist-pager-indicators:0.24.3-alpha"
+
 
 compose-activity = "androidx.activity:activity-compose:1.5.0"
 compose-compiler = "androidx.compose.compiler:compiler:1.2.0"

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 /*
  * Copyright 2023 PInstagram
  *
@@ -16,6 +18,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id ("kotlin-kapt")
 }
 
 android {
@@ -29,4 +32,10 @@ dependencies {
     implementation(libs.android.coreKtx)
     implementation(libs.datastore)
     implementation(libs.kotlin.serialization.json)
+
+
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.ext.work)
+    implementation(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 }

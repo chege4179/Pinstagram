@@ -67,8 +67,7 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.foundation.layout)
 
-    //datastore
-    implementation(libs.datastore)
+
 
     implementation(libs.hilt.android)
     implementation(libs.hilt.ext.work)

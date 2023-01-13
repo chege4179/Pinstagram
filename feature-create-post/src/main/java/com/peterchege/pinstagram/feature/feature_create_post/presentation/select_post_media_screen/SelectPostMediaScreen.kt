@@ -8,14 +8,15 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.peterchege.compose_image_picker.view.AssetPicker
 import com.peterchege.compose_image_picker.constant.AssetPickerConfig
 import com.peterchege.compose_image_picker.data.PickerPermissions
+import com.peterchege.compose_image_picker.data.toMediaAsset
 import com.peterchege.pinstagram.core.core_common.Screens
-import com.peterchege.pinstagram.feature.feature_create_post.domain.convertAssetToString
 import kotlinx.coroutines.launch
 
 
@@ -23,9 +24,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun SelectPostMediaScreen(
     bottomNavController: NavController,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    viewModel: SelectPostMediaScreenViewModel = hiltViewModel()
 
 ) {
+    val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     Scaffold(
         scaffoldState = scaffoldState,
@@ -40,11 +43,12 @@ fun SelectPostMediaScreen(
         ) {
             AssetPicker(
                 assetPickerConfig = AssetPickerConfig(gridCount = 3),
-                onPicked = {
-                    val assets = it
-                    val assetStrings = assets.map { convertAssetToString(it) }
-                    val wholeAssetString = assetStrings.joinToString("|")
-                    navHostController.navigate(Screens.CONFIRM_POST_MEDIA_SCREEN + "/$wholeAssetString")
+                onPicked = { assets ->
+                    val mediaAssets = assets.map { it.toMediaAsset() }
+                    scope.launch {
+                        viewModel.loadSelectedMediaToDatabase(mediaAssets = mediaAssets)
+                    }
+                    navHostController.navigate(Screens.CONFIRM_POST_MEDIA_SCREEN)
 
                 },
                 onClose = {

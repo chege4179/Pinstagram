@@ -1,4 +1,4 @@
-package com.huhx.picker.view
+package com.peterchege.compose_image_picker.view
 
 import android.os.Build
 import androidx.compose.foundation.background
@@ -61,7 +61,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.peterchege.compose_image_picker.R
 
 import com.peterchege.compose_image_picker.data.AssetInfo
-import com.peterchege.compose_image_picker.view.AssetImageIndicator
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
 @Composable

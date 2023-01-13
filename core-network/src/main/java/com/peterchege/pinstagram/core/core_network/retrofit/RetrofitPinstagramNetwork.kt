@@ -15,17 +15,25 @@
  */
 package com.peterchege.pinstagram.core.core_network.retrofit
 
+import android.content.Context
+import android.net.Uri
 import android.provider.SyncStateContract
 import com.peterchege.pinstagram.core.core_common.Constants
 import com.peterchege.pinstagram.core.core_common.Constants.BASE_URL
+import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset
+import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
 import com.peterchege.pinstagram.core.core_model.response_models.LoginResponse
 import com.peterchege.pinstagram.core.core_model.response_models.SignUpResponse
+import com.peterchege.pinstagram.core.core_model.response_models.UploadPostResponse
 import com.peterchege.pinstagram.core.core_network.PinstagramNetworkDataSource
 import com.peterchege.pinstagram.core.core_network.PinstgramAPI
+import com.peterchege.pinstagram.core.core_network.util.UriToFile
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
+
 
 class RetrofitPinstagramNetwork : PinstagramNetworkDataSource {
 
@@ -41,5 +49,12 @@ class RetrofitPinstagramNetwork : PinstagramNetworkDataSource {
 
     override suspend fun signUpUser(signUpBody: SignUpBody): SignUpResponse {
         return networkApi.signUpUser(signUpBody = signUpBody)
+    }
+
+    override suspend fun uploadPost(assets: List<MediaAsset>, user: User,context:Context): UploadPostResponse {
+        val requestFiles = assets.map {
+            UriToFile(context = context).prepareImagePart(Uri.parse(it.uriString), it.filename)
+        }
+        return networkApi.uploadPost(assets = requestFiles,user = user)
     }
 }

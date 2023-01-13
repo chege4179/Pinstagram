@@ -27,7 +27,7 @@ import androidx.navigation.compose.composable
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen.LoginScreen
 import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.SignUpScreen
-import com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post_media_screen.ConfirmPostMediaScreen
+//import com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post_media_screen.ConfirmPostMediaScreen
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -52,9 +52,9 @@ fun AppNavigation(
         composable(route = Screens.BOTTOM_TAB_NAVIGATION){
             BottomNavigationWrapper(navHostController = navController)
         }
-        composable(route = Screens.CONFIRM_POST_MEDIA_SCREEN + "/{assets}"){
-            ConfirmPostMediaScreen(navController = navController)
-        }
+//        composable(route = Screens.CONFIRM_POST_MEDIA_SCREEN){
+//            ConfirmPostMediaScreen(navController = navController)
+//        }
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 PInstagram
+ * Copyright 2023 Blogger
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.core.core_ui
+package com.peterchege.pinstagram.core.core_room.database
 
-import org.junit.Test
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import com.peterchege.pinstagram.core.core_room.dao.MediaAssetEntityDao
+import com.peterchege.pinstagram.core.core_room.entities.MediaAssetEntity
 
-import org.junit.Assert.*
+@Database(
+    entities = [MediaAssetEntity::class],
+    version = 1
+)
+abstract class PinstagramDatabase: RoomDatabase() {
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
-    @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
-    }
+    abstract val mediaAssetEntityDao:MediaAssetEntityDao
+
 }

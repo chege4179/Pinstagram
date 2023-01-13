@@ -15,9 +15,8 @@
  */
 package com.peterchege.pinstagram.feature.feature_auth.data
 
-import android.content.Context
-import androidx.datastore.dataStore
-import com.peterchege.pinstagram.core.core_datastore.UserInfoSerializer
+
+import com.peterchege.pinstagram.core.core_datastore.repository.UserDataStoreRepository
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
@@ -25,14 +24,14 @@ import com.peterchege.pinstagram.core.core_model.response_models.LoginResponse
 import com.peterchege.pinstagram.core.core_model.response_models.SignUpResponse
 import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
 import com.peterchege.pinstagram.feature.feature_auth.domain.repository.AuthRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-val Context.userDataStore by dataStore("user.json", UserInfoSerializer)
+
 class AuthRepositoryImpl @Inject constructor (
     private val api:RetrofitPinstagramNetwork,
-    @ApplicationContext private val context: Context
+    private val userDataStoreRepository: UserDataStoreRepository,
+
 ) :AuthRepository {
     override suspend fun loginUser(loginBody: LoginBody): LoginResponse {
         return  api.loginUser(loginBody = loginBody)
@@ -42,16 +41,12 @@ class AuthRepositoryImpl @Inject constructor (
         return api.signUpUser(signUpBody = signUpBody)
     }
     suspend fun getLoggedInUser(): Flow<User?> {
-        return context.userDataStore.data
+        return userDataStoreRepository.getLoggedInUser()
     }
     suspend fun setLoggedInUser(user:User) {
-        context.userDataStore.updateData {
-            user
-        }
+        return userDataStoreRepository.setLoggedInUser(user = user)
     }
     suspend fun unsetLoggedInUser() {
-        context.userDataStore.updateData {
-            null
-        }
+        return userDataStoreRepository.unsetLoggedInUser()
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.core.core_datastore
+package com.peterchege.pinstagram.core.core_datastore.serializers
 
 import androidx.datastore.core.Serializer
 import com.peterchege.pinstagram.core.core_model.external_models.User

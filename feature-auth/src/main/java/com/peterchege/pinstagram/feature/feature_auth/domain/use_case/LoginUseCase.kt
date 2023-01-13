@@ -16,23 +16,14 @@
 package com.peterchege.pinstagram.feature.feature_auth.domain.use_case
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.core.Serializer
-import androidx.datastore.dataStore
 import com.peterchege.pinstagram.core.core_common.Resource
-import com.peterchege.pinstagram.core.core_datastore.UserInfoSerializer
-import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.response_models.LoginResponse
 import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
-import com.peterchege.pinstagram.feature.feature_auth.data.userDataStore
-import com.peterchege.pinstagram.feature.feature_auth.domain.repository.AuthRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.intellij.lang.annotations.Language
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
