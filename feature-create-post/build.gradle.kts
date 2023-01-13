@@ -4,8 +4,13 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
-
+buildscript{
+    dependencies {
+        classpath ("org.jetbrains.kotlin:kotlin-serialization:1.8.0")
+    }
+}
 android {
     namespace = "com.peterchege.pinstagram.feature.feature_create_post"
     compileSdk = 33
@@ -38,6 +43,8 @@ dependencies {
     implementation(libs.compose.compiler)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
+
+    implementation(libs.kotlin.serialization.json)
 
     //lifecycle
 

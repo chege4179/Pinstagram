@@ -2,7 +2,9 @@ package com.peterchege.compose_image_picker.data
 
 import android.provider.MediaStore
 import com.peterchege.compose_image_picker.constant.prefixZero
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class AssetInfo(
     val id: Long,
     val uriString: String,

@@ -14,6 +14,8 @@ import androidx.navigation.NavHostController
 import com.peterchege.compose_image_picker.view.AssetPicker
 import com.peterchege.compose_image_picker.constant.AssetPickerConfig
 import com.peterchege.compose_image_picker.data.PickerPermissions
+import com.peterchege.pinstagram.core.core_common.Screens
+import com.peterchege.pinstagram.feature.feature_create_post.domain.convertAssetToString
 import kotlinx.coroutines.launch
 
 
@@ -39,6 +41,10 @@ fun SelectPostMediaScreen(
             AssetPicker(
                 assetPickerConfig = AssetPickerConfig(gridCount = 3),
                 onPicked = {
+                    val assets = it
+                    val assetStrings = assets.map { convertAssetToString(it) }
+                    val wholeAssetString = assetStrings.joinToString("|")
+                    navHostController.navigate(Screens.CONFIRM_POST_MEDIA_SCREEN + "/$wholeAssetString")
 
                 },
                 onClose = {

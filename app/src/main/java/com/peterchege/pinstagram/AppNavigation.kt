@@ -52,10 +52,9 @@ fun AppNavigation(
         composable(route = Screens.BOTTOM_TAB_NAVIGATION){
             BottomNavigationWrapper(navHostController = navController)
         }
-        composable(route = Screens.CONFIRM_POST_MEDIA_SCREEN){
+        composable(route = Screens.CONFIRM_POST_MEDIA_SCREEN + "/{assets}"){
             ConfirmPostMediaScreen(navController = navController)
         }
-
     }
 
 }

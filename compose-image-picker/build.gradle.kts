@@ -1,8 +1,13 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
-
+buildscript{
+    dependencies {
+        classpath ("org.jetbrains.kotlin:kotlin-serialization:1.8.0")
+    }
+}
 android {
     namespace = "com.peterchege.compose_image_picker"
     compileSdk = 32
@@ -39,4 +44,6 @@ dependencies {
     testImplementation( "junit:junit:4.13.2")
     androidTestImplementation ("androidx.test.ext:junit:1.1.5")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
+
+    implementation(libs.kotlin.serialization.json)
 }
