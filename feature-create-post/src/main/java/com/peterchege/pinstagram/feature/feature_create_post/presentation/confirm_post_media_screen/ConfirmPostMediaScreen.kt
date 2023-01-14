@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023 PInstagram
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post_media_screen
 
 import android.annotation.SuppressLint
@@ -7,6 +22,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -26,15 +43,13 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
+
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_ui.PagerIndicator
 import com.peterchege.pinstagram.core.core_ui.VideoPreview
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ConfirmPostMediaScreen(
@@ -60,7 +75,7 @@ fun ConfirmPostMediaScreen(
                 val pagerState1 = rememberPagerState(initialPage = 0)
                 val coroutineScope = rememberCoroutineScope()
                 HorizontalPager(
-                    count = viewModel.mediaAssets.value.size,
+                    pageCount = viewModel.mediaAssets.value.size,
                     state = pagerState1
                 ) { image ->
                     val asset = viewModel.mediaAssets.value[image]

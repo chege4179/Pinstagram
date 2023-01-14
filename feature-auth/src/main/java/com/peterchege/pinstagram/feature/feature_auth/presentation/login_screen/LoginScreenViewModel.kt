@@ -30,8 +30,6 @@ import com.peterchege.pinstagram.feature.feature_auth.domain.use_case.LoginUseCa
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.*
 import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.RegistrationFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.producers.Produced.successful
-//import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn

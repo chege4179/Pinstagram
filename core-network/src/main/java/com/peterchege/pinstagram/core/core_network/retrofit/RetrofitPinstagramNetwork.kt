@@ -17,7 +17,7 @@ package com.peterchege.pinstagram.core.core_network.retrofit
 
 import android.content.Context
 import android.net.Uri
-import android.provider.SyncStateContract
+
 import com.peterchege.pinstagram.core.core_common.Constants
 import com.peterchege.pinstagram.core.core_common.Constants.BASE_URL
 import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset

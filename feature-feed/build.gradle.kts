@@ -61,12 +61,10 @@ dependencies {
     implementation(libs.lifecycle.livedataKtx)
 
     implementation(libs.android.hilt.navigation.compose)
-    implementation(libs.androidx.compose.foundation)
-    implementation(libs.androidx.compose.foundation.layout)
+
 
     implementation(libs.hilt.android)
-    implementation(libs.hilt.ext.work)
-    implementation(libs.hilt.compiler)
+
     kapt(libs.hilt.compiler)
 
 }

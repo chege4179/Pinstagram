@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
+//import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -37,9 +38,9 @@ class AppNavigationViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            authRepositoryImpl.getLoggedInUser().collectLatest {
-                _loggedInUser.value = it
-            }
+//            authRepositoryImpl.getLoggedInUser().collectLatest {
+//                _loggedInUser.value = it
+//            }
         }
     }
 }

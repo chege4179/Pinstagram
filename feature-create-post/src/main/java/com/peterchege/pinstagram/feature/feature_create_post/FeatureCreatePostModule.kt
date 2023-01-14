@@ -6,12 +6,21 @@ import com.peterchege.pinstagram.core.core_room.database.PinstagramLocalDataSour
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ActivityComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ActivityComponent::class)
 object FeatureCreatePostModule {
 
 
+    @Provides
 
+    fun providePinstagramApi(): RetrofitPinstagramNetwork {
+        return RetrofitPinstagramNetwork()
+    }
+    @Provides
+
+    fun providePinstagramDatabase(app: Application): PinstagramLocalDataSource {
+        return PinstagramLocalDataSource(app = app)
+    }
 }

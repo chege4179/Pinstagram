@@ -25,6 +25,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.android.coreKtx)
 
+
+    implementation(libs.android.coreKtx)
 }

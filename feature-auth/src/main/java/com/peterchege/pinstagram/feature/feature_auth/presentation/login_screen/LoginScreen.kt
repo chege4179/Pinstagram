@@ -36,6 +36,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.LoginFormEvent
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.RegistrationFormEvent
+import dagger.hilt.android.AndroidEntryPoint
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

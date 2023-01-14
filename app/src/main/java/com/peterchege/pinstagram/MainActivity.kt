@@ -24,10 +24,10 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.peterchege.pinstagram.ui.theme.PinstagramTheme
-import dagger.hilt.android.AndroidEntryPoint
+//import dagger.hilt.android.AndroidEntryPoint
 
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

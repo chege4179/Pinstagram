@@ -39,12 +39,11 @@ dependencies {
     implementation(project(":core-datastore"))
     implementation(project(":core-network"))
 
-
-
-
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
     implementation(libs.android.material)
+    implementation(project(mapOf("path" to ":core-room")))
+
     testImplementation(libs.test.junit4)
     androidTestImplementation(libs.android.test.junit4)
     androidTestImplementation(libs.android.test.espresso)
@@ -64,18 +63,18 @@ dependencies {
     implementation(libs.lifecycle.livedataKtx)
 
     implementation(libs.android.hilt.navigation.compose)
+
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.foundation.layout)
 
 
 
     implementation(libs.hilt.android)
-    implementation(libs.hilt.ext.work)
-    implementation(libs.hilt.compiler)
     kapt(libs.hilt.compiler)
 
 
     implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.gson)
 
 
 }

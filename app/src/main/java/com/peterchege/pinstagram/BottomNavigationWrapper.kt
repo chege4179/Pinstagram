@@ -37,8 +37,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_model.external_models.BottomNavItem
-import com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post_media_screen.SelectPostMediaScreen
+//import com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post_media_screen.SelectPostMediaScreen
 import com.peterchege.pinstagram.feature.feature_feed.presentation.FeedScreen
+import com.peterchege.pinstagram.feature.feature_search.presentation.SearchScreen
 
 
 @ExperimentalMaterialApi
@@ -165,16 +166,16 @@ fun BottomNavigation(
         ){
             FeedScreen(bottomNavController = navController, navHostController = navHostController)
         }
-//        composable(
-//            route = Screens.SEARCH_SCREEN
-//        ){
-//            SearchScreen(bottomNavController = navController, navHostController = navHostController)
-//        }
         composable(
-            route = Screens.SELECT_POST_MEDIA_SCREEN
+            route = Screens.SEARCH_SCREEN
         ){
-            SelectPostMediaScreen(bottomNavController = navController, navHostController = navHostController)
+            SearchScreen(bottomNavController = navController, navHostController = navHostController)
         }
+//        composable(
+//            route = Screens.SELECT_POST_MEDIA_SCREEN
+//        ){
+//            SelectPostMediaScreen(bottomNavController = navController, navHostController = navHostController)
+//        }
 //        composable(
 //            route = Screens.NOTIFICATION_SCREEN
 //        ){
