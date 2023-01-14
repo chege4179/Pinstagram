@@ -86,8 +86,8 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.foundation.layout)
 
-//    implementation(libs.accompanist.pager)
-//    implementation(libs.accompanist.pager.indicator)
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicator)
 
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.gson)

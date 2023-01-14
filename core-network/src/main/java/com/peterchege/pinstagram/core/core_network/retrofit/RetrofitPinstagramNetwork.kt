@@ -30,16 +30,26 @@ import com.peterchege.pinstagram.core.core_model.response_models.UploadPostRespo
 import com.peterchege.pinstagram.core.core_network.PinstagramNetworkDataSource
 import com.peterchege.pinstagram.core.core_network.PinstgramAPI
 import com.peterchege.pinstagram.core.core_network.util.UriToFile
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
+import java.util.concurrent.TimeUnit
 
 
 class RetrofitPinstagramNetwork : PinstagramNetworkDataSource {
 
+    private fun makeOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(120, TimeUnit.SECONDS)
+            .readTimeout(120, TimeUnit.SECONDS)
+            .writeTimeout(90, TimeUnit.SECONDS)
+            .build()
+    }
+
     private val networkApi = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory.create())
     .baseUrl(Constants.BASE_URL)
+        .client(makeOkHttpClient())
     .build()
     .create(PinstgramAPI::class.java)
 

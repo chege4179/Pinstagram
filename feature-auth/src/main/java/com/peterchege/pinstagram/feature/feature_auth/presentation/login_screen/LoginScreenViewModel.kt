@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.peterchege.pinstagram.core.core_common.Resource
+import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.feature.feature_auth.domain.use_case.LoginUseCase
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.*
@@ -91,11 +92,12 @@ class LoginScreenViewModel @Inject constructor(
                 is Resource.Success -> {
                     Log.e("success","success")
                     _isLoading.value = false
-                    result.message?.let {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = it
-                        )
-                    }
+                    navController.navigate(Screens.BOTTOM_TAB_NAVIGATION)
+//                    result.message?.let {
+//                        scaffoldState.snackbarHostState.showSnackbar(
+//                            message = it
+//                        )
+//                    }
 
                 }
                 is Resource.Error -> {

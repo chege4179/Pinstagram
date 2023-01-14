@@ -42,6 +42,8 @@ dependencies {
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
     implementation(libs.android.material)
+    implementation(project(mapOf("path" to ":core-ui")))
+    implementation(project(mapOf("path" to ":core-model")))
     testImplementation(libs.test.junit4)
     androidTestImplementation(libs.android.test.junit4)
     androidTestImplementation(libs.android.test.espresso)

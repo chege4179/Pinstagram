@@ -16,40 +16,33 @@
 package com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post_media_screen
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
+
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_ui.PagerIndicator
 import com.peterchege.pinstagram.core.core_ui.VideoPreview
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalPagerApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ConfirmPostMediaScreen(
@@ -75,7 +68,7 @@ fun ConfirmPostMediaScreen(
                 val pagerState1 = rememberPagerState(initialPage = 0)
                 val coroutineScope = rememberCoroutineScope()
                 HorizontalPager(
-                    pageCount = viewModel.mediaAssets.value.size,
+                    count = viewModel.mediaAssets.value.size,
                     state = pagerState1
                 ) { image ->
                     val asset = viewModel.mediaAssets.value[image]
@@ -86,7 +79,7 @@ fun ConfirmPostMediaScreen(
                             modifier = Modifier.fillMaxWidth()
                         ){
                             SubcomposeAsyncImage(
-                                model =viewModel.mediaAssets.value[image],
+                                model =viewModel.mediaAssets.value[image].uriString,
                                 loading = {
                                     Box(modifier = Modifier.fillMaxSize()) {
                                         CircularProgressIndicator(

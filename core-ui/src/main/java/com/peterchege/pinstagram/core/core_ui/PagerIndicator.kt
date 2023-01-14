@@ -24,7 +24,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,9 +36,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.PagerState
 
 
-@OptIn( ExperimentalFoundationApi::class)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PagerIndicator(
     modifier: Modifier = Modifier,
@@ -65,7 +66,7 @@ fun PagerIndicator(
         }
     }
 
-    val itemCount = 10
+    val itemCount = pagerState.pageCount
 
     LaunchedEffect(key1 = currentItem) {
         val viewportSize = listState.layoutInfo.viewportSize

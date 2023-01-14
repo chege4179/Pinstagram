@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-model"))
 
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
@@ -47,6 +48,7 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.material)
     implementation(libs.compose.compiler)
+    implementation(libs.compose.materialIcons)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
     implementation(libs.navigation.compose)
@@ -54,9 +56,11 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.foundation.layout)
 
-//    //pager
-//    implementation(libs.accompanist.pager)
-//    implementation(libs.accompanist.pager.indicator)
+    implementation(libs.coil.compose)
+
+    //pager
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicator)
 
 
     // exoplayer
