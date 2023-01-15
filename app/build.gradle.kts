@@ -107,6 +107,7 @@ dependencies {
     implementation(project(":feature-create-post"))
     implementation(project(":feature-search"))
     implementation(project(":feature-notifications"))
+    implementation(project(":feature-profile"))
 
 
     implementation(libs.android.coreKtx)

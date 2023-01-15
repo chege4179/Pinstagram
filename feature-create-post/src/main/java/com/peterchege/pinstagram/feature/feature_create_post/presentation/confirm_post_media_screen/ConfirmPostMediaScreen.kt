@@ -115,6 +115,14 @@ fun ConfirmPostMediaScreen(
 
             }
             item {
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = viewModel.caption.value,
+                    onValueChange = {
+                        viewModel.onChangeCaption(it)
+                    })
+            }
+            item {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

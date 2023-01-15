@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023 PInstagram
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.peterchege.pinstagram.core.core_ui
 
 import androidx.compose.foundation.Image
@@ -7,7 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,28 +40,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberImagePainter
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
 import com.peterchege.pinstagram.core.core_model.external_models.User
+import com.peterchege.pinstagram.core.core_model.response_models.Post
+import kotlinx.coroutines.launch
 
 
-data class Post(
-    val id : Int,
-    val image: String,
-    val user: User,
-    val likesCount: Int,
-    val isLiked: Boolean = false,
-    val caption: String,
-    val commentsCount: Int,
-    val timeStamp: Int
-)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PostItem(
     post: Post
 ){
+    val pagerState1 = rememberPagerState(initialPage = 0)
     Column{
         Divider(thickness = 0.5.dp)
         PostTopBar(post = post)
-        PostImage(post = post)
-        PostActionsRow()
+        PostImage(post = post, pagerState1 = pagerState1)
+        PostActionsRow(pagerState1 = pagerState1)
         PostLikesCount(post = post)
         PostCaption(post = post)
         Spacer(modifier = Modifier.height(2.dp))
@@ -75,10 +88,10 @@ fun PostTopBar(
                 .size(40.dp)
                 .weight(1f)
                 ,
-            image = rememberImagePainter(post.user.profileImageUrl)
+            image = rememberImagePainter(post.postUser.profileImageUrl)
         )
         Text(
-            text = post.user.fullName,
+            text = post.postUser.fullName,
             modifier = modifier
                 .weight(8f)
                 .padding(start = 10.dp),
@@ -86,8 +99,8 @@ fun PostTopBar(
         )
         IconButton(onClick = { }) {
             Icon(
-                imageVector = Icons.Outlined.Home,
-                contentDescription = "menu",
+                imageVector = Icons.Outlined.MoreVert,
+                contentDescription = "Settings",
                 modifier = modifier
             )
         }
@@ -97,10 +110,13 @@ fun PostTopBar(
 
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PostActionsRow(
     modifier: Modifier = Modifier,
+    pagerState1: PagerState
 ){
+    val coroutineScope = rememberCoroutineScope()
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -120,22 +136,22 @@ fun PostActionsRow(
             ) {
                 IconButton(onClick = { }) {
                     Icon(
-                        imageVector = Icons.Outlined.Home,
+                        imageVector = Icons.Outlined.Favorite,
                         contentDescription = "menu",
                         modifier = modifier
                     )
                 }
                 IconButton(onClick = { }) {
                     Icon(
-                        imageVector = Icons.Outlined.Home,
-                        contentDescription = "menu",
+                        imageVector = Icons.Outlined.Chat,
+                        contentDescription = "Comment",
                         modifier = modifier
                     )
                 }
                 IconButton(onClick = { }) {
                     Icon(
-                        imageVector = Icons.Outlined.Home,
-                        contentDescription = "menu",
+                        imageVector = Icons.Outlined.Send,
+                        contentDescription = "Share",
                         modifier = modifier
                     )
                 }
@@ -144,6 +160,21 @@ fun PostActionsRow(
                         .fillMaxHeight()
                         .weight(1f)
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(20.dp)
+                    ) {
+                        PagerIndicator(
+                            modifier = Modifier.align(Alignment.Center),
+                            pagerState = pagerState1
+                        ) {
+
+                            coroutineScope.launch {
+                                pagerState1.scrollToPage(it)
+                            }
+                        }
+                    }
 
                 }
                 Row(
@@ -155,7 +186,7 @@ fun PostActionsRow(
                 ) {
                     IconButton(onClick = { }) {
                         Icon(
-                            imageVector = Icons.Outlined.Home,
+                            imageVector = Icons.Outlined.Bookmark,
                             contentDescription = "menu",
                             modifier = modifier
                         )
@@ -167,10 +198,12 @@ fun PostActionsRow(
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PostImage (
     modifier: Modifier = Modifier,
-    post: Post
+    post: Post,
+    pagerState1:PagerState
 ){
     Box(
         modifier = modifier
@@ -179,23 +212,39 @@ fun PostImage (
         contentAlignment = Alignment.Center,
 
     ) {
-        SubcomposeAsyncImage(
-            model = post.image,
-            loading = {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(
-                            Alignment.Center
-                        )
+
+
+        HorizontalPager(
+            count = post.postsContent.size,
+            state = pagerState1
+        ) { image ->
+            val asset = post.postsContent[image]
+            if (asset.postMediaType == "video"){
+                VideoPreview(uriString = asset.postMediaURL)
+            }else{
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ){
+                    SubcomposeAsyncImage(
+                        model =asset.postMediaURL,
+                        loading = {
+                            Box(modifier = Modifier.fillMaxSize()) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.align(
+                                        Alignment.Center
+                                    )
+                                )
+                            }
+                        },
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp),
+                        contentDescription = "Product Images"
                     )
                 }
-            },
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp),
-            contentDescription = "Post Image"
-        )
+            }
+        }
     }
 }
 
@@ -213,7 +262,7 @@ fun PostLikesCount(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = post.likesCount.toString().plus(" likes"),
+            text = post.postLikes.size.toString().plus(" likes"),
             fontWeight = FontWeight.Bold,
             color = Color.Black,
             fontSize = 16.sp
@@ -247,11 +296,11 @@ fun PostCaption(
                     fontSize = 14.sp
                 )
                 pushStyle(boldStyle)
-                append(post.user.username)
+                append(post.postUser.username)
                 append(" ")
-                if (post.caption.isNotEmpty()){
+                if (post.postCaption.isNotEmpty()){
                     pushStyle(normalStyle)
-                    append(post.caption)
+                    append(post.postCaption)
                 }
             }
         )
@@ -271,7 +320,7 @@ fun PostCaption(
          verticalAlignment = Alignment.CenterVertically
      ) {
          Text(
-             text = "View all ${post.commentsCount} comments",
+             text = "View all ${post.postViews.size} comments",
              color = Color.Black,
              fontWeight = FontWeight.Normal,
              fontSize = 14.sp
@@ -293,7 +342,7 @@ fun PostCaption(
          verticalAlignment = Alignment.CenterVertically
      ) {
          Text(
-             text = "${post.timeStamp} hours ago ",
+             text = "${post.createdAt} ${post.createdOn} ",
              color = Color.Black,
              fontSize = 10.sp,
              fontWeight = FontWeight.Light

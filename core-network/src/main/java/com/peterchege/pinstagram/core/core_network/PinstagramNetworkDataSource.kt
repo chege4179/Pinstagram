@@ -20,6 +20,7 @@ import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
+import com.peterchege.pinstagram.core.core_model.response_models.AllPostResponse
 import com.peterchege.pinstagram.core.core_model.response_models.LoginResponse
 import com.peterchege.pinstagram.core.core_model.response_models.SignUpResponse
 import com.peterchege.pinstagram.core.core_model.response_models.UploadPostResponse
@@ -29,11 +30,14 @@ interface  PinstagramNetworkDataSource {
 
     suspend fun loginUser(loginBody: LoginBody):LoginResponse
 
+    suspend fun getFeedPosts(): AllPostResponse
+
     suspend fun signUpUser(signUpBody: SignUpBody):SignUpResponse
 
     suspend fun uploadPost(
         assets:List<MediaAsset>,
         user:User,
+        caption:String,
         context:Context,
     ):UploadPostResponse
 

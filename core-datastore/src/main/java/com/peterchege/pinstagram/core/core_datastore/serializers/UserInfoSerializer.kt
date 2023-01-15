@@ -44,7 +44,19 @@ object UserInfoSerializer : Serializer<User?> {
         output.write(
             Json.encodeToString(
                 serializer = User.serializer(),
-                value = t!!
+                value = t ?: User(
+                    bio = "",
+                    createdAt = "",
+                    createdOn = "",
+                    email = "",
+                    followingIds = emptyList(),
+                    followerIds = emptyList(),
+                    fullName = "",
+                    userId = "",
+                    username = "",
+                    profileImageUrl = "",
+                    password = "",
+                )
             ).encodeToByteArray()
         )
     }

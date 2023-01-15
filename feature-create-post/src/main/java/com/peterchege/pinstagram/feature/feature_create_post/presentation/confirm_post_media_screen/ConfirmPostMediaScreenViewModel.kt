@@ -43,6 +43,13 @@ class ConfirmPostMediaScreenViewModel @Inject constructor(
     val _mediaAssets = mutableStateOf<List<MediaAsset>>(emptyList())
     val mediaAssets : State<List<MediaAsset>> = _mediaAssets
 
+    val _caption = mutableStateOf("")
+    val caption:State<String> = _caption
+
+    fun onChangeCaption(text:String){
+        _caption.value = text
+    }
+
     init {
         viewModelScope.launch {
             val assets = getSelectedMediaFromDatabase()
@@ -64,12 +71,16 @@ class ConfirmPostMediaScreenViewModel @Inject constructor(
         viewModelScope.launch {
             val user = userDataStoreRepository.getLoggedInUser()
             user.collect{
-                val response = createPostRepository.uploadPost(assets = mediaAssets.value,user = it!!,context = context)
-
+                val response = createPostRepository.uploadPost(
+                    assets = mediaAssets.value,
+                    user = it!!,
+                    context = context,
+                    caption = _caption.value
+                )
                 scaffoldState.snackbarHostState.showSnackbar(
                     message = response.msg
                 )
-
+                createPostRepository.deleteAllMediaAssets()
             }
 
         }

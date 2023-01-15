@@ -24,6 +24,7 @@ import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
+import com.peterchege.pinstagram.core.core_model.response_models.AllPostResponse
 import com.peterchege.pinstagram.core.core_model.response_models.LoginResponse
 import com.peterchege.pinstagram.core.core_model.response_models.SignUpResponse
 import com.peterchege.pinstagram.core.core_model.response_models.UploadPostResponse
@@ -40,31 +41,42 @@ class RetrofitPinstagramNetwork : PinstagramNetworkDataSource {
 
     private fun makeOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-            .connectTimeout(120, TimeUnit.SECONDS)
-            .readTimeout(120, TimeUnit.SECONDS)
-            .writeTimeout(90, TimeUnit.SECONDS)
+            .connectTimeout(1200, TimeUnit.SECONDS)
+            .readTimeout(1200, TimeUnit.SECONDS)
+            .writeTimeout(900, TimeUnit.SECONDS)
             .build()
     }
 
     private val networkApi = Retrofit.Builder()
-    .addConverterFactory(GsonConverterFactory.create())
-    .baseUrl(Constants.BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl(Constants.BASE_URL)
         .client(makeOkHttpClient())
-    .build()
-    .create(PinstgramAPI::class.java)
+        .build()
+        .create(PinstgramAPI::class.java)
 
     override suspend fun loginUser(loginBody: LoginBody): LoginResponse {
         return networkApi.loginUser(loginBody = loginBody)
+    }
+
+    override suspend fun getFeedPosts(): AllPostResponse {
+        return networkApi.getFeedPosts()
     }
 
     override suspend fun signUpUser(signUpBody: SignUpBody): SignUpResponse {
         return networkApi.signUpUser(signUpBody = signUpBody)
     }
 
-    override suspend fun uploadPost(assets: List<MediaAsset>, user: User,context:Context): UploadPostResponse {
+
+
+    override suspend fun uploadPost(
+        assets: List<MediaAsset>,
+        user: User,
+        caption: String,
+        context: Context,
+    ): UploadPostResponse {
         val requestFiles = assets.map {
             UriToFile(context = context).prepareImagePart(Uri.parse(it.uriString), it.filename)
         }
-        return networkApi.uploadPost(assets = requestFiles,user = user)
+        return networkApi.uploadPost(assets = requestFiles, user = user, caption = caption)
     }
 }

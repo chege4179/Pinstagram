@@ -41,6 +41,7 @@ import com.peterchege.pinstagram.feature.feature_create_post.presentation.select
 //import com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post_media_screen.SelectPostMediaScreen
 import com.peterchege.pinstagram.feature.feature_feed.presentation.FeedScreen
 import com.peterchege.pinstagram.feature.feature_notifications.presentation.NotificationScreen
+import com.peterchege.pinstagram.feature.feature_profile.presentation.ProfileScreen
 import com.peterchege.pinstagram.feature.feature_search.presentation.SearchScreen
 
 
@@ -183,11 +184,11 @@ fun BottomNavigation(
         ){
             NotificationScreen(bottomNavController = navController,navHostController=  navHostController)
         }
-//        composable(
-//            route = Screens.PROFILE_SCREEN
-//        ){
-//            ProfileNavigation(navController, navHostController = navHostController)
-//        }
+        composable(
+            route = Screens.PROFILE_SCREEN
+        ){
+            ProfileScreen(navController, navHostController = navHostController)
+        }
 
     }
 

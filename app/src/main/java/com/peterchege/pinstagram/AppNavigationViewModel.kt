@@ -39,7 +39,9 @@ class AppNavigationViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             authRepositoryImpl.getLoggedInUser().collectLatest {
-                _loggedInUser.value = it
+                if(it?.username != ""){
+                    _loggedInUser.value = it
+                }
             }
         }
     }

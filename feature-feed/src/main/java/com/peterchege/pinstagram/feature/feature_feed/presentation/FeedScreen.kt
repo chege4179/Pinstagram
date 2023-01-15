@@ -16,16 +16,20 @@
 package com.peterchege.pinstagram.feature.feature_feed.presentation
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.peterchege.pinstagram.core.core_model.external_models.User
-import com.peterchege.pinstagram.core.core_ui.Post
 import com.peterchege.pinstagram.core.core_ui.PostItem
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -33,65 +37,33 @@ import com.peterchege.pinstagram.core.core_ui.PostItem
 fun FeedScreen(
     bottomNavController: NavController,
     navHostController: NavHostController,
+    viewModel: FeedScreenViewModel = hiltViewModel()
 ) {
-    val defaultUser = User(
-        bio = "djdjd",
-        createdAt = "",
-        fullName = "Peter  Chege",
-        userId = "fff",
-        username = "peterchege4179",
-        followerIds = emptyList(),
-        followingIds = emptyList(),
-        email = "peterkagure@gmail.com",
-        createdOn = "",
-        password = "",
-        profileImageUrl = "https://ui-avatars.com/api/?background=7462A7&color=fff&name=Peter+Chege&bold=true&fontsize=0.6&rounded=true"
-    )
-    val postList = listOf<Post>(
-        Post(
-            id = 1,
-            image = "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1651130156/blogger/c70b8d5a835c512ec5ba1c2992caff89.jpg",
-            user = defaultUser,
-            likesCount = 23,
-            isLiked = false,
-            timeStamp = 23,
-            commentsCount = 23,
-            caption = "Nice caption"
+    val scaffoldState = rememberScaffoldState()
+    LaunchedEffect(key1 = viewModel.isLoading.value){
+        scaffoldState.snackbarHostState.showSnackbar(
+            message = viewModel.msg.value
+        )
+    }
 
-        ),
-        Post(
-            id = 2,
-            image = "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1651130156/blogger/c70b8d5a835c512ec5ba1c2992caff89.jpg",
-            user = defaultUser,
-            likesCount = 23,
-            isLiked = false,
-            timeStamp = 23,
-            commentsCount = 23,
-            caption = "Nice caption 2"
-
-        ),
-        Post(
-            id = 3,
-            image = "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1651130156/blogger/c70b8d5a835c512ec5ba1c2992caff89.jpg",
-            user = defaultUser,
-            likesCount = 23,
-            isLiked = false,
-            timeStamp = 23,
-            commentsCount = 23,
-            caption = "Nice caption 3"
-
-        ),
-    )
     Scaffold(
+        scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxSize(),
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ){
-            items(postList){
-                PostItem(post = it)
+        Box(modifier = Modifier.fillMaxSize()){
+            if (viewModel.isLoading.value){
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }else{
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ){
+                    items(viewModel.posts.value){
+                        PostItem(post = it)
+                    }
+                }
             }
         }
+
 
     }
 

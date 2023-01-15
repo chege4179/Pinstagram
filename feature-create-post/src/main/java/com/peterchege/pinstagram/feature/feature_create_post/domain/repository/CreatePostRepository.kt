@@ -28,7 +28,7 @@ interface CreatePostRepository {
 
     suspend fun insertMediaAsset(mediaAsset: MediaAsset)
 
-    suspend fun uploadPost(assets:List<MediaAsset>,user:User,context: Context):UploadPostResponse
+    suspend fun uploadPost(assets:List<MediaAsset>,user:User,context: Context, caption:String):UploadPostResponse
 
 
 }

@@ -38,12 +38,13 @@ android {
 dependencies {
 
     implementation(project(":core-common"))
+    implementation(project(":core-network"))
+    implementation(project(":core-ui"))
+    implementation(project(":core-model"))
 
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
     implementation(libs.android.material)
-    implementation(project(mapOf("path" to ":core-ui")))
-    implementation(project(mapOf("path" to ":core-model")))
     testImplementation(libs.test.junit4)
     androidTestImplementation(libs.android.test.junit4)
     androidTestImplementation(libs.android.test.espresso)
@@ -68,5 +69,8 @@ dependencies {
     implementation(libs.hilt.android)
 
     kapt(libs.hilt.compiler)
+
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.gson)
 
 }

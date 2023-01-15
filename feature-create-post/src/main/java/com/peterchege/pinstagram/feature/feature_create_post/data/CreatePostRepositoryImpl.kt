@@ -48,9 +48,9 @@ class CreatePostRepositoryImpl @Inject constructor(
         return db.db.mediaAssetEntityDao.insertMediaAsset(mediaAssetEntity = mediaAsset.toEntity())
     }
 
-    override suspend fun uploadPost(assets: List<MediaAsset>, user: User,context: Context):UploadPostResponse {
+    override suspend fun uploadPost(assets: List<MediaAsset>, user: User,context: Context, caption:String):UploadPostResponse {
 
-        return api.uploadPost(assets = assets,user = user, context = context)
+        return api.uploadPost(assets = assets,user = user, context = context, caption = caption)
     }
 
 
