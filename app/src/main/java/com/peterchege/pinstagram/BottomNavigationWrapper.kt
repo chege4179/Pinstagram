@@ -15,6 +15,7 @@
  */
 package com.peterchege.pinstagram
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -155,6 +156,7 @@ fun BottomNavigationWrapper(
 
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BottomNavigation(
     navController: NavHostController,

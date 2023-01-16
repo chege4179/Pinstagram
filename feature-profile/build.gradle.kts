@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.compose.compiler)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.materialIcons)
 
     //lifecycle
 
@@ -67,7 +68,8 @@ dependencies {
 
     implementation(libs.android.hilt.navigation.compose)
 
-
+    implementation(libs.retrofit.core)
+    implementation(libs.coil.compose)
 
 
     implementation(libs.hilt.android)

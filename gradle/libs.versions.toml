@@ -95,6 +95,7 @@ room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 
 datastore = "androidx.datastore:datastore-preferences:1.0.0"
+work-runtime = "androidx.work:work-runtime-ktx:2.7.1"
 kotlin-serialization-json ="org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
 
 timber = "com.jakewharton.timber:timber:5.0.1"

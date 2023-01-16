@@ -24,10 +24,7 @@ import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
-import com.peterchege.pinstagram.core.core_model.response_models.AllPostResponse
-import com.peterchege.pinstagram.core.core_model.response_models.LoginResponse
-import com.peterchege.pinstagram.core.core_model.response_models.SignUpResponse
-import com.peterchege.pinstagram.core.core_model.response_models.UploadPostResponse
+import com.peterchege.pinstagram.core.core_model.response_models.*
 import com.peterchege.pinstagram.core.core_network.PinstagramNetworkDataSource
 import com.peterchege.pinstagram.core.core_network.PinstgramAPI
 import com.peterchege.pinstagram.core.core_network.util.UriToFile
@@ -78,5 +75,9 @@ class RetrofitPinstagramNetwork : PinstagramNetworkDataSource {
             UriToFile(context = context).prepareImagePart(Uri.parse(it.uriString), it.filename)
         }
         return networkApi.uploadPost(assets = requestFiles, user = user, caption = caption)
+    }
+
+    override suspend fun getUserById(userId: String): GetUserByIdResponse {
+        return networkApi.getUserById(userId = userId)
     }
 }

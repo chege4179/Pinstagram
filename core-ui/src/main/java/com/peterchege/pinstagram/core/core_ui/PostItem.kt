@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -88,7 +89,7 @@ fun PostTopBar(
                 .size(40.dp)
                 .weight(1f)
                 ,
-            image = rememberImagePainter(post.postUser.profileImageUrl)
+            image = rememberAsyncImagePainter(post.postUser.profileImageUrl)
         )
         Text(
             text = post.postUser.fullName,

@@ -20,10 +20,7 @@ import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
-import com.peterchege.pinstagram.core.core_model.response_models.AllPostResponse
-import com.peterchege.pinstagram.core.core_model.response_models.LoginResponse
-import com.peterchege.pinstagram.core.core_model.response_models.SignUpResponse
-import com.peterchege.pinstagram.core.core_model.response_models.UploadPostResponse
+import com.peterchege.pinstagram.core.core_model.response_models.*
 import okhttp3.MultipartBody
 
 interface  PinstagramNetworkDataSource {
@@ -40,6 +37,8 @@ interface  PinstagramNetworkDataSource {
         caption:String,
         context:Context,
     ):UploadPostResponse
+
+    suspend fun getUserById(userId:String) :GetUserByIdResponse
 
 
 

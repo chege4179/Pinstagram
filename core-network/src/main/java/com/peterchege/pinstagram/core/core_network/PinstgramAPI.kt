@@ -18,10 +18,7 @@ package com.peterchege.pinstagram.core.core_network
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
-import com.peterchege.pinstagram.core.core_model.response_models.AllPostResponse
-import com.peterchege.pinstagram.core.core_model.response_models.LoginResponse
-import com.peterchege.pinstagram.core.core_model.response_models.SignUpResponse
-import com.peterchege.pinstagram.core.core_model.response_models.UploadPostResponse
+import com.peterchege.pinstagram.core.core_model.response_models.*
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
@@ -39,7 +36,6 @@ interface PinstgramAPI {
         @Body signUpBody:SignUpBody
     ):SignUpResponse
 
-
     @Multipart
     @POST("/post/create")
     suspend fun uploadPost(
@@ -47,4 +43,9 @@ interface PinstgramAPI {
         @Part("user") user: User,
         @Part("caption") caption:String,
     ): UploadPostResponse
+
+    @GET("/user/single/{userId}")
+    suspend fun getUserById(
+        @Path("userId") userId:String
+    ):GetUserByIdResponse
 }
