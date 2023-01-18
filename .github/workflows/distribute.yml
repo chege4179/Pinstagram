@@ -7,6 +7,11 @@ jobs:
   distribute_android_app:
     runs-on: ubuntu-latest
     steps:
+      - name: Create firebase distribution key  file
+        run: |
+          touch firebase_distribution_key.json
+          echo ${{ secrets.FIREBASE_DISTRIBUTION_KEY }} >> firebase_distribution_key.json
+          cat firebase_distribution_key.json
       - uses: actions/checkout@v2
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1

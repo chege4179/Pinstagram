@@ -62,6 +62,13 @@ dependencies {
 
     kapt(libs.hilt.compiler)
 
+    testImplementation(libs.test.junit4)
+    androidTestImplementation(libs.android.test.junit4)
+    androidTestImplementation(libs.io.mockk.mockk)
+
+    androidTestImplementation(libs.okhttp.mockwebserver)
+    androidTestImplementation(libs.google.truth)
+
 
 
 }

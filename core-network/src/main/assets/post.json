@@ -1,0 +1,252 @@
+{
+  "msg": "Post fetched successfully",
+  "success": true,
+  "posts": [
+    {
+      "postUserId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+      "postId": "b49bc9e9-b759-47c0-977b-09647a31ad08",
+      "postCaption": "\"nice caption\"",
+      "postViews": [],
+      "postLikes": [],
+      "createdAt": "3:27 PM",
+      "createdOn": "01/15/2023",
+      "postUser": {
+        "userId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+        "username": "peterchege4179",
+        "fullName": "Peter Chege",
+        "email": "peterkagure@gmail.com",
+        "bio": null,
+        "followerIds": [],
+        "followingIds": [],
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$CQNpBs76xNAgCDwxRoGZVw$EYs7N+WSbuPaUcUcx4Zwx5LD0P1YrA5+fYs2bEnk33Q",
+        "createdAt": "3:19 PM",
+        "createdOn": "01/15/2023",
+        "profileImageUrl": "https://ui-avatars.com/api/?background=EB70CD&color=fff&name=Peter+Chege&bold=true&fontsize=0.6&rounded=true"
+      },
+      "postsContent": [
+        {
+          "postMediaId": "pinstagram/IMG_20230114_145807.jpg",
+          "postMediaType": "image",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1673785674/pinstagram/IMG_20230114_145807.jpg.jpg",
+          "postPostId": "b49bc9e9-b759-47c0-977b-09647a31ad08"
+        },
+        {
+          "postMediaId": "pinstagram/IMG_20230114_145811.jpg",
+          "postMediaType": "image",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1673785673/pinstagram/IMG_20230114_145811.jpg.jpg",
+          "postPostId": "b49bc9e9-b759-47c0-977b-09647a31ad08"
+        },
+        {
+          "postMediaId": "pinstagram/IMG_20230114_145825.jpg",
+          "postMediaType": "image",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1673785673/pinstagram/IMG_20230114_145825.jpg.jpg",
+          "postPostId": "b49bc9e9-b759-47c0-977b-09647a31ad08"
+        }
+      ]
+    },
+    {
+      "postUserId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+      "postId": "fb9ae8b3-474f-4664-a52f-af6876b0632a",
+      "postCaption": "Image And Video",
+      "postViews": [],
+      "postLikes": [],
+      "createdAt": "3:43 PM",
+      "createdOn": "01/15/2023",
+      "postUser": {
+        "userId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+        "username": "peterchege4179",
+        "fullName": "Peter Chege",
+        "email": "peterkagure@gmail.com",
+        "bio": null,
+        "followerIds": [],
+        "followingIds": [],
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$CQNpBs76xNAgCDwxRoGZVw$EYs7N+WSbuPaUcUcx4Zwx5LD0P1YrA5+fYs2bEnk33Q",
+        "createdAt": "3:19 PM",
+        "createdOn": "01/15/2023",
+        "profileImageUrl": "https://ui-avatars.com/api/?background=EB70CD&color=fff&name=Peter+Chege&bold=true&fontsize=0.6&rounded=true"
+      },
+      "postsContent": [
+        {
+          "postMediaId": "pinstagram/VID_20230114_145721.mp4",
+          "postMediaType": "video",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/video/upload/v1636615405/movies/FnVideo.mp4",
+          "postPostId": "fb9ae8b3-474f-4664-a52f-af6876b0632a"
+        }
+      ]
+    },
+    {
+      "postUserId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+      "postId": "f7f10da5-5215-419d-9710-884b80442194",
+      "postCaption": "\"test post\"",
+      "postViews": [],
+      "postLikes": [],
+      "createdAt": "3:19 PM",
+      "createdOn": "01/15/2023",
+      "postUser": {
+        "userId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+        "username": "peterchege4179",
+        "fullName": "Peter Chege",
+        "email": "peterkagure@gmail.com",
+        "bio": null,
+        "followerIds": [],
+        "followingIds": [],
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$CQNpBs76xNAgCDwxRoGZVw$EYs7N+WSbuPaUcUcx4Zwx5LD0P1YrA5+fYs2bEnk33Q",
+        "createdAt": "3:19 PM",
+        "createdOn": "01/15/2023",
+        "profileImageUrl": "https://ui-avatars.com/api/?background=EB70CD&color=fff&name=Peter+Chege&bold=true&fontsize=0.6&rounded=true"
+      },
+      "postsContent": [
+        {
+          "postMediaId": "pinstagram/IMG-20230115-WA0001.jpg",
+          "postMediaType": "image",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1673795944/pinstagram/IMG-20230115-WA0001.jpg.jpg",
+          "postPostId": "f7f10da5-5215-419d-9710-884b80442194"
+        }
+      ]
+    },
+    {
+      "postUserId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+      "postId": "594b6c5f-9e62-446a-9032-2502842455b9",
+      "postCaption": "\"hzhshshhs\"",
+      "postViews": [],
+      "postLikes": [],
+      "createdAt": "3:20 PM",
+      "createdOn": "01/15/2023",
+      "postUser": {
+        "userId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+        "username": "peterchege4179",
+        "fullName": "Peter Chege",
+        "email": "peterkagure@gmail.com",
+        "bio": null,
+        "followerIds": [],
+        "followingIds": [],
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$CQNpBs76xNAgCDwxRoGZVw$EYs7N+WSbuPaUcUcx4Zwx5LD0P1YrA5+fYs2bEnk33Q",
+        "createdAt": "3:19 PM",
+        "createdOn": "01/15/2023",
+        "profileImageUrl": "https://ui-avatars.com/api/?background=EB70CD&color=fff&name=Peter+Chege&bold=true&fontsize=0.6&rounded=true"
+      },
+      "postsContent": [
+        {
+          "postMediaId": "pinstagram/IMG-20230115-WA0000.jpg",
+          "postMediaType": "image",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1673796032/pinstagram/IMG-20230115-WA0000.jpg.jpg",
+          "postPostId": "594b6c5f-9e62-446a-9032-2502842455b9"
+        }
+      ]
+    },
+    {
+      "postUserId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+      "postId": "f5d6b5dd-21c0-42c4-8c12-6a7fc335424b",
+      "postCaption": "\"\"",
+      "postViews": [],
+      "postLikes": [],
+      "createdAt": "3:24 PM",
+      "createdOn": "01/15/2023",
+      "postUser": {
+        "userId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+        "username": "peterchege4179",
+        "fullName": "Peter Chege",
+        "email": "peterkagure@gmail.com",
+        "bio": null,
+        "followerIds": [],
+        "followingIds": [],
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$CQNpBs76xNAgCDwxRoGZVw$EYs7N+WSbuPaUcUcx4Zwx5LD0P1YrA5+fYs2bEnk33Q",
+        "createdAt": "3:19 PM",
+        "createdOn": "01/15/2023",
+        "profileImageUrl": "https://ui-avatars.com/api/?background=EB70CD&color=fff&name=Peter+Chege&bold=true&fontsize=0.6&rounded=true"
+      },
+      "postsContent": [
+        {
+          "postMediaId": "pinstagram/VID-20230104-WA0000.mp4",
+          "postMediaType": "video",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/video/upload/v1673796261/pinstagram/VID-20230104-WA0000.mp4.mp4",
+          "postPostId": "f5d6b5dd-21c0-42c4-8c12-6a7fc335424b"
+        },
+        {
+          "postMediaId": "pinstagram/Snapchat-1724082004.mp4",
+          "postMediaType": "video",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/video/upload/v1673796261/pinstagram/Snapchat-1724082004.mp4.mp4",
+          "postPostId": "f5d6b5dd-21c0-42c4-8c12-6a7fc335424b"
+        }
+      ]
+    },
+    {
+      "postUserId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+      "postId": "565c37f7-4518-4e93-a907-fbcb8dcf767b",
+      "postCaption": "\"kadede\"",
+      "postViews": [],
+      "postLikes": [],
+      "createdAt": "10:09 AM",
+      "createdOn": "01/16/2023",
+      "postUser": {
+        "userId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+        "username": "peterchege4179",
+        "fullName": "Peter Chege",
+        "email": "peterkagure@gmail.com",
+        "bio": null,
+        "followerIds": [],
+        "followingIds": [],
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$CQNpBs76xNAgCDwxRoGZVw$EYs7N+WSbuPaUcUcx4Zwx5LD0P1YrA5+fYs2bEnk33Q",
+        "createdAt": "3:19 PM",
+        "createdOn": "01/15/2023",
+        "profileImageUrl": "https://ui-avatars.com/api/?background=EB70CD&color=fff&name=Peter+Chege&bold=true&fontsize=0.6&rounded=true"
+      },
+      "postsContent": [
+        {
+          "postMediaId": "pinstagram/IMG-20230112-WA0002.jpg",
+          "postMediaType": "image",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1673863784/pinstagram/IMG-20230112-WA0002.jpg.jpg",
+          "postPostId": "565c37f7-4518-4e93-a907-fbcb8dcf767b"
+        }
+      ]
+    },
+    {
+      "postUserId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+      "postId": "de8b6eb5-21f7-451c-8e33-ade08a8fee14",
+      "postCaption": "\"\"",
+      "postViews": [],
+      "postLikes": [],
+      "createdAt": "10:10 AM",
+      "createdOn": "01/16/2023",
+      "postUser": {
+        "userId": "a3c6c401-fb9d-4285-a810-a53c58a2bbfe",
+        "username": "peterchege4179",
+        "fullName": "Peter Chege",
+        "email": "peterkagure@gmail.com",
+        "bio": null,
+        "followerIds": [],
+        "followingIds": [],
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$CQNpBs76xNAgCDwxRoGZVw$EYs7N+WSbuPaUcUcx4Zwx5LD0P1YrA5+fYs2bEnk33Q",
+        "createdAt": "3:19 PM",
+        "createdOn": "01/15/2023",
+        "profileImageUrl": "https://ui-avatars.com/api/?background=EB70CD&color=fff&name=Peter+Chege&bold=true&fontsize=0.6&rounded=true"
+      },
+      "postsContent": [
+        {
+          "postMediaId": "pinstagram/Screenshot_20230111-061725.png",
+          "postMediaType": "image",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1673863841/pinstagram/Screenshot_20230111-061725.png.png",
+          "postPostId": "de8b6eb5-21f7-451c-8e33-ade08a8fee14"
+        },
+        {
+          "postMediaId": "pinstagram/IMG-20230111-WA0000.jpg",
+          "postMediaType": "image",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1673863841/pinstagram/IMG-20230111-WA0000.jpg.jpg",
+          "postPostId": "de8b6eb5-21f7-451c-8e33-ade08a8fee14"
+        },
+        {
+          "postMediaId": "pinstagram/IMG-20230112-WA0001.jpg",
+          "postMediaType": "image",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1673863841/pinstagram/IMG-20230112-WA0001.jpg.jpg",
+          "postPostId": "de8b6eb5-21f7-451c-8e33-ade08a8fee14"
+        },
+        {
+          "postMediaId": "pinstagram/Screenshot_20230114-200512.png",
+          "postMediaType": "image",
+          "postMediaURL": "https://res.cloudinary.com/dhuqr5iyw/image/upload/v1673863841/pinstagram/Screenshot_20230114-200512.png.png",
+          "postPostId": "de8b6eb5-21f7-451c-8e33-ade08a8fee14"
+        }
+      ]
+    }
+  ]
+}

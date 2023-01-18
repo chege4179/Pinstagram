@@ -88,12 +88,15 @@ android {
     }
 
 }
-configurations {
 
-//    implementation() {
-//        exclude(group = "org.jetbrains", module = "annotations")
-//    }
-}
+
+
+
+
+
+
+
+
 dependencies {
     implementation(project(":core-datastore"))
     implementation(project(":core-common"))

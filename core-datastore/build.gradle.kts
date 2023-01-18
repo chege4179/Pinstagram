@@ -51,5 +51,9 @@ dependencies {
 
     implementation(libs.hilt.android)
     implementation(libs.android.coreKtx)
+
     kapt(libs.hilt.compiler)
+
+    api(libs.test.junit4)
+    //androidTestImplementation(libs.android.test.junit4)
 }

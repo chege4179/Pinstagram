@@ -15,3 +15,4 @@
 local.properties
 Plan
 fastlane/firebase_distribution_key.json
+firebase_distribution_key.json

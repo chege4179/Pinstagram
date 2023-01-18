@@ -13,13 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.core.core_model.response_models
+package com.peterchege.pinstagram.core.core_datastore.serializers
 
-import com.peterchege.pinstagram.core.core_model.external_models.User
 
-data class GetUserByIdResponse(
-    val msg: String,
-    val posts: List<Post>,
-    val success: Boolean,
-    val user: User
-)
+import org.junit.Test
+
+class UserInfoSerializerTest {
+    private val userInfoSerializer = UserInfoSerializer
+
+
+    @Test
+    fun test_whether_default_user_is_null() {
+        assert(userInfoSerializer.defaultValue == null)
+    }
+
+
+
+}
