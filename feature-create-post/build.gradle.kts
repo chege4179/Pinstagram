@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.compose.ui.tooling)
     implementation(libs.navigation.compose)
 
+    implementation(libs.kotlin.collections.immutable)
 
 
 

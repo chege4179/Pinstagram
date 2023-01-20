@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.huhx.picker.view
+package com.peterchege.compose_image_picker.view
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -77,9 +77,6 @@ import com.peterchege.compose_image_picker.R
 import com.peterchege.compose_image_picker.constant.RequestType
 import com.peterchege.compose_image_picker.data.AssetInfo
 import com.peterchege.compose_image_picker.data.AssetViewModel
-import com.peterchege.compose_image_picker.view.AppBarButton
-import com.peterchege.compose_image_picker.view.AssetImageIndicator
-import com.peterchege.compose_image_picker.view.LocalAssetConfig
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)

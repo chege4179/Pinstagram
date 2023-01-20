@@ -16,8 +16,9 @@
 package com.peterchege.pinstagram.core.core_model.external_models
 
 import android.provider.MediaStore
+import kotlinx.serialization.Serializable
 
-
+@Serializable
 data class MediaAsset(
     val id: Long,
     val uriString: String,

@@ -41,9 +41,7 @@ fun FeedScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
     LaunchedEffect(key1 = viewModel.isLoading.value){
-        scaffoldState.snackbarHostState.showSnackbar(
-            message = viewModel.msg.value
-        )
+
     }
 
     Scaffold(

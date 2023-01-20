@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post_media_screen
+package com.peterchege.pinstagram.feature.feature_create_post.presentation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,9 +38,9 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 
-import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_ui.PagerIndicator
 import com.peterchege.pinstagram.core.core_ui.VideoPreview
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.CreatePostScreensViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
@@ -47,9 +48,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun ConfirmPostMediaScreen(
     navController: NavController,
-    viewModel: ConfirmPostMediaScreenViewModel = hiltViewModel(),
+    viewModel: CreatePostScreensViewModel = hiltViewModel(),
 
     ) {
+
+    LaunchedEffect(key1 = true){
+        viewModel.getMediaAssets()
+    }
+    val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
     Scaffold(
@@ -72,14 +78,14 @@ fun ConfirmPostMediaScreen(
                     state = pagerState1
                 ) { image ->
                     val asset = viewModel.mediaAssets.value[image]
-                    if (asset.isVideo()){
+                    if (asset.isVideo()) {
                         VideoPreview(uriString = asset.uriString)
-                    }else{
+                    } else {
                         Box(
                             modifier = Modifier.fillMaxWidth()
-                        ){
+                        ) {
                             SubcomposeAsyncImage(
-                                model =viewModel.mediaAssets.value[image].uriString,
+                                model = viewModel.mediaAssets.value[image].uriString,
                                 loading = {
                                     Box(modifier = Modifier.fillMaxSize()) {
                                         CircularProgressIndicator(
@@ -93,7 +99,7 @@ fun ConfirmPostMediaScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(300.dp),
-                                contentDescription = "Product Images"
+                                contentDescription = "Post Assets"
                             )
                         }
                     }
@@ -115,12 +121,26 @@ fun ConfirmPostMediaScreen(
 
             }
             item {
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.caption.value,
-                    onValueChange = {
-                        viewModel.onChangeCaption(it)
-                    })
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = viewModel.caption.value,
+                        placeholder = {
+                            Text(text = "Enter Caption")
+                        },
+                        onValueChange = {
+                            viewModel.onChangeCaption(it)
+                        })
+
+                }
+
             }
             item {
                 Row(
@@ -130,22 +150,24 @@ fun ConfirmPostMediaScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically,
 
-                ) {
+                    ) {
                     Button(onClick = {
-                        viewModel.cancelPost()
-                        navController.navigate(Screens.SELECT_POST_MEDIA_SCREEN)
+                        scope.launch {
+                            viewModel.clearMediaAssets()
+                        }
+                        navController.popBackStack()
                     }) {
                         Text(
-                            text= "Cancel"
+                            text = "Cancel"
                         )
 
                     }
 
                     Button(onClick = {
-                        viewModel.uploadPost(context = context,scaffoldState = scaffoldState)
+                        viewModel.uploadPost(context = context, scaffoldState = scaffoldState)
                     }) {
                         Text(
-                            text= "Post"
+                            text = "Post ${viewModel.mediaAssets.value.size}"
                         )
 
                     }

@@ -36,6 +36,8 @@ dependencies {
 
 
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.kotlin.collections.immutable)
+
     implementation(libs.compose.ui)
     implementation(libs.android.coreKtx)
 

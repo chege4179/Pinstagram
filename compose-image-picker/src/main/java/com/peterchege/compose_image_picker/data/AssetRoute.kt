@@ -23,7 +23,7 @@ import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.peterchege.compose_image_picker.constant.RequestType
-import com.huhx.picker.view.AssetDisplayScreen
+import com.peterchege.compose_image_picker.view.AssetDisplayScreen
 import com.peterchege.compose_image_picker.view.AssetPreviewScreen
 import com.peterchege.compose_image_picker.view.AssetSelectorScreen
 

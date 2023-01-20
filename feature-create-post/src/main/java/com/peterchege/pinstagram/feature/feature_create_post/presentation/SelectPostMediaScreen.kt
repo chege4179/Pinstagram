@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post_media_screen
+package com.peterchege.pinstagram.feature.feature_create_post.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 fun SelectPostMediaScreen(
     bottomNavController: NavController,
     navHostController: NavHostController,
-    viewModel: SelectPostMediaScreenViewModel = hiltViewModel()
+    viewModel: CreatePostScreensViewModel = hiltViewModel()
 
 ) {
     val scope = rememberCoroutineScope()
@@ -49,7 +49,6 @@ fun SelectPostMediaScreen(
         scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxSize()
     ) {
-        val scope = rememberCoroutineScope()
         PickerPermissions(
             permissions = listOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -61,12 +60,17 @@ fun SelectPostMediaScreen(
                 onPicked = { assets ->
                     val mediaAssets = assets.map { it.toMediaAsset() }
                     scope.launch {
-                        viewModel.loadSelectedMediaToDatabase(mediaAssets = mediaAssets)
+                        viewModel.setMediaAssets(mediaAssetsState = mediaAssets)
                     }
+
                     navHostController.navigate(Screens.CONFIRM_POST_MEDIA_SCREEN)
 
                 },
                 onClose = {
+                    scope.launch {
+                        viewModel.clearMediaAssets()
+                    }
+                    bottomNavController.navigate(Screens.FEED_SCREEN)
 
                 },
             )

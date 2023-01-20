@@ -66,7 +66,7 @@ class FeedScreenViewModel  @Inject constructor(
                 is Resource.Error -> {
                     Log.e("error","error")
                     _isLoading.value = false
-                    _msg.value = result.data!!.msg
+                    _msg.value = result.data?.msg ?: "An unexpected error occurred"
                 }
                 is Resource.Loading -> {
                     Log.e("loading","loading")

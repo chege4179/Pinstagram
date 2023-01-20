@@ -47,6 +47,7 @@ dependencies {
 
     implementation(libs.datastore)
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.kotlin.collections.immutable)
 
 
     implementation(libs.hilt.android)
