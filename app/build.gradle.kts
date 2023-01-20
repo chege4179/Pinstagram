@@ -111,6 +111,7 @@ dependencies {
     implementation(project(":feature-search"))
     implementation(project(":feature-notifications"))
     implementation(project(":feature-profile"))
+    implementation(project(":feature-comments"))
 
 
     implementation(libs.android.coreKtx)

@@ -27,6 +27,7 @@ import androidx.navigation.compose.composable
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen.LoginScreen
 import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.SignUpScreen
+import com.peterchege.pinstagram.feature.feature_comments.presentation.CommentsScreen
 import com.peterchege.pinstagram.feature.feature_create_post.presentation.ConfirmPostMediaScreen
 
 
@@ -54,6 +55,12 @@ fun AppNavigation(
         }
         composable(route = Screens.CONFIRM_POST_MEDIA_SCREEN){
             ConfirmPostMediaScreen(navController = navController)
+        }
+        composable(route = Screens.CONFIRM_POST_MEDIA_SCREEN){
+            ConfirmPostMediaScreen(navController = navController)
+        }
+        composable(route = Screens.COMMENTS_SCREEN + "/{postId}"){
+            CommentsScreen(navController = navController)
         }
     }
 

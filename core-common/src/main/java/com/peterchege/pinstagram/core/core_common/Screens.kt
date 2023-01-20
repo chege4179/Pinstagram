@@ -30,5 +30,7 @@ object Screens {
 
     const val CONFIRM_POST_MEDIA_SCREEN = "CONFIRM_POST_MEDIA_SCREEN"
 
+    const val COMMENTS_SCREEN = "COMMENTS_SCREEN"
+
 
 }

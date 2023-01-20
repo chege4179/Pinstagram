@@ -43,10 +43,6 @@ class FeedScreenViewModel  @Inject constructor(
     private val _msg = mutableStateOf("")
     val msg: State<String> = _msg
 
-
-
-
-
     val _posts = mutableStateOf<List<Post>>(emptyList())
     val posts : State<List<Post>> = _posts
 
