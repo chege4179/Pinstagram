@@ -74,7 +74,7 @@ class RetrofitPinstagramNetwork : PinstagramNetworkDataSource {
         val requestFiles = assets.map {
             UriToFile(context = context).prepareImagePart(Uri.parse(it.uriString), it.filename)
         }
-        return networkApi.uploadPost(assets = requestFiles, user = user, caption = caption)
+        return networkApi.uploadPost(assets = requestFiles, userId = user.userId, caption = caption)
     }
 
     override suspend fun getUserById(userId: String): GetUserByIdResponse {

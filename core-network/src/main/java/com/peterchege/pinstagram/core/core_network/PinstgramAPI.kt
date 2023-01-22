@@ -40,7 +40,7 @@ interface PinstgramAPI {
     @POST("/post/create")
     suspend fun uploadPost(
         @Part assets:List<MultipartBody.Part>,
-        @Part("user") user: User,
+        @Part("userId") userId: String,
         @Part("caption") caption:String,
     ): UploadPostResponse
 

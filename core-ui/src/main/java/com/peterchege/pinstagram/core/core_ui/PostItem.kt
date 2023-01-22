@@ -53,7 +53,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PostItem(
-    post: Post
+    post: Post,
+
 ){
     val pagerState1 = rememberPagerState(initialPage = 0)
     Column{
@@ -89,10 +90,10 @@ fun PostTopBar(
                 .size(40.dp)
                 .weight(1f)
                 ,
-            image = rememberAsyncImagePainter(post.postUser.profileImageUrl)
+            image = rememberAsyncImagePainter(post.postCreator.profileImageUrl)
         )
         Text(
-            text = post.postUser.fullName,
+            text = post.postCreator.fullName,
             modifier = modifier
                 .weight(8f)
                 .padding(start = 10.dp),
@@ -216,10 +217,10 @@ fun PostImage (
 
 
         HorizontalPager(
-            count = post.postsContent.size,
+            count = post.postContent.size,
             state = pagerState1
         ) { image ->
-            val asset = post.postsContent[image]
+            val asset = post.postContent[image]
             if (asset.postMediaType == "video"){
                 VideoPreview(uriString = asset.postMediaURL)
             }else{
@@ -263,7 +264,7 @@ fun PostLikesCount(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = post.postLikes.size.toString().plus(" likes"),
+            text = post.likes.size.toString().plus(" likes"),
             fontWeight = FontWeight.Bold,
             color = Color.Black,
             fontSize = 16.sp
@@ -297,7 +298,7 @@ fun PostCaption(
                     fontSize = 14.sp
                 )
                 pushStyle(boldStyle)
-                append(post.postUser.username)
+                append(post.postCreator.username)
                 append(" ")
                 if (post.postCaption.isNotEmpty()){
                     pushStyle(normalStyle)
@@ -321,7 +322,7 @@ fun PostCaption(
          verticalAlignment = Alignment.CenterVertically
      ) {
          Text(
-             text = "View all ${post.postViews.size} comments",
+             text = "View all ${post.comments.size} comments",
              color = Color.Black,
              fontWeight = FontWeight.Normal,
              fontSize = 14.sp

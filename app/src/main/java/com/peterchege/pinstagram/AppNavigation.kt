@@ -29,7 +29,7 @@ import com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen.
 import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.SignUpScreen
 import com.peterchege.pinstagram.feature.feature_comments.presentation.CommentsScreen
 import com.peterchege.pinstagram.feature.feature_create_post.presentation.ConfirmPostMediaScreen
-
+import com.peterchege.pinstagram.feature.feature_profile.presentation.ProfileListScreen
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -56,11 +56,12 @@ fun AppNavigation(
         composable(route = Screens.CONFIRM_POST_MEDIA_SCREEN){
             ConfirmPostMediaScreen(navController = navController)
         }
-        composable(route = Screens.CONFIRM_POST_MEDIA_SCREEN){
-            ConfirmPostMediaScreen(navController = navController)
-        }
+
         composable(route = Screens.COMMENTS_SCREEN + "/{postId}"){
             CommentsScreen(navController = navController)
+        }
+        composable(route = Screens.PROFILE_LIST_SCREEN + "/{postId}"){
+            ProfileListScreen(navController = navController)
         }
     }
 

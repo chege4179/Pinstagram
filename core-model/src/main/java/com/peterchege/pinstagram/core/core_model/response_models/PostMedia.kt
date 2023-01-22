@@ -19,5 +19,5 @@ data class PostMedia(
     val postMediaId: String,
     val postMediaType: String,
     val postMediaURL: String,
-    val postPostId: String
+    val postMediaPostId: String
 )

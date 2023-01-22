@@ -17,14 +17,16 @@ package com.peterchege.pinstagram.core.core_model.response_models
 
 import com.peterchege.pinstagram.core.core_model.external_models.User
 
+
 data class Post(
     val createdAt: String,
     val createdOn: String,
     val postCaption: String,
     val postId: String,
-    val postLikes: List<String>,
-    val postUser: User,
-    val postUserId: String,
-    val postViews: List<String>,
-    val postsContent: List<PostMedia>
+    val likes: List<User>,
+    val postCreator: User,
+    val postAuthorId: String,
+    val views: List<User>,
+    val postContent: List<PostMedia>,
+    val comments:List<Comment>,
 )

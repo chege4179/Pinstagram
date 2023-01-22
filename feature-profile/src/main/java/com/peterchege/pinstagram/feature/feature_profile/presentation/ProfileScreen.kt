@@ -19,6 +19,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
 
@@ -60,6 +61,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.response_models.Post
 
@@ -122,7 +124,10 @@ fun ProfileScreen(
                     when(selectedTabIndex) {
                         0 -> PostSection(
                             posts = viewModel.posts.value,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                navHostController.navigate(Screens.PROFILE_LIST_SCREEN +"/${it}")
+                            }
                         )
                     }
                 }
@@ -233,8 +238,8 @@ fun StatSection(modifier: Modifier = Modifier, user:User,posts:List<Post>) {
         modifier = modifier
     ) {
         ProfileStat(numberText = posts.size.toString(), text = "Posts")
-        ProfileStat(numberText = user.followerIds.size.toString(), text = "Followers")
-        ProfileStat(numberText = user.followingIds.size.toString(), text = "Following")
+        ProfileStat(numberText = user.followers.size.toString(), text = "Followers")
+        ProfileStat(numberText = user.following.size.toString(), text = "Following")
     }
 }
 
@@ -435,7 +440,8 @@ fun PostTabView(
 @Composable
 fun PostSection(
     posts: List<Post>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick : (postId:String) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -444,7 +450,7 @@ fun PostSection(
     ) {
         items(posts) {
             SubcomposeAsyncImage(
-                model =it.postsContent[0].postMediaURL,
+                model =it.postContent[0].postMediaURL,
                 loading = {
                     Box(modifier = Modifier.fillMaxSize()) {
                         CircularProgressIndicator(
@@ -462,6 +468,9 @@ fun PostSection(
                         width = 1.dp,
                         color = Color.White
                     )
+                    .clickable {
+                        onClick(it.postId)
+                    }
             )
         }
     }

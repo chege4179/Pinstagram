@@ -32,5 +32,7 @@ object Screens {
 
     const val COMMENTS_SCREEN = "COMMENTS_SCREEN"
 
+    const val PROFILE_LIST_SCREEN = "PROFILE_LIST_SCREEN"
+
 
 }
