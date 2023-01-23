@@ -29,6 +29,10 @@ plugins {
 android {
     namespace = "com.peterchege.pinstagram.core.core_model"
     compileSdk = 33
+    defaultConfig {
+        minSdk = 21
+        targetSdk = 33
+    }
 
 }
 

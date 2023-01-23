@@ -28,6 +28,10 @@ android {
     buildFeatures {
         compose = true
     }
+    defaultConfig {
+        minSdk = 21
+        targetSdk = 33
+    }
 
     composeOptions {
         kotlinCompilerExtensionVersion = "1.3.2"
