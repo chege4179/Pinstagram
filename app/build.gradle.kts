@@ -136,6 +136,7 @@ dependencies {
     implementation(libs.lifecycle.runtimeKtx)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.livedataKtx)
+    implementation(libs.lifecycle.runtime.compose)
     implementation(libs.android.hilt.navigation.compose)
 
 

@@ -17,6 +17,7 @@ package com.peterchege.pinstagram.feature.feature_profile.presentation
 
 import android.util.Log
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -39,6 +40,8 @@ class ProfileScreenViewModel @Inject constructor(
     private val userDataStoreRepository: UserDataStoreRepository,
     private val getLoggedInUserProfileUseCase: GetLoggedInUserProfileUseCase,
 ):ViewModel() {
+    
+
 
     private val _isLoading = mutableStateOf(false)
     val isLoading: State<Boolean> = _isLoading

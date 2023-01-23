@@ -16,13 +16,16 @@
 package com.peterchege.pinstagram
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
 //import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -33,16 +36,9 @@ import javax.inject.Inject
 class AppNavigationViewModel @Inject constructor(
     private val authRepositoryImpl: AuthRepositoryImpl
 ):ViewModel() {
-    val _loggedInUser = mutableStateOf<User?>(null)
-    val loggedInUser : State<User?> =_loggedInUser
 
-    init {
-        viewModelScope.launch {
-            authRepositoryImpl.getLoggedInUser().collect {
-                if(it?.username != ""){
-                    _loggedInUser.value = it
-                }
-            }
-        }
-    }
+
+    val loggedInUser  = authRepositoryImpl.getLoggedInUser()
+
+
 }

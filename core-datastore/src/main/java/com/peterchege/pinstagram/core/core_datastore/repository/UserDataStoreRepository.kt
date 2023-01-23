@@ -29,7 +29,7 @@ class UserDataStoreRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ){
 
-    suspend fun getLoggedInUser(): Flow<User?> {
+    fun getLoggedInUser(): Flow<User?> {
         return context.userDataStore.data
     }
     suspend fun setLoggedInUser(user: User) {

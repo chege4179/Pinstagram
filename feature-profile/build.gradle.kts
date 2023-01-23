@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.materialIcons)
+    implementation(libs.lifecycle.runtime.compose)
 
     //lifecycle
 

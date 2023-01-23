@@ -19,12 +19,16 @@ package com.peterchege.pinstagram
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.peterchege.pinstagram.core.core_common.Screens
+import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
 import com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen.LoginScreen
 import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.SignUpScreen
 import com.peterchege.pinstagram.feature.feature_comments.presentation.CommentsScreen
@@ -36,13 +40,15 @@ import com.peterchege.pinstagram.feature.feature_profile.presentation.ProfileLis
 @Composable
 fun AppNavigation(
     navController: NavHostController,
-    viewModel: AppNavigationViewModel = hiltViewModel()
+    viewModel: AppNavigationViewModel = hiltViewModel(),
+
 ) {
-    val context = LocalContext.current
-    val user = viewModel.loggedInUser.value
+
+    val user = viewModel.loggedInUser.collectAsStateWithLifecycle(initialValue = null)
+
     NavHost(
         navController = navController,
-        startDestination = if(user == null) Screens.LOGIN_SCREEN else Screens.BOTTOM_TAB_NAVIGATION
+        startDestination = if(user.value == null) Screens.LOGIN_SCREEN else Screens.BOTTOM_TAB_NAVIGATION
     ){
         composable(route = Screens.LOGIN_SCREEN){
             LoginScreen(navController = navController)

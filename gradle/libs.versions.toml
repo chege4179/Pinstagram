@@ -49,8 +49,11 @@ compose-preview-customview = "androidx.customview:customview:1.2.0-alpha01"
 compose-preview-customview-poolingcontainer = "androidx.customview:customview-poolingcontainer:1.0.0-rc01"
 compose-constraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02"
 
+
+
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
+
 
 hilt-android = { module = "com.google.dagger:hilt-android",  version.ref = "hilt" }
 hilt-ext-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltExt" }
@@ -66,6 +69,7 @@ kotlin-coroutines-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
 lifecycle-livedataKtx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
 lifecycle-runtimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha04"
 
 lottie-compose = "com.airbnb.android:lottie-compose:5.0.3"
 
