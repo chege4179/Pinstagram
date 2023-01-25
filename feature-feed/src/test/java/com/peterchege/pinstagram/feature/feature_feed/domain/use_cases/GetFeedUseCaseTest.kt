@@ -1,0 +1,49 @@
+package com.peterchege.pinstagram.feature.feature_feed.domain.use_cases
+
+import com.peterchege.pinstagram.core.core_common.Resource
+import com.peterchege.pinstagram.core.core_model.external_models.User
+import com.peterchege.pinstagram.core.core_model.response_models.Post
+import com.peterchege.pinstagram.feature.feature_feed.domain.repository.FakeFeedRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.runBlocking
+import org.junit.Assert.*
+import org.junit.Before
+import org.junit.Test
+
+class GetFeedUseCaseTest {
+    private lateinit var getFeedUseCase: GetFeedUseCase
+    private lateinit var fakeFeedRepository: FakeFeedRepository
+    @Before
+    fun setUp(){
+        fakeFeedRepository = FakeFeedRepository()
+        getFeedUseCase = GetFeedUseCase(repository =fakeFeedRepository)
+
+    }
+
+    @Test
+    fun `get Feed Posts make sure the state is loading first`() = runBlocking {
+
+        val result = getFeedUseCase.invoke().first()
+
+        assert((result is Resource.Loading))
+    }
+
+    @Test
+    fun `get Posts and make sure the Posts are not empty`() = runBlocking {
+        val result =  getFeedUseCase.invoke().last()
+        val data  = result.data
+
+
+        if (data != null) {
+            assert((result is Resource.Success) && data.posts.isNotEmpty())
+        }
+
+    }
+
+
+
+
+
+
+}

@@ -15,10 +15,10 @@
  */
 package com.peterchege.pinstagram.feature.feature_feed.domain.use_cases
 
-import android.util.Log
 import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_model.response_models.AllPostResponse
 import com.peterchege.pinstagram.feature.feature_feed.data.FeedRepositoryImpl
+import com.peterchege.pinstagram.feature.feature_feed.domain.repository.FeedRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -26,12 +26,12 @@ import java.io.IOException
 import javax.inject.Inject
 
 class GetFeedUseCase @Inject constructor(
-    private val repository: FeedRepositoryImpl,
+    private val repository: FeedRepository,
 
-) {
+    ) {
     operator fun invoke() : Flow<Resource<AllPostResponse>> = flow {
         try {
-            Log.e("use case","here")
+
             emit(Resource.Loading<AllPostResponse>())
             val response = repository.getFeedPosts()
             if (response.success) {

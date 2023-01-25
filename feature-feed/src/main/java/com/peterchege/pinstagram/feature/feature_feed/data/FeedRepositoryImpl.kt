@@ -20,7 +20,7 @@ import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNe
 import com.peterchege.pinstagram.feature.feature_feed.domain.repository.FeedRepository
 import javax.inject.Inject
 
-class FeedRepositoryImpl @Inject constructor(
+class FeedRepositoryImpl (
     private val api:RetrofitPinstagramNetwork
 ): FeedRepository {
 
