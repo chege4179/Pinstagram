@@ -45,12 +45,6 @@ class FakeAuthRepository :AuthRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getLoggedInUser(): Flow<User?> {
-        TODO("Not yet implemented")
-    }
 
-    override suspend fun setLoggedInUser(user: User) {
-        TODO("Not yet implemented")
-    }
 
 }

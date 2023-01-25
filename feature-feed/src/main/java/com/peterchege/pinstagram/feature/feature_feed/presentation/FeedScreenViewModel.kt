@@ -50,7 +50,7 @@ class FeedScreenViewModel  @Inject constructor(
         getFeedPosts(getFeedUseCase = getFeedUseCase)
     }
 
-    private fun getFeedPosts(getFeedUseCase: GetFeedUseCase){
+    fun getFeedPosts(getFeedUseCase: GetFeedUseCase){
         getFeedUseCase().onEach { result ->
             when (result) {
                 is Resource.Success -> {

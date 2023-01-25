@@ -11,7 +11,7 @@ class LoginUseCaseTest {
     @Before
     fun setUp(){
         fakeAuthRepository = FakeAuthRepository()
-        loginUseCase = LoginUseCase(repository = fakeAuthRepository)
+
 
 
     }
