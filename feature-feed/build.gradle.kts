@@ -26,9 +26,11 @@ android {
     namespace = "com.peterchege.pinstagram.feature.feature_feed"
     compileSdk = 33
 
+
     defaultConfig {
         minSdk = 21
         targetSdk = 33
+        testInstrumentationRunner = "com.peterchege.pinstagram.feature.feature_feed.HiltTestRunner"
     }
 
     buildFeatures {
@@ -68,11 +70,12 @@ dependencies {
     implementation(libs.lifecycle.runtime.compose)
 
     implementation(libs.android.hilt.navigation.compose)
+    implementation(libs.android.hilt.androidx.compiler)
 
 
-    implementation(libs.hilt.android)
+    implementation(libs.android.dagger.hilt)
 
-    kapt(libs.hilt.compiler)
+    kapt(libs.android.hilt.compiler)
 
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.gson)
@@ -84,6 +87,11 @@ dependencies {
     testImplementation(libs.android.arch.core.testing)
     testImplementation(libs.kotlin.coroutines.test)
 
+    debugImplementation(libs.compose.ui.test.manifest)
+    androidTestImplementation(libs.dagger.hilt.android.testing)
+    androidTestImplementation(libs.android.test.compose)
+    kaptAndroidTest (libs.android.hilt.compiler)
+    testImplementation(libs.test.junit4)
     androidTestImplementation(libs.android.test.junit4)
     androidTestImplementation(libs.android.test.espresso)
 

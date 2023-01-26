@@ -20,6 +20,7 @@ import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_model.response_models.AllPostResponse
 import com.peterchege.pinstagram.core.core_model.response_models.GetUserByIdResponse
 import com.peterchege.pinstagram.feature.feature_profile.data.ProfileRepositoryImpl
+import com.peterchege.pinstagram.feature.feature_profile.domain.repository.ProfileRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -27,12 +28,11 @@ import java.io.IOException
 import javax.inject.Inject
 
 class GetUserProfileUseCase @Inject constructor(
-    private val repository: ProfileRepositoryImpl,
+    private val repository: ProfileRepository,
 
     ) {
-    operator fun invoke( userId:String ) : Flow<Resource<GetUserByIdResponse>> = flow {
+    operator fun invoke(userId:String) : Flow<Resource<GetUserByIdResponse>> = flow {
         try {
-
             emit(Resource.Loading<GetUserByIdResponse>())
             val response = repository.getUserById( userId = userId)
             if (response.success) {

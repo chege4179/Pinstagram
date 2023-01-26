@@ -17,6 +17,7 @@ package com.peterchege.pinstagram.feature.feature_profile.presentation
 
 import android.util.Log
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -27,7 +28,8 @@ import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_datastore.repository.UserDataStoreRepository
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.response_models.Post
-import com.peterchege.pinstagram.feature.feature_profile.domain.use_cases.GetLoggedInUserProfileUseCase
+import com.peterchege.pinstagram.feature.feature_profile.domain.use_cases.GetUserProfileUseCase
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -38,7 +40,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileListScreenViewModel @Inject constructor(
     private val userDataStoreRepository: UserDataStoreRepository,
-    private val getLoggedInUserProfileUseCase: GetLoggedInUserProfileUseCase,
+    private val getUserProfileUseCase: GetUserProfileUseCase,
+
     private val savedStateHandle: SavedStateHandle
 ):ViewModel() {
 
@@ -54,13 +57,15 @@ class ProfileListScreenViewModel @Inject constructor(
     val _posts = mutableStateOf<List<Post>>(emptyList())
     val posts : State<List<Post>> = _posts
 
-    val _user = mutableStateOf<User?>(null)
-    val user : State<User?> = _user
+
 
     init {
         savedStateHandle.get<String>("postId")?.let {
-            getLoggedInUserProfile(getLoggedInUserProfileUseCase = getLoggedInUserProfileUseCase)
-            _postId.value = it
+            viewModelScope.launch {
+                getLoggedInUserProfile(getUserProfileUseCase = getUserProfileUseCase)
+                _postId.value = it
+            }
+
 
         }
 
@@ -69,28 +74,32 @@ class ProfileListScreenViewModel @Inject constructor(
 
 
 
-    private fun getLoggedInUserProfile(getLoggedInUserProfileUseCase: GetLoggedInUserProfileUseCase){
-        getLoggedInUserProfileUseCase().onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    Log.e("success","success")
-                    _isLoading.value = false
-                    _msg.value = result.data!!.msg
-                    _posts.value = result.data!!.posts
-                    _user.value = result.data!!.user
+    private suspend fun getLoggedInUserProfile(getUserProfileUseCase: GetUserProfileUseCase){
+        val loggedInUser = userDataStoreRepository.getLoggedInUser()
+        loggedInUser.collect{
+            getUserProfileUseCase(it!!.userId).onEach { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        Log.e("success","success")
+                        _isLoading.value = false
+                        _msg.value = result.data!!.msg
+                        _posts.value = result.data!!.posts
 
-                }
-                is Resource.Error -> {
-                    Log.e("error","error")
-                    _isLoading.value = false
-                    _msg.value = result.data!!.msg
-                }
-                is Resource.Loading -> {
-                    Log.e("loading","loading")
-                    _isLoading.value = true
 
+                    }
+                    is Resource.Error -> {
+                        Log.e("error","error")
+                        _isLoading.value = false
+                        _msg.value = result.data!!.msg
+                    }
+                    is Resource.Loading -> {
+                        Log.e("loading","loading")
+                        _isLoading.value = true
+
+                    }
                 }
-            }
-        }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
+        }
+
     }
 }

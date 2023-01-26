@@ -21,10 +21,14 @@ materialIconsExtended="1.4.0-alpha01"
 [libraries]
 android-appCompat = "androidx.appcompat:appcompat:1.5.1"
 android-coreKtx = "androidx.core:core-ktx:1.9.0"
-android-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+
+# dagger hilt
+android-dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 android-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 android-hilt-navigation-compose = "androidx.hilt:hilt-navigation-compose:1.0.0"
 android-hilt-androidx-compiler = "androidx.hilt:hilt-compiler:1.0.0"
+android-hilt-ext-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltExt" }
+
 
 android-material = "com.google.android.material:material:1.7.0"
 
@@ -55,10 +59,7 @@ androidx-compose-foundation = { group = "androidx.compose.foundation", name = "f
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
 
 
-hilt-android = { module = "com.google.dagger:hilt-android",  version.ref = "hilt" }
-hilt-ext-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltExt" }
-hilt-ext-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltExt" }
-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+
 
 
 
@@ -94,7 +95,6 @@ work-runtime = "androidx.work:work-runtime-ktx:2.7.1"
 kotlin-serialization-json ="org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
 kotlin-collections-immutable =  "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
 
-
 timber = "com.jakewharton.timber:timber:5.0.1"
 
 exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core" , version.ref = "exoplayer"}
@@ -108,7 +108,7 @@ exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui" , version.
 
 test-robolectric = "org.robolectric:robolectric:4.8.1"
 test-navigation = "androidx.navigation:navigation-testing:2.5.0"
-hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
+
 compose-ui-test-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 android-hilt-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
 android-test-compose = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
@@ -130,7 +130,6 @@ mockito-inline = "org.mockito:mockito-inline:3.11.2"
 mockito-core  = "org.mockito:mockito-core:5.0.0"
 
 
-
 #  debug implementation
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
 
@@ -138,8 +137,6 @@ compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", ve
 dagger-hilt-android-testing = "com.google.dagger:hilt-android-testing:2.44.2"
 
 #kapt android Test
-
-
 
 # Instrumentation tests
 io-mockk-mockk-android = "io.mockk:mockk-android:1.10.5"

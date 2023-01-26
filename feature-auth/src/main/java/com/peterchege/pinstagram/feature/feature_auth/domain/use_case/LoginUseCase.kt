@@ -33,8 +33,7 @@ import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
     private val repository: AuthRepositoryImpl,
-    @ApplicationContext
-    private val context: Context
+
 ) {
     operator fun invoke(loginUser: LoginBody) : Flow<Resource<LoginResponse>> = flow {
         try {

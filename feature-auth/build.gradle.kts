@@ -25,6 +25,11 @@ android {
     compileSdk = 33
 
     defaultConfig {
+        testInstrumentationRunner = "com.peterchege.pinstagram.feature.feature_auth.HiltTestRunner"
+    }
+
+
+    defaultConfig {
         minSdk = 21
         targetSdk = 33
     }
@@ -43,15 +48,13 @@ dependencies {
     implementation(project(":core-model"))
     implementation(project(":core-datastore"))
     implementation(project(":core-network"))
+    implementation(project(":core-room"))
+
+
 
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
     implementation(libs.android.material)
-    implementation(project(mapOf("path" to ":core-room")))
-
-    testImplementation(libs.test.junit4)
-    androidTestImplementation(libs.android.test.junit4)
-    androidTestImplementation(libs.android.test.espresso)
 
     //compose
     implementation(libs.compose.activity)
@@ -74,12 +77,21 @@ dependencies {
 
 
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    implementation(libs.android.dagger.hilt)
+    kapt(libs.android.hilt.compiler)
+    kapt(libs.android.hilt.androidx.compiler)
 
 
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.gson)
+
+    debugImplementation(libs.compose.ui.test.manifest)
+    androidTestImplementation(libs.dagger.hilt.android.testing)
+    androidTestImplementation(libs.android.test.compose)
+    kaptAndroidTest (libs.android.hilt.compiler)
+    testImplementation(libs.test.junit4)
+    androidTestImplementation(libs.android.test.junit4)
+    androidTestImplementation(libs.android.test.espresso)
 
 
 }

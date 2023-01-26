@@ -62,9 +62,9 @@ dependencies {
     implementation(libs.kotlin.coroutines.android)
     implementation(libs.kotlin.serialization.json)
 
-    implementation(libs.hilt.android)
+    implementation(libs.android.dagger.hilt)
 
-    kapt(libs.hilt.compiler)
+    kapt(libs.android.hilt.compiler)
 
     testImplementation(libs.test.junit4)
     androidTestImplementation(libs.android.test.junit4)

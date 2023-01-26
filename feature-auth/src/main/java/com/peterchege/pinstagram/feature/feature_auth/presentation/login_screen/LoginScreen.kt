@@ -17,6 +17,8 @@ package com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
@@ -28,19 +30,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 //import androidx.hilt.navigation.compose.hiltViewModel
 import com.peterchege.pinstagram.core.core_common.Screens
+import com.peterchege.pinstagram.core.core_common.TestTags
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.LoginFormEvent
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.RegistrationFormEvent
 import dagger.hilt.android.AndroidEntryPoint
 
-
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+
 @Composable
 fun LoginScreen(
     navController: NavController,
@@ -86,7 +91,10 @@ fun LoginScreen(
                         loginScreenViewModel.onEvent(LoginFormEvent.EmailChanged(it))
                     },
                     isError = state.emailError != null,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag(TestTags.LOGIN_EMAIL_FIELD)
+                    ,
                     placeholder = {
                         Text(text = "Email")
                     },
@@ -109,7 +117,10 @@ fun LoginScreen(
                         loginScreenViewModel.onEvent(LoginFormEvent.PasswordChanged(it))
                     },
                     isError = state.passwordError != null,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag(TestTags.LOGIN_PASSWORD_FIELD)
+                    ,
                     placeholder = {
                         Text(text = "Password")
                     },
@@ -153,7 +164,11 @@ fun LoginScreen(
                 }
             }
             if (loginScreenViewModel.isLoading.value) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .testTag(TestTags.LOGIN_CIRCULAR_INDICATOR)
+                )
             }
         }
 

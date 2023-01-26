@@ -1,5 +1,6 @@
 package com.peterchege.pinstagram.feature.feature_feed.di
 
+
 import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
 import com.peterchege.pinstagram.feature.feature_feed.data.FeedRepositoryImpl
 import com.peterchege.pinstagram.feature.feature_feed.domain.repository.FeedRepository
@@ -12,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object FeatureFeedModule {
+object TestFeatureFeedModule {
 
 
     @Provides

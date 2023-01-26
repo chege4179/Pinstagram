@@ -12,19 +12,21 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
-object FeatureAuthModule {
+object TestFeatureAuthModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(context : Context):AuthRepository {
+    fun provideAuthRepository(context : Context): AuthRepository {
         return AuthRepositoryImpl(
             api = RetrofitPinstagramNetwork(),
             userDataStoreRepository = UserDataStoreRepository(context),
         )
 
     }
+
+
+
 
 }

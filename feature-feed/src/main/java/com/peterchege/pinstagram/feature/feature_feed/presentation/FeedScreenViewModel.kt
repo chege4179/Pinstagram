@@ -34,7 +34,6 @@ import javax.inject.Inject
 @HiltViewModel
 class FeedScreenViewModel  @Inject constructor(
     getFeedUseCase: GetFeedUseCase,
-
 ):ViewModel() {
 
     private val _isLoading = mutableStateOf(false)

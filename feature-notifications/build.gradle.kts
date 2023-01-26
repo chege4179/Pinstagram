@@ -76,10 +76,10 @@ dependencies {
 
 
 
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.ext.work)
-    implementation(libs.hilt.compiler)
-    kapt(libs.hilt.compiler)
+    implementation(libs.android.dagger.hilt)
+    implementation(libs.android.hilt.ext.work)
+    implementation(libs.android.hilt.compiler)
+    kapt(libs.android.hilt.compiler)
 
 
 

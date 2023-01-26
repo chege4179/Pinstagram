@@ -54,10 +54,10 @@ dependencies {
     implementation(libs.kotlin.collections.immutable)
 
 
-    implementation(libs.hilt.android)
+    implementation(libs.android.dagger.hilt)
     implementation(libs.android.coreKtx)
 
-    kapt(libs.hilt.compiler)
+    kapt(libs.android.hilt.compiler)
 
     api(libs.test.junit4)
     //androidTestImplementation(libs.android.test.junit4)

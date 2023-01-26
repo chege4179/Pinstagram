@@ -62,8 +62,8 @@ dependencies {
     implementation(libs.room.paging)
     api(libs.room.runtime)
 
-    implementation(libs.hilt.android)
+    implementation(libs.android.dagger.hilt)
 
-    kapt(libs.hilt.compiler)
+    kapt(libs.android.hilt.compiler)
 
 }
