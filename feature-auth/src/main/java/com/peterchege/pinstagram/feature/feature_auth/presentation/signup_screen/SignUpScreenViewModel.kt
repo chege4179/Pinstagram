@@ -19,14 +19,20 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.peterchege.pinstagram.core.core_common.Resource
+import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
+import com.peterchege.pinstagram.feature.feature_auth.domain.use_case.SignUpUseCase
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.*
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class SignUpScreenViewModel (
-
+class SignUpScreenViewModel @Inject constructor(
+    private val signUpUseCase: SignUpUseCase,
 ) : ViewModel() {
 
     var state by mutableStateOf(RegistrationFormState())
@@ -48,6 +54,12 @@ class SignUpScreenViewModel (
             is RegistrationFormEvent.AcceptTerms -> {
                 state = state.copy(acceptedTerms = event.isAccepted)
             }
+            is RegistrationFormEvent.UsernameChanged -> {
+                state = state.copy(username = event.username)
+            }
+            is RegistrationFormEvent.FullNameChanged -> {
+                state = state.copy(username = event.fullName)
+            }
             is RegistrationFormEvent.Submit -> {
                 submitData()
             }
@@ -55,18 +67,22 @@ class SignUpScreenViewModel (
     }
 
     private fun submitData() {
-        val emailResult = validateEmail(state.email)
-        val passwordResult = validatePassword(state.password)
+        val emailResult = validateEmail(email = state.email)
+        val passwordResult = validatePassword(password = state.password)
         val repeatedPasswordResult = validateRepeatedPassword(
-            state.password, state.repeatedPassword
+            password= state.password,repeatedPassword =  state.repeatedPassword
         )
-        val termsResult = validateTerms(state.acceptedTerms)
+        val termsResult = validateTerms(acceptedTerms = state.acceptedTerms)
+        val usernameResult = validateUsername(username = state.username)
+        val fullNameResult = validateFullName(fullName = state.fullName)
 
         val hasError = listOf(
             emailResult,
             passwordResult,
             repeatedPasswordResult,
-            termsResult
+            termsResult,
+            usernameResult,
+            fullNameResult
         ).any { !it.successful }
 
         if (hasError) {
@@ -74,13 +90,33 @@ class SignUpScreenViewModel (
                 emailError = emailResult.errorMessage,
                 passwordError = passwordResult.errorMessage,
                 repeatedPasswordError = repeatedPasswordResult.errorMessage,
-                termsError = termsResult.errorMessage
+                termsError = termsResult.errorMessage,
+                usernameError = usernameResult.errorMessage,
+                fullNameError = fullNameResult.errorMessage,
+
             )
             return
         }
-        viewModelScope.launch {
-            validationEventChannel.send(ValidationEvent.Success)
-        }
+        val signUpBody = SignUpBody(
+            username = state.username,
+            fullName = state.fullName,
+            email = state.email,
+            password = state.password
+        )
+        signUpUseCase(signUpBody = signUpBody).onEach { result ->
+            when(result){
+                is Resource.Success -> {
+
+                }
+                is Resource.Loading -> {
+
+                }
+                is Resource.Error -> {
+
+                }
+
+            }
+        }.launchIn(viewModelScope)
     }
 
     sealed class ValidationEvent {

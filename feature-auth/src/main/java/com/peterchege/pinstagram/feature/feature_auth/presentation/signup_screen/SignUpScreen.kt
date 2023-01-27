@@ -66,6 +66,48 @@ fun SignUpScreen(
             verticalArrangement = Arrangement.Center
         ) {
             TextField(
+                value = state.fullName,
+                onValueChange = {
+                    signUpScreenViewModel.onEvent(RegistrationFormEvent.EmailChanged(it))
+                },
+                isError = state.fullNameError != null,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(text = "Full Name")
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text
+                )
+            )
+            if (state.fullNameError != null) {
+                Text(
+                    text = state.fullNameError,
+                    color = MaterialTheme.colors.error,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+            TextField(
+                value = state.username,
+                onValueChange = {
+                    signUpScreenViewModel.onEvent(RegistrationFormEvent.EmailChanged(it))
+                },
+                isError = state.usernameError != null,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(text = "Username")
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text
+                )
+            )
+            if (state.usernameError != null) {
+                Text(
+                    text = state.usernameError,
+                    color = MaterialTheme.colors.error,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+            TextField(
                 value = state.email,
                 onValueChange = {
                     signUpScreenViewModel.onEvent(RegistrationFormEvent.EmailChanged(it))

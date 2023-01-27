@@ -20,6 +20,5 @@ data class SignUpBody (
     val fullName:String,
     val email:String,
     val password:String,
-    val createdAt:String,
-    val createdOn:String,
+
     )

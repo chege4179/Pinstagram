@@ -16,6 +16,8 @@
 package com.peterchege.pinstagram.feature.feature_auth.domain.validation
 
 sealed class RegistrationFormEvent {
+    data class UsernameChanged(val username: String) : RegistrationFormEvent()
+    data class FullNameChanged(val fullName: String) : RegistrationFormEvent()
     data class EmailChanged(val email: String) : RegistrationFormEvent()
     data class PasswordChanged(val password: String) : RegistrationFormEvent()
     data class RepeatedPasswordChanged(

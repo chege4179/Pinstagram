@@ -79,3 +79,37 @@ fun validateTerms(acceptedTerms: Boolean): ValidationResult {
         successful = true
     )
 }
+
+fun validateFullName(fullName:String):ValidationResult{
+    if(fullName.length < 10){
+        return ValidationResult(
+            successful = false,
+            errorMessage = "Name too short"
+
+        )
+    }else{
+        return ValidationResult(
+            successful = true,
+            errorMessage = null
+
+        )
+    }
+
+}
+
+fun validateUsername(username:String):ValidationResult{
+    if(username.length < 10){
+        return ValidationResult(
+            successful = false,
+            errorMessage = "Username too short"
+
+        )
+    }else{
+        return ValidationResult(
+            successful = true,
+            errorMessage = null
+
+        )
+    }
+
+}
