@@ -40,6 +40,7 @@ class ProfileScreenViewModel @Inject constructor(
     private val userDataStoreRepository: UserDataStoreRepository,
     private val getLoggedInUserProfileUseCase: GetUserProfileUseCase,
 ):ViewModel() {
+    val loggedInUser = userDataStoreRepository.getLoggedInUser()
     
 
 
@@ -63,15 +64,14 @@ class ProfileScreenViewModel @Inject constructor(
     }
 
     fun logOutUser(navController: NavController){
+        navController.navigate(Screens.LOGIN_SCREEN)
         viewModelScope.launch {
             userDataStoreRepository.unsetLoggedInUser()
         }
-        navController.navigate(Screens.LOGIN_SCREEN)
-
     }
 
 
-    suspend fun getLoggedInUserProfile(getUserProfileUseCase: GetUserProfileUseCase){
+    private suspend fun getLoggedInUserProfile(getUserProfileUseCase: GetUserProfileUseCase){
         val user = userDataStoreRepository.getLoggedInUser()
         user.collect{
             getUserProfileUseCase(userId = it!!.userId).onEach { result ->

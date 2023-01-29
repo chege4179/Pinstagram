@@ -35,11 +35,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -57,6 +53,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.SubcomposeAsyncImage
@@ -77,6 +74,10 @@ fun ProfileScreen(
     navHostController: NavHostController,
     viewModel: ProfileScreenViewModel = hiltViewModel()
 ) {
+    val user = viewModel.loggedInUser.collectAsStateWithLifecycle(initialValue = null)
+    LaunchedEffect(key1 = user.value !=null){
+
+    }
     var selectedTabIndex by remember {
         mutableStateOf(0)
     }
