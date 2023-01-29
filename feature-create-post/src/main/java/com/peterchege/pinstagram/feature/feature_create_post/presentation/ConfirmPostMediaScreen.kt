@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,8 +52,9 @@ fun ConfirmPostMediaScreen(
     viewModel: CreatePostScreensViewModel = hiltViewModel(),
 
     ) {
+    val user = viewModel.user.collectAsState(initial = null)
 
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         viewModel.getMediaAssets()
     }
     val scope = rememberCoroutineScope()
@@ -127,7 +129,7 @@ fun ConfirmPostMediaScreen(
                         .padding(horizontal = 10.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
 
                     TextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -163,9 +165,17 @@ fun ConfirmPostMediaScreen(
 
                     }
 
-                    Button(onClick = {
-                        viewModel.uploadPost(context = context, scaffoldState = scaffoldState)
-                    }) {
+                    Button(
+                        onClick = {
+                            if(user.value != null){
+                                viewModel.uploadPost(
+                                    context = context,
+                                    scaffoldState = scaffoldState,
+                                    user = user.value!!
+                                )
+                            }
+                        }
+                    ) {
                         Text(
                             text = "Post ${viewModel.mediaAssets.value.size}"
                         )

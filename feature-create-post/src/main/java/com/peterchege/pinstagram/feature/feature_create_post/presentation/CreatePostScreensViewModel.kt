@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peterchege.pinstagram.core.core_datastore.repository.UserDataStoreRepository
 import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset
+import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.feature.feature_create_post.data.CreatePostRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -36,6 +37,7 @@ class CreatePostScreensViewModel @Inject constructor(
     private val userDataStoreRepository: UserDataStoreRepository,
 
 ) : ViewModel() {
+    val user = userDataStoreRepository.getLoggedInUser()
 
     val _mediaAssets = mutableStateOf<List<MediaAsset>>(emptyList())
     val mediaAssets : State<List<MediaAsset>> = _mediaAssets
@@ -46,46 +48,37 @@ class CreatePostScreensViewModel @Inject constructor(
     fun onChangeCaption(text:String){
         _caption.value = text
     }
-
-    suspend fun setMediaAssets(mediaAssetsState:List<MediaAsset>){
-        Log.e("Create Post Screen","Set Media Assets ")
-        mediaAssetsState.forEach {
-            createPostRepository.insertMediaAsset(mediaAsset = it)
+    fun setMediaAssets(mediaAssetsState:List<MediaAsset>){
+        Log.e("Create Post Screen","Set Media Assets ${mediaAssetsState.size}")
+        viewModelScope.launch {
+            mediaAssetsState.map {
+                createPostRepository.insertMediaAsset(mediaAsset = it)
+            }
         }
-
-
     }
     suspend fun clearMediaAssets(){
         createPostRepository.deleteAllMediaAssets()
 
     }
-    suspend fun getMediaAssets(){
-        Log.e("Create Post Screen","Get Media Assets ")
-        _mediaAssets.value = createPostRepository.getAllMediaAssets()
-
-
-    }
-
-    fun uploadPost(context: Context, scaffoldState: ScaffoldState){
+    fun getMediaAssets(){
         viewModelScope.launch {
-            val user = userDataStoreRepository.getLoggedInUser()
-            user.collect{
-                val response = createPostRepository.uploadPost(
-                    assets = mediaAssets.value,
-                    user = it!!,
-                    context = context,
-                    caption = _caption.value
-                )
-                scaffoldState.snackbarHostState.showSnackbar(
-                    message = response.msg
-                )
-                createPostRepository.deleteAllMediaAssets()
-            }
-
+            Log.e("Create Post Screen","Get Media Assets ")
+            _mediaAssets.value = createPostRepository.getAllMediaAssets()
         }
-
-
     }
 
-
+    fun uploadPost(context: Context, scaffoldState: ScaffoldState,user: User){
+        viewModelScope.launch {
+            val response = createPostRepository.uploadPost(
+                assets = mediaAssets.value,
+                user = user,
+                context = context,
+                caption = _caption.value
+            )
+            scaffoldState.snackbarHostState.showSnackbar(
+                message = response.msg
+            )
+            createPostRepository.deleteAllMediaAssets()
+        }
+    }
 }

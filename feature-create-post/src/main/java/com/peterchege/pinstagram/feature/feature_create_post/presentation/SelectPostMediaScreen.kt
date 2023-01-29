@@ -59,10 +59,7 @@ fun SelectPostMediaScreen(
                 assetPickerConfig = AssetPickerConfig(gridCount = 3),
                 onPicked = { assets ->
                     val mediaAssets = assets.map { it.toMediaAsset() }
-                    scope.launch {
-                        viewModel.setMediaAssets(mediaAssetsState = mediaAssets)
-                    }
-
+                    viewModel.setMediaAssets(mediaAssetsState = mediaAssets)
                     navHostController.navigate(Screens.CONFIRM_POST_MEDIA_SCREEN)
 
                 },
