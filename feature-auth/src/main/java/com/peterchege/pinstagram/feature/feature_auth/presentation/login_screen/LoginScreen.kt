@@ -16,6 +16,7 @@
 package com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen
 
 import android.annotation.SuppressLint
+import android.graphics.Paint
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.annotation.VisibleForTesting
@@ -28,6 +29,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
@@ -140,7 +142,10 @@ fun LoginScreen(
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(50.dp),
+                        .height(50.dp)
+
+
+                    ,
                     onClick = {
                         keyboardController?.hide()
                         loginScreenViewModel.submitData(
@@ -150,7 +155,11 @@ fun LoginScreen(
                     }
                 )
                 {
-                    Text("Login")
+                    if (loginScreenViewModel.isLoading.value) {
+                        CircularProgressIndicator(color = Color.White)
+                    }else{
+                        Text("Login")
+                    }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
                 TextButton(
@@ -163,13 +172,7 @@ fun LoginScreen(
                     Text(text = "Sign Up")
                 }
             }
-            if (loginScreenViewModel.isLoading.value) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .testTag(TestTags.LOGIN_CIRCULAR_INDICATOR)
-                )
-            }
+
         }
 
     }

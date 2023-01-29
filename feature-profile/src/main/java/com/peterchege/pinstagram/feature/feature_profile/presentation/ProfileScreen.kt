@@ -93,9 +93,11 @@ fun ProfileScreen(
             viewModel.user.value?.let { user ->
                 Column(modifier = Modifier.fillMaxSize()) {
                     TopBar(
+                        viewModel = viewModel,
                         name = user.username,
                         modifier = Modifier
-                            .padding(10.dp)
+                            .padding(10.dp),
+                        navController = navHostController
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     ProfileSection( user = user, posts = viewModel.posts.value)
@@ -143,8 +145,13 @@ fun ProfileScreen(
 @Composable
 fun TopBar(
     name: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ProfileScreenViewModel,
+    navController: NavController,
 ) {
+    var expanded by remember { mutableStateOf(false) }
+
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
@@ -163,18 +170,41 @@ fun TopBar(
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
-        Icon(
-            imageVector = Icons.Outlined.Notifications,
-            contentDescription = "Back",
-            tint = Color.Black,
-            modifier = Modifier.size(24.dp)
-        )
-        Icon(
-            imageVector = Icons.Outlined.MoreVert,
-            contentDescription = "Back",
-            tint = Color.Black,
-            modifier = Modifier.size(20.dp)
-        )
+        IconButton(
+            onClick = {
+
+            }
+        ){
+            Icon(
+                imageVector = Icons.Outlined.Notifications,
+                contentDescription = "Back",
+                tint = Color.Black,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+        IconButton(
+            onClick={
+                expanded = true
+            }
+        ){
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                DropdownMenuItem(onClick = {
+                    viewModel.logOutUser(navController = navController)
+                }) {
+                    Text("Log Out ")
+                }
+            }
+            Icon(
+                imageVector = Icons.Outlined.MoreVert,
+                contentDescription = "Back",
+                tint = Color.Black,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+
     }
 }
 

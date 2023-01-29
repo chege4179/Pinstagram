@@ -23,26 +23,33 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 //import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.RegistrationFormEvent
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SignUpScreen(
     navController: NavController,
+    signUpScreenViewModel: SignUpScreenViewModel = hiltViewModel()
 
 ) {
-    val signUpScreenViewModel = viewModel<SignUpScreenViewModel>()
     val state = signUpScreenViewModel.state
     val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     LaunchedEffect(key1 = context) {
         signUpScreenViewModel.validationEvents.collect { event ->
             when (event) {
@@ -68,7 +75,7 @@ fun SignUpScreen(
             TextField(
                 value = state.fullName,
                 onValueChange = {
-                    signUpScreenViewModel.onEvent(RegistrationFormEvent.EmailChanged(it))
+                    signUpScreenViewModel.onEvent(RegistrationFormEvent.FullNameChanged(it))
                 },
                 isError = state.fullNameError != null,
                 modifier = Modifier.fillMaxWidth(),
@@ -86,10 +93,11 @@ fun SignUpScreen(
                     modifier = Modifier.align(Alignment.End)
                 )
             }
+            Spacer(modifier = Modifier.height(16.dp))
             TextField(
                 value = state.username,
                 onValueChange = {
-                    signUpScreenViewModel.onEvent(RegistrationFormEvent.EmailChanged(it))
+                    signUpScreenViewModel.onEvent(RegistrationFormEvent.UsernameChanged(it))
                 },
                 isError = state.usernameError != null,
                 modifier = Modifier.fillMaxWidth(),
@@ -107,6 +115,7 @@ fun SignUpScreen(
                     modifier = Modifier.align(Alignment.End)
                 )
             }
+            Spacer(modifier = Modifier.height(16.dp))
             TextField(
                 value = state.email,
                 onValueChange = {
@@ -178,32 +187,31 @@ fun SignUpScreen(
             }
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Checkbox(
-                    checked = state.acceptedTerms,
-                    onCheckedChange = {
-                        signUpScreenViewModel.onEvent(RegistrationFormEvent.AcceptTerms(it))
-                    }
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "Accept terms")
-            }
-            if (state.termsError != null) {
-                Text(
-                    text = state.termsError,
-                    color = MaterialTheme.colors.error,
-                )
-            }
-
             Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
                 onClick = {
+                    keyboardController?.hide()
                     signUpScreenViewModel.onEvent(RegistrationFormEvent.Submit)
-                },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text(text = "Submit")
+                }
+            )
+            {
+                if (signUpScreenViewModel.isLoading.value) {
+                    CircularProgressIndicator(color = Color.White)
+                }else{
+                    Text("Sign Up")
+                }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+            TextButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                onClick = {
+                    navController.navigate(Screens.LOGIN_SCREEN)
+                }) {
+                Text(text = "Login")
             }
         }
 

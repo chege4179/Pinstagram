@@ -45,10 +45,21 @@ fun AppNavigation(
 ) {
 
     val user = viewModel.loggedInUser.collectAsStateWithLifecycle(initialValue = null)
+    fun getInitialRoute():String{
+        return if(user.value== null){
+            Screens.LOGIN_SCREEN
+        }else{
+            if (user.value?.username == ""){
+                Screens.LOGIN_SCREEN
+            }else{
+                Screens.BOTTOM_TAB_NAVIGATION
+            }
+        }
+    }
 
     NavHost(
         navController = navController,
-        startDestination = if(user.value == null) Screens.LOGIN_SCREEN else Screens.BOTTOM_TAB_NAVIGATION
+        startDestination = getInitialRoute()
     ){
         composable(route = Screens.LOGIN_SCREEN){
             LoginScreen(navController = navController)

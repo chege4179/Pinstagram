@@ -52,7 +52,7 @@ fun FeedScreen(
             .fillMaxSize()
 
         ){
-            Text(text = "Test" ,modifier = Modifier.testTag(TestTags.FEED_CONTAINER))
+
             if (viewModel.isLoading.value){
                 CircularProgressIndicator(modifier = Modifier
                     .align(Alignment.Center)

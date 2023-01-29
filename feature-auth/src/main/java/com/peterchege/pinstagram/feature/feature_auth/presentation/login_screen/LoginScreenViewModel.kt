@@ -93,11 +93,7 @@ class LoginScreenViewModel @Inject constructor(
                     Log.e("success","success")
                     _isLoading.value = false
                     navController.navigate(Screens.BOTTOM_TAB_NAVIGATION)
-//                    result.message?.let {
-//                        scaffoldState.snackbarHostState.showSnackbar(
-//                            message = it
-//                        )
-//                    }
+
 
                 }
                 is Resource.Error -> {

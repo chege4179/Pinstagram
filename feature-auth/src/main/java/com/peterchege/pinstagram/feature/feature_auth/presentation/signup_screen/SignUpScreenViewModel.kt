@@ -23,6 +23,7 @@ import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
 import com.peterchege.pinstagram.feature.feature_auth.domain.use_case.SignUpUseCase
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,6 +32,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+@HiltViewModel
 class SignUpScreenViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
 ) : ViewModel() {
@@ -40,6 +42,8 @@ class SignUpScreenViewModel @Inject constructor(
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
 
+    private val _isLoading = mutableStateOf(false)
+    val isLoading: State<Boolean> = _isLoading
     fun onEvent(event: RegistrationFormEvent) {
         when (event) {
             is RegistrationFormEvent.EmailChanged -> {
@@ -58,7 +62,7 @@ class SignUpScreenViewModel @Inject constructor(
                 state = state.copy(username = event.username)
             }
             is RegistrationFormEvent.FullNameChanged -> {
-                state = state.copy(username = event.fullName)
+                state = state.copy(fullName = event.fullName)
             }
             is RegistrationFormEvent.Submit -> {
                 submitData()
@@ -106,13 +110,15 @@ class SignUpScreenViewModel @Inject constructor(
         signUpUseCase(signUpBody = signUpBody).onEach { result ->
             when(result){
                 is Resource.Success -> {
+                    _isLoading.value = false
 
                 }
                 is Resource.Loading -> {
+                    _isLoading.value = true
 
                 }
                 is Resource.Error -> {
-
+                    _isLoading.value = false
                 }
 
             }
