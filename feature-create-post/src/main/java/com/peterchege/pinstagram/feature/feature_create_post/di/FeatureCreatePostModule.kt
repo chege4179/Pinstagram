@@ -13,29 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_create_post
+package com.peterchege.pinstagram.feature.feature_create_post.di
 
 import android.app.Application
 import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
 import com.peterchege.pinstagram.core.core_room.database.PinstagramLocalDataSource
+import com.peterchege.pinstagram.feature.feature_create_post.data.CreatePostRepositoryImpl
+import com.peterchege.pinstagram.feature.feature_create_post.domain.repository.CreatePostRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(SingletonComponent::class)
 object FeatureCreatePostModule {
 
 
     @Provides
-
+    @Singleton
     fun providePinstagramApi(): RetrofitPinstagramNetwork {
         return RetrofitPinstagramNetwork()
     }
     @Provides
-
+    @Singleton
     fun providePinstagramDatabase(app: Application): PinstagramLocalDataSource {
         return PinstagramLocalDataSource(app = app)
     }
+
+    @Provides
+    @Singleton
+    fun provideCreatePostRepository(app:Application): CreatePostRepository {
+        return CreatePostRepositoryImpl(
+            api = RetrofitPinstagramNetwork(),
+            db = PinstagramLocalDataSource(app = app),
+        )
+    }
+
+
 }

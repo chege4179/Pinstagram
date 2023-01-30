@@ -36,7 +36,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.peterchege.pinstagram.core.core_common.Screens
+import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.RegistrationFormEvent
+import kotlinx.coroutines.flow.collectLatest
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -47,23 +49,26 @@ fun SignUpScreen(
     signUpScreenViewModel: SignUpScreenViewModel = hiltViewModel()
 
 ) {
+    val scaffoldState = rememberScaffoldState()
     val state = signUpScreenViewModel.state
-    val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    LaunchedEffect(key1 = context) {
-        signUpScreenViewModel.validationEvents.collect { event ->
+
+    LaunchedEffect(key1 = true) {
+        signUpScreenViewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is SignUpScreenViewModel.ValidationEvent.Success -> {
-                    Toast.makeText(
-                        context,
-                        "Registration successful",
-                        Toast.LENGTH_LONG
-                    ).show()
+                is UiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.uiText
+                    )
+                }
+                is UiEvent.Navigate -> {
+                    navController.navigate(route = event.route)
                 }
             }
         }
     }
     Scaffold(
+        scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxSize()
     ) {
         Column(

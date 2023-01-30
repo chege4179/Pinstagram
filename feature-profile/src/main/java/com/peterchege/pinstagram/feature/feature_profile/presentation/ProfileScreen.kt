@@ -74,10 +74,8 @@ fun ProfileScreen(
     navHostController: NavHostController,
     viewModel: ProfileScreenViewModel = hiltViewModel()
 ) {
-    val user = viewModel.loggedInUser.collectAsStateWithLifecycle(initialValue = null)
-    LaunchedEffect(key1 = user.value !=null){
 
-    }
+
     var selectedTabIndex by remember {
         mutableStateOf(0)
     }
@@ -125,13 +123,15 @@ fun ProfileScreen(
                         selectedTabIndex = it
                     }
                     when(selectedTabIndex) {
-                        0 -> PostSection(
+                        0 ->  PostSection(
                             posts = viewModel.posts.value,
                             modifier = Modifier.fillMaxWidth(),
                             onClick = {
                                 navHostController.navigate(Screens.PROFILE_LIST_SCREEN +"/${it}")
                             }
                         )
+
+
                     }
                 }
             }
@@ -479,7 +479,7 @@ fun PostSection(
         modifier = modifier
             .scale(1.01f)
     ) {
-        items(posts) {
+        items(items = posts) {
             SubcomposeAsyncImage(
                 model =it.postContent[0].postMediaURL,
                 loading = {

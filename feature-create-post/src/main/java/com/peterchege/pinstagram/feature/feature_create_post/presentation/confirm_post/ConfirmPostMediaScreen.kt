@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_create_post.presentation
+package com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -38,10 +38,13 @@ import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.peterchege.pinstagram.core.core_common.UiEvent
 
 import com.peterchege.pinstagram.core.core_ui.PagerIndicator
 import com.peterchege.pinstagram.core.core_ui.VideoPreview
-import com.peterchege.pinstagram.feature.feature_create_post.presentation.CreatePostScreensViewModel
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post.ConfirmPostScreenViewModel
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post.SelectPostScreensViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
@@ -49,17 +52,31 @@ import kotlinx.coroutines.launch
 @Composable
 fun ConfirmPostMediaScreen(
     navController: NavController,
-    viewModel: CreatePostScreensViewModel = hiltViewModel(),
+    viewModel: ConfirmPostScreenViewModel = hiltViewModel(),
 
     ) {
     val user = viewModel.user.collectAsState(initial = null)
-
-    LaunchedEffect(key1 = true) {
-        viewModel.getMediaAssets()
-    }
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.uiText
+                    )
+                }
+                is UiEvent.Navigate -> {
+                    navController.navigate(route = event.route)
+                }
+            }
+        }
+    }
+    LaunchedEffect(key1 = true) {
+        viewModel.getMediaAssets()
+    }
+
     Scaffold(
         scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxSize(),

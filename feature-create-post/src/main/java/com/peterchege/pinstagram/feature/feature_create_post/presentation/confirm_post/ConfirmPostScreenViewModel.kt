@@ -13,30 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_create_post.presentation
+package com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post
 
 import android.content.Context
 import android.util.Log
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_datastore.repository.UserDataStoreRepository
 import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset
 import com.peterchege.pinstagram.core.core_model.external_models.User
-import com.peterchege.pinstagram.feature.feature_create_post.data.CreatePostRepositoryImpl
+import com.peterchege.pinstagram.feature.feature_create_post.domain.repository.CreatePostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class CreatePostScreensViewModel @Inject constructor(
-    private val createPostRepository: CreatePostRepositoryImpl,
-    private val userDataStoreRepository: UserDataStoreRepository,
 
-) : ViewModel() {
+@HiltViewModel
+class ConfirmPostScreenViewModel @Inject constructor(
+    private val userDataStoreRepository: UserDataStoreRepository,
+    private val createPostRepository: CreatePostRepository,
+
+) :ViewModel() {
     val user = userDataStoreRepository.getLoggedInUser()
 
     val _mediaAssets = mutableStateOf<List<MediaAsset>>(emptyList())
@@ -45,17 +48,14 @@ class CreatePostScreensViewModel @Inject constructor(
     val _caption = mutableStateOf("")
     val caption: State<String> = _caption
 
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
+
     fun onChangeCaption(text:String){
         _caption.value = text
     }
-    fun setMediaAssets(mediaAssetsState:List<MediaAsset>){
-        Log.e("Create Post Screen","Set Media Assets ${mediaAssetsState.size}")
-        viewModelScope.launch {
-            mediaAssetsState.map {
-                createPostRepository.insertMediaAsset(mediaAsset = it)
-            }
-        }
-    }
+
     suspend fun clearMediaAssets(){
         createPostRepository.deleteAllMediaAssets()
 
@@ -67,7 +67,7 @@ class CreatePostScreensViewModel @Inject constructor(
         }
     }
 
-    fun uploadPost(context: Context, scaffoldState: ScaffoldState,user: User){
+    fun uploadPost(context: Context, scaffoldState: ScaffoldState, user: User){
         viewModelScope.launch {
             val response = createPostRepository.uploadPost(
                 assets = mediaAssets.value,
@@ -81,4 +81,5 @@ class CreatePostScreensViewModel @Inject constructor(
             createPostRepository.deleteAllMediaAssets()
         }
     }
+
 }

@@ -142,7 +142,7 @@ dependencies {
 
     implementation(libs.android.dagger.hilt)
     kapt(libs.android.hilt.compiler)
-
+    debugImplementation ("com.squareup.leakcanary:leakcanary-android:2.10")
     debugImplementation(libs.compose.ui.test.manifest)
     androidTestImplementation(libs.dagger.hilt.android.testing)
     androidTestImplementation(libs.android.test.compose)

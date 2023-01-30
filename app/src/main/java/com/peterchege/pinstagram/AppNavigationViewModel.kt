@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
+import com.peterchege.pinstagram.feature.feature_auth.domain.repository.AuthRepository
 //import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -34,11 +35,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AppNavigationViewModel @Inject constructor(
-    private val authRepositoryImpl: AuthRepositoryImpl
+    private val authRepository: AuthRepository
 ):ViewModel() {
 
 
-    val loggedInUser  = authRepositoryImpl.getLoggedInUser()
+    val loggedInUser  = authRepository.getLoggedInUser()
 
 
 }

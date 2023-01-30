@@ -20,14 +20,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peterchege.pinstagram.core.core_common.Resource
+import com.peterchege.pinstagram.core.core_common.Screens
+import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
 import com.peterchege.pinstagram.feature.feature_auth.domain.use_case.SignUpUseCase
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,8 +39,8 @@ class SignUpScreenViewModel @Inject constructor(
 
     var state by mutableStateOf(RegistrationFormState())
 
-    private val validationEventChannel = Channel<ValidationEvent>()
-    val validationEvents = validationEventChannel.receiveAsFlow()
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     private val _isLoading = mutableStateOf(false)
     val isLoading: State<Boolean> = _isLoading
@@ -111,6 +111,8 @@ class SignUpScreenViewModel @Inject constructor(
             when(result){
                 is Resource.Success -> {
                     _isLoading.value = false
+                    _eventFlow.emit(UiEvent.ShowSnackbar(uiText = "Account created successfully"))
+                    _eventFlow.emit(UiEvent.Navigate(route = Screens.LOGIN_SCREEN))
 
                 }
                 is Resource.Loading -> {
@@ -119,13 +121,12 @@ class SignUpScreenViewModel @Inject constructor(
                 }
                 is Resource.Error -> {
                     _isLoading.value = false
+                    _eventFlow.emit(UiEvent.ShowSnackbar(uiText = result.message ?: "An unexpected error occurred "))
                 }
 
             }
         }.launchIn(viewModelScope)
     }
 
-    sealed class ValidationEvent {
-        object Success : ValidationEvent()
-    }
+
 }

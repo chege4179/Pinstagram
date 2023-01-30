@@ -19,20 +19,16 @@ package com.peterchege.pinstagram
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.peterchege.pinstagram.core.core_common.Screens
-import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
 import com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen.LoginScreen
 import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.SignUpScreen
 import com.peterchege.pinstagram.feature.feature_comments.presentation.CommentsScreen
-import com.peterchege.pinstagram.feature.feature_create_post.presentation.ConfirmPostMediaScreen
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post.ConfirmPostMediaScreen
 import com.peterchege.pinstagram.feature.feature_profile.presentation.ProfileListScreen
 
 

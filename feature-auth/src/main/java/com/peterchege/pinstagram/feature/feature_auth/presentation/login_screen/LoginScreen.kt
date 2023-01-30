@@ -40,9 +40,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 //import androidx.hilt.navigation.compose.hiltViewModel
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_common.TestTags
+import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.LoginFormEvent
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.RegistrationFormEvent
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 @OptIn(ExperimentalComposeUiApi::class)
@@ -56,18 +58,19 @@ fun LoginScreen(
 
 
     val state = loginScreenViewModel.state
-    val context = LocalContext.current
+
     val scaffoldState = rememberScaffoldState()
     val keyboardController = LocalSoftwareKeyboardController.current
-    LaunchedEffect(key1 = context) {
-        loginScreenViewModel.validationEvents.collect { event ->
+    LaunchedEffect(key1 = true) {
+        loginScreenViewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is LoginScreenViewModel.ValidationEvent.Success -> {
-                    Toast.makeText(
-                        context,
-                        "Registration successful",
-                        Toast.LENGTH_LONG
-                    ).show()
+                is UiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.uiText
+                    )
+                }
+                is UiEvent.Navigate -> {
+                    navController.navigate(route = event.route)
                 }
             }
         }
@@ -148,10 +151,7 @@ fun LoginScreen(
                     ,
                     onClick = {
                         keyboardController?.hide()
-                        loginScreenViewModel.submitData(
-                            navController = navController,
-                            scaffoldState = scaffoldState
-                        )
+                        loginScreenViewModel.submitData()
                     }
                 )
                 {

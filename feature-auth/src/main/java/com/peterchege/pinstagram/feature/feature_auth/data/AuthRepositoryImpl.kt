@@ -44,13 +44,10 @@ class AuthRepositoryImpl @Inject constructor (
     override suspend fun signUpUser(signUpBody: SignUpBody): SignUpResponse {
         return api.signUpUser(signUpBody = signUpBody)
     }
-    fun getLoggedInUser(): Flow<User?> {
+    override fun getLoggedInUser(): Flow<User?> {
         return userDataStoreRepository.getLoggedInUser()
     }
-    suspend fun setLoggedInUser(user:User) {
+    override suspend fun setLoggedInUser(user:User) {
         return userDataStoreRepository.setLoggedInUser(user = user)
-    }
-    suspend fun unsetLoggedInUser() {
-        return userDataStoreRepository.unsetLoggedInUser()
     }
 }

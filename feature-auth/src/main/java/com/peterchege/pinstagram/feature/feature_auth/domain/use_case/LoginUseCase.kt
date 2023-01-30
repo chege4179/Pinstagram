@@ -21,6 +21,7 @@ import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.response_models.LoginResponse
 import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
+import com.peterchege.pinstagram.feature.feature_auth.domain.repository.AuthRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -32,12 +33,12 @@ import javax.inject.Inject
 
 
 class LoginUseCase @Inject constructor(
-    private val repository: AuthRepositoryImpl,
+    private val repository: AuthRepository,
 
-) {
+    ) {
     operator fun invoke(loginUser: LoginBody) : Flow<Resource<LoginResponse>> = flow {
         try {
-            Log.e("use case","here")
+
             emit(Resource.Loading<LoginResponse>())
             val loginResponse = repository.loginUser(loginUser)
             if (loginResponse.success) {

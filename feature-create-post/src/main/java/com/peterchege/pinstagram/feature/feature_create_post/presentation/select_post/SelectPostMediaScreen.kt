@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_create_post.presentation
+package com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 fun SelectPostMediaScreen(
     bottomNavController: NavController,
     navHostController: NavHostController,
-    viewModel: CreatePostScreensViewModel = hiltViewModel()
+    viewModel: SelectPostScreensViewModel = hiltViewModel()
 
 ) {
     val scope = rememberCoroutineScope()

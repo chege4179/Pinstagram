@@ -18,7 +18,8 @@ package com.peterchege.pinstagram.core.core_common
 object Constants {
     private const val REMOTE_URL = "https://pinstagramapi-production.up.railway.app/"
     private const val LOCAL_URL = "http://10.0.2.2:9000/"
-    const val BASE_URL = LOCAL_URL
+    private const val PUBLIC_LOCAL_URL = "http://192.168.1.6:9000/"
+    const val BASE_URL = PUBLIC_LOCAL_URL
 
     const val DATABASE_NAME = "pinstagram_db"
 

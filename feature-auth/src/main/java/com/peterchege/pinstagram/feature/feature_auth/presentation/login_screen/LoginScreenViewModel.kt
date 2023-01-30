@@ -16,30 +16,24 @@
 package com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen
 
 import android.util.Log
-import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_common.Screens
+import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.feature.feature_auth.domain.use_case.LoginUseCase
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.*
-import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.RegistrationFormState
+import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.SignUpScreenViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-//import javax.inject.Inject
 
 @HiltViewModel
 class LoginScreenViewModel @Inject constructor(
@@ -52,8 +46,9 @@ class LoginScreenViewModel @Inject constructor(
     private val _isLoading = mutableStateOf(false)
     val isLoading: State<Boolean> = _isLoading
 
-    private val validationEventChannel = Channel<ValidationEvent>()
-    val validationEvents = validationEventChannel.receiveAsFlow()
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     fun onEvent(event: LoginFormEvent) {
         when (event) {
@@ -63,12 +58,13 @@ class LoginScreenViewModel @Inject constructor(
             is LoginFormEvent.PasswordChanged -> {
                 state = state.copy(password = event.password)
             }
+            else -> {
 
-            else -> {}
+            }
         }
     }
 
-    fun submitData( navController: NavController,scaffoldState: ScaffoldState) {
+    fun submitData() {
         val emailResult = validateEmail(state.email)
         val passwordResult = validatePassword(state.password)
 
@@ -92,33 +88,25 @@ class LoginScreenViewModel @Inject constructor(
                 is Resource.Success -> {
                     Log.e("success","success")
                     _isLoading.value = false
-                    navController.navigate(Screens.BOTTOM_TAB_NAVIGATION)
+                    _eventFlow.emit(UiEvent.ShowSnackbar(uiText = "Login Successful"))
+                    _eventFlow.emit(UiEvent.Navigate(route = Screens.BOTTOM_TAB_NAVIGATION))
 
 
                 }
                 is Resource.Error -> {
                     Log.e("error","error")
                     _isLoading.value = false
-                    result.message?.let {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = it
-                        )
-                    }
+                    _eventFlow.emit(UiEvent.ShowSnackbar(
+                        uiText = result.message ?: "An unexpected error occurred"))
+
                 }
                 is Resource.Loading -> {
                     Log.e("loading","loading")
                     _isLoading.value = true
-                    result.message?.let {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = it
-                        )
-                    }
+
                 }
             }
         }.launchIn(viewModelScope)
     }
 
-    sealed class ValidationEvent {
-        object Success : ValidationEvent()
-    }
 }

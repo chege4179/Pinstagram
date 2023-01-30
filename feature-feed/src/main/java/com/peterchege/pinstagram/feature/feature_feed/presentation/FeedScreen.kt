@@ -33,7 +33,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.peterchege.pinstagram.core.core_common.TestTags
+import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_ui.PostItem
+import kotlinx.coroutines.flow.collectLatest
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -43,7 +45,20 @@ fun FeedScreen(
     viewModel: FeedScreenViewModel = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
-
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.uiText
+                    )
+                }
+                is UiEvent.Navigate -> {
+                    navHostController.navigate(route = event.route)
+                }
+            }
+        }
+    }
     Scaffold(
         scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxSize(),

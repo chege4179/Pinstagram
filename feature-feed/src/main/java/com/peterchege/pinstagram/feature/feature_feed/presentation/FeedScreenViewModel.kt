@@ -22,10 +22,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_common.Screens
+import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_model.response_models.Post
 import com.peterchege.pinstagram.feature.feature_feed.data.FeedRepositoryImpl
 import com.peterchege.pinstagram.feature.feature_feed.domain.use_cases.GetFeedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -39,11 +42,11 @@ class FeedScreenViewModel  @Inject constructor(
     private val _isLoading = mutableStateOf(false)
     val isLoading: State<Boolean> = _isLoading
 
-    private val _msg = mutableStateOf("")
-    val msg: State<String> = _msg
-
     val _posts = mutableStateOf<List<Post>>(emptyList())
     val posts : State<List<Post>> = _posts
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     init {
         getFeedPosts(getFeedUseCase = getFeedUseCase)
@@ -55,13 +58,15 @@ class FeedScreenViewModel  @Inject constructor(
                 is Resource.Success -> {
                     Log.e("success","success")
                     _isLoading.value = false
-                    _msg.value = result.data!!.msg
                     _posts.value = result.data!!.posts
+
                 }
                 is Resource.Error -> {
                     Log.e("error","error")
                     _isLoading.value = false
-                    _msg.value = result.data?.msg ?: "An unexpected error occurred"
+                    _eventFlow.emit(UiEvent.ShowSnackbar(
+                        uiText = result.data?.msg ?: "An unexpected error occurred"
+                    ))
                 }
                 is Resource.Loading -> {
                     Log.e("loading","loading")

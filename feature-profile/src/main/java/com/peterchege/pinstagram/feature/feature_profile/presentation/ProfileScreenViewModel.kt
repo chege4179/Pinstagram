@@ -29,6 +29,7 @@ import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.response_models.Post
 import com.peterchege.pinstagram.feature.feature_profile.domain.use_cases.GetUserProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -38,7 +39,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileScreenViewModel @Inject constructor(
     private val userDataStoreRepository: UserDataStoreRepository,
-    private val getLoggedInUserProfileUseCase: GetUserProfileUseCase,
+    private val getUserProfileUseCase: GetUserProfileUseCase,
 ):ViewModel() {
     val loggedInUser = userDataStoreRepository.getLoggedInUser()
     
@@ -58,7 +59,32 @@ class ProfileScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getLoggedInUserProfile(getUserProfileUseCase = getLoggedInUserProfileUseCase)
+            val user = userDataStoreRepository.getLoggedInUser()
+            user.collectLatest{
+                getUserProfileUseCase(userId = it!!.userId).onEach { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            Log.e("success","success")
+                            _isLoading.value = false
+                            _msg.value = result.data!!.msg
+                            _posts.value = result.data!!.posts
+                            _user.value = result.data!!.user
+
+
+                        }
+                        is Resource.Error -> {
+                            Log.e("error","error")
+                            _isLoading.value = false
+                            _msg.value = result.data!!.msg
+                        }
+                        is Resource.Loading -> {
+                            Log.e("loading","loading")
+                            _isLoading.value = true
+
+                        }
+                    }
+                }.launchIn(viewModelScope)
+            }
         }
 
     }
@@ -71,32 +97,5 @@ class ProfileScreenViewModel @Inject constructor(
     }
 
 
-    private suspend fun getLoggedInUserProfile(getUserProfileUseCase: GetUserProfileUseCase){
-        val user = userDataStoreRepository.getLoggedInUser()
-        user.collect{
-            getUserProfileUseCase(userId = it!!.userId).onEach { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        Log.e("success","success")
-                        _isLoading.value = false
-                        _msg.value = result.data!!.msg
-                        _posts.value = result.data!!.posts
-                        _user.value = result.data!!.user
 
-                    }
-                    is Resource.Error -> {
-                        Log.e("error","error")
-                        _isLoading.value = false
-                        _msg.value = result.data!!.msg
-                    }
-                    is Resource.Loading -> {
-                        Log.e("loading","loading")
-                        _isLoading.value = true
-
-                    }
-                }
-            }.launchIn(viewModelScope)
-        }
-
-    }
 }

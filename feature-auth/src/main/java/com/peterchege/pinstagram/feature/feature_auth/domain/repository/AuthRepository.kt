@@ -15,10 +15,12 @@
  */
 package com.peterchege.pinstagram.feature.feature_auth.domain.repository
 
+import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
 import com.peterchege.pinstagram.core.core_model.response_models.LoginResponse
 import com.peterchege.pinstagram.core.core_model.response_models.SignUpResponse
+import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
 
@@ -26,4 +28,10 @@ interface AuthRepository {
 
 
     suspend fun signUpUser(signUpBody: SignUpBody):SignUpResponse
+
+    fun getLoggedInUser(): Flow<User?>
+
+    suspend fun setLoggedInUser(user:User)
+
+
 }
