@@ -22,7 +22,8 @@ import com.peterchege.pinstagram.feature.feature_profile.domain.repository.Profi
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
-    private val api:RetrofitPinstagramNetwork
+    private val api:RetrofitPinstagramNetwork,
+    private val userDataStoreRepository: UserDataStoreRepository,
 
 ): ProfileRepository {
     override suspend fun getUserById(userId: String): GetUserByIdResponse {

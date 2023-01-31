@@ -60,9 +60,11 @@ fun FeedScreen(
         scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxSize(),
         topBar ={
-            TopAppBar{
-                Text(text = "Pinstagram")
-            }
+            TopAppBar(
+                title = {
+                    Text(text = "Pinstagram")
+                }
+            )
         }
     ) {
         Box(modifier = Modifier

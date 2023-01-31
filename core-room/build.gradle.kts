@@ -66,4 +66,12 @@ dependencies {
 
     kapt(libs.android.hilt.compiler)
 
+    debugImplementation(libs.compose.ui.test.manifest)
+    androidTestImplementation(libs.dagger.hilt.android.testing)
+    androidTestImplementation(libs.android.test.compose)
+    kaptAndroidTest (libs.android.hilt.compiler)
+    testImplementation(libs.test.junit4)
+    androidTestImplementation(libs.android.test.junit4)
+    androidTestImplementation(libs.android.test.espresso)
+
 }
