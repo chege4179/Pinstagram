@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_profile.presentation
+package com.peterchege.pinstagram.feature.feature_profile.presentation.logged_in_user_profile
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -21,9 +21,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.R
-
-import androidx.compose.foundation.lazy.LazyRow
 
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -44,16 +41,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.SubcomposeAsyncImage
@@ -69,13 +63,12 @@ data class ImageWithText(
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalFoundationApi
 @Composable
-fun ProfileScreen(
+fun LoggedInUserProfileScreen(
     bottomNavController:NavController,
     navHostController: NavHostController,
-    viewModel: ProfileScreenViewModel = hiltViewModel()
+    viewModel: LoggedInUserProfileScreenViewModel = hiltViewModel()
 ) {
-
-
+    val user = viewModel.user.value
     var selectedTabIndex by remember {
         mutableStateOf(0)
     }
@@ -89,8 +82,10 @@ fun ProfileScreen(
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }else{
-            viewModel.user.value?.let { user ->
-                Column(modifier = Modifier.fillMaxSize()) {
+            if (user !=null){
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
                     TopBar(
                         viewModel = viewModel,
                         name = user.username,
@@ -118,7 +113,7 @@ fun ProfileScreen(
                                 text = "IGTV"
                             ),
 
-                        )
+                            )
                     ) {
                         selectedTabIndex = it
                     }
@@ -133,12 +128,11 @@ fun ProfileScreen(
 
 
                     }
+
+
                 }
             }
-
         }
-
-
     }
 
 }
@@ -147,7 +141,7 @@ fun ProfileScreen(
 fun TopBar(
     name: String,
     modifier: Modifier = Modifier,
-    viewModel: ProfileScreenViewModel,
+    viewModel: LoggedInUserProfileScreenViewModel,
     navController: NavController,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -474,35 +468,39 @@ fun PostSection(
     modifier: Modifier = Modifier,
     onClick : (postId:String) -> Unit
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        modifier = modifier
-            .scale(1.01f)
-    ) {
-        items(items = posts) {
-            SubcomposeAsyncImage(
-                model =it.postContent[0].postMediaURL,
-                loading = {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(
-                                Alignment.Center
+    if (posts.isNotEmpty()){
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
+            modifier = modifier
+                .scale(1.01f)
+        ) {
+            items(items = posts) {
+                SubcomposeAsyncImage(
+                    model =it.postContent[0].postMediaURL,
+                    loading = {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.align(
+                                    Alignment.Center
+                                )
                             )
+                        }
+                    },
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .aspectRatio(1f)
+                        .border(
+                            width = 1.dp,
+                            color = Color.White
                         )
-                    }
-                },
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .border(
-                        width = 1.dp,
-                        color = Color.White
-                    )
-                    .clickable {
-                        onClick(it.postId)
-                    }
-            )
+                        .clickable {
+                            onClick(it.postId)
+
+                        }
+                )
+            }
         }
     }
+
 }

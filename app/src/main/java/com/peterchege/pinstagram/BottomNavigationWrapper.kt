@@ -39,10 +39,9 @@ import androidx.navigation.compose.rememberNavController
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_model.external_models.BottomNavItem
 import com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post.SelectPostMediaScreen
-//import com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post.SelectPostMediaScreen
 import com.peterchege.pinstagram.feature.feature_feed.presentation.FeedScreen
 import com.peterchege.pinstagram.feature.feature_notifications.presentation.NotificationScreen
-import com.peterchege.pinstagram.feature.feature_profile.presentation.ProfileScreen
+import com.peterchege.pinstagram.feature.feature_profile.presentation.logged_in_user_profile.LoggedInUserProfileScreen
 import com.peterchege.pinstagram.feature.feature_search.presentation.presentation.SearchScreen
 
 
@@ -131,7 +130,7 @@ fun BottomNavigationWrapper(
                     ),
                     BottomNavItem(
                         name="Profile",
-                        route = Screens.PROFILE_SCREEN ,
+                        route = Screens.LOGGED_IN_USER_PROFILE_SCREEN ,
                         icon = Icons.Default.Person
                     )
 
@@ -187,9 +186,9 @@ fun BottomNavigation(
             NotificationScreen(bottomNavController = navController,navHostController=  navHostController)
         }
         composable(
-            route = Screens.PROFILE_SCREEN
+            route = Screens.LOGGED_IN_USER_PROFILE_SCREEN
         ){
-            ProfileScreen(navController, navHostController = navHostController)
+            LoggedInUserProfileScreen(navController, navHostController = navHostController)
         }
 
     }

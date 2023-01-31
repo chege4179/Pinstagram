@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_profile.presentation
+package com.peterchege.pinstagram.feature.feature_profile.presentation.profile_posts_list
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -34,16 +34,10 @@ import com.peterchege.pinstagram.core.core_ui.PostItem
 @Composable
 fun ProfileListScreen(
     navController: NavController,
-    viewModel:ProfileListScreenViewModel = hiltViewModel()
+    viewModel: ProfileListScreenViewModel = hiltViewModel()
 ) {
     val scrollState = rememberLazyListState()
-    LaunchedEffect(key1 = viewModel.posts.value.isNotEmpty()){
-        val postIds = viewModel.posts.value.map { it.postId }
-        Log.e("Post Ids",postIds.toString())
-        Log.e("Passed Post id",viewModel.postId.value)
-        scrollState.animateScrollToItem(postIds.indexOf(viewModel.postId.value))
 
-    }
 
     Box(modifier = Modifier.fillMaxSize()){
         if (viewModel.isLoading.value){

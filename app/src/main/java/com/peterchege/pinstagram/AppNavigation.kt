@@ -29,7 +29,8 @@ import com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen.
 import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.SignUpScreen
 import com.peterchege.pinstagram.feature.feature_comments.presentation.CommentsScreen
 import com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post.ConfirmPostMediaScreen
-import com.peterchege.pinstagram.feature.feature_profile.presentation.ProfileListScreen
+import com.peterchege.pinstagram.feature.feature_profile.presentation.profile_posts_list.ProfileListScreen
+import com.peterchege.pinstagram.feature.feature_profile.presentation.user_profile.UserProfileScreen
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -41,7 +42,7 @@ fun AppNavigation(
 ) {
 
     val user = viewModel.loggedInUser.collectAsStateWithLifecycle(initialValue = null)
-    fun getInitialRoute():String{
+    fun getInitialRoute() : String {
         return if(user.value== null){
             Screens.LOGIN_SCREEN
         }else{
@@ -75,6 +76,9 @@ fun AppNavigation(
         }
         composable(route = Screens.PROFILE_LIST_SCREEN + "/{postId}"){
             ProfileListScreen(navController = navController)
+        }
+        composable(route = Screens.USER_PROFILE_SCREEN + "/{userId}"){
+            UserProfileScreen(navController = navController)
         }
     }
 

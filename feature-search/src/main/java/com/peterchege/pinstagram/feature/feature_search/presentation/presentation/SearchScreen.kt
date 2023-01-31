@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_ui.ProfileCard
 import kotlinx.coroutines.flow.collectLatest
@@ -71,20 +72,21 @@ fun SearchScreen(
                     Text(text = "Search Username")
                 }
             )
-            if (viewModel.isLoading.value){
+            if (viewModel.isLoading.value) {
                 Box(
                     modifier = Modifier.fillMaxSize()
-                ){
+                ) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
-            }else{
+            } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
-                ){
-                    items(items = viewModel.users.value){ user ->
+                ) {
+                    items(items = viewModel.users.value) { user ->
                         ProfileCard(
                             user = user,
                             onProfileNavigate = {
+                                navHostController.navigate(Screens.USER_PROFILE_SCREEN)
 
                             },
                         )

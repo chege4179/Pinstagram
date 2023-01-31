@@ -13,20 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_profile.presentation
+package com.peterchege.pinstagram.feature.feature_profile.presentation.profile_posts_list
 
 import android.util.Log
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.peterchege.pinstagram.core.core_common.Resource
-import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_datastore.repository.UserDataStoreRepository
-import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.response_models.Post
 import com.peterchege.pinstagram.feature.feature_profile.domain.use_cases.GetUserProfileUseCase
 
