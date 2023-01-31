@@ -43,7 +43,7 @@ import com.peterchege.pinstagram.feature.feature_create_post.presentation.select
 import com.peterchege.pinstagram.feature.feature_feed.presentation.FeedScreen
 import com.peterchege.pinstagram.feature.feature_notifications.presentation.NotificationScreen
 import com.peterchege.pinstagram.feature.feature_profile.presentation.ProfileScreen
-import com.peterchege.pinstagram.feature.feature_search.presentation.SearchScreen
+import com.peterchege.pinstagram.feature.feature_search.presentation.presentation.SearchScreen
 
 
 @ExperimentalMaterialApi

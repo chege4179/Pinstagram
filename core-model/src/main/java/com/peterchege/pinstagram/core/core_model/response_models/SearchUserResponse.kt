@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.core.core_common
+package com.peterchege.pinstagram.core.core_model.response_models
 
-object Constants {
-    private const val REMOTE_URL = "https://pinstagramapi-production.up.railway.app/"
-    private const val LOCAL_URL = "http://10.0.2.2:9000/"
-    private const val PUBLIC_LOCAL_URL = "http://192.168.1.6:9000/"
-    const val BASE_URL = LOCAL_URL
+import com.peterchege.pinstagram.core.core_model.external_models.User
 
-    const val DATABASE_NAME = "pinstagram_db"
-
-}
+data class SearchUserResponse (
+    val msg:String,
+    val success:Boolean,
+    val users:List<User>
+        )

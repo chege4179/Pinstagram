@@ -41,5 +41,8 @@ interface  PinstagramNetworkDataSource {
     suspend fun getUserById(userId:String) :GetUserByIdResponse
 
 
+    suspend fun searchUsers(username:String):SearchUserResponse
+
+
 
 }

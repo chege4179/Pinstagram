@@ -80,4 +80,8 @@ class RetrofitPinstagramNetwork : PinstagramNetworkDataSource {
     override suspend fun getUserById(userId: String): GetUserByIdResponse {
         return networkApi.getUserById(userId = userId)
     }
+
+    override suspend fun searchUsers(username: String): SearchUserResponse {
+        return networkApi.searchUsers(username = username)
+    }
 }

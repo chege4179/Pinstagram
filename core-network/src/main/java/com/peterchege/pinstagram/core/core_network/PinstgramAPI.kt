@@ -48,4 +48,9 @@ interface PinstgramAPI {
     suspend fun getUserById(
         @Path("userId") userId:String
     ):GetUserByIdResponse
+
+    @GET("/user/search")
+    suspend fun searchUsers(
+        @Query("username") username:String
+    ):SearchUserResponse
 }
