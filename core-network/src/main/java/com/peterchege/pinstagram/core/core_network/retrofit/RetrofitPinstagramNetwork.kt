@@ -28,6 +28,7 @@ import com.peterchege.pinstagram.core.core_model.response_models.*
 import com.peterchege.pinstagram.core.core_network.PinstagramNetworkDataSource
 import com.peterchege.pinstagram.core.core_network.PinstgramAPI
 import com.peterchege.pinstagram.core.core_network.util.UriToFile
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -66,15 +67,12 @@ class RetrofitPinstagramNetwork : PinstagramNetworkDataSource {
 
 
     override suspend fun uploadPost(
-        assets: List<MediaAsset>,
-        user: User,
-        caption: String,
-        context: Context,
+        assets: List<MultipartBody.Part>,
+        userId: String,
+        caption: String
     ): UploadPostResponse {
-        val requestFiles = assets.map {
-            UriToFile(context = context).prepareImagePart(Uri.parse(it.uriString), it.filename)
-        }
-        return networkApi.uploadPost(assets = requestFiles, userId = user.userId, caption = caption)
+
+        return networkApi.uploadPost(assets = assets, userId = userId, caption = caption)
     }
 
     override suspend fun getUserById(userId: String): GetUserByIdResponse {

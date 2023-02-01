@@ -16,6 +16,7 @@
 package com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 
@@ -34,14 +35,18 @@ import androidx.compose.ui.unit.dp
 
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.work.*
 import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.google.gson.Gson
 import com.peterchege.pinstagram.core.core_common.UiEvent
+import com.peterchege.pinstagram.core.core_network.util.UriToFile
 
 import com.peterchege.pinstagram.core.core_ui.PagerIndicator
 import com.peterchege.pinstagram.core.core_ui.VideoPreview
+import com.peterchege.pinstagram.core.core_work.UploadPostWorker
 import com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post.ConfirmPostScreenViewModel
 import com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post.SelectPostScreensViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -76,6 +81,9 @@ fun ConfirmPostMediaScreen(
     LaunchedEffect(key1 = true) {
         viewModel.getMediaAssets()
     }
+    val workManager = WorkManager.getInstance(context)
+
+
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -185,11 +193,37 @@ fun ConfirmPostMediaScreen(
                     Button(
                         onClick = {
                             if(user.value != null){
-                                viewModel.uploadPost(
-                                    context = context,
-                                    scaffoldState = scaffoldState,
-                                    user = user.value!!
+                                val requestFiles = viewModel.mediaAssets.value.map {
+                                    UriToFile(context = context).prepareImagePart(Uri.parse(it.uriString), it.filename)
+                                }
+//                                viewModel.uploadPost(
+//                                    requestFiles = requestFiles,
+//                                    scaffoldState = scaffoldState,
+//                                    user = user.value!!
+//                                )
+                                val requestFilesString = Gson().toJson(requestFiles)
+                                val postArticleParams = workDataOf(
+                                    "caption" to viewModel.caption.value,
+                                    "userId" to user.value!!.userId,
+                                    "assets" to requestFilesString,
+
                                 )
+                                val uploadPostRequest = OneTimeWorkRequestBuilder<UploadPostWorker>()
+                                    .setInputData(postArticleParams)
+                                    .setConstraints(
+                                        Constraints.Builder()
+                                            .setRequiredNetworkType(
+                                                NetworkType.CONNECTED
+                                            )
+                                            .build()
+                                    )
+                                    .build()
+                                workManager
+                                    .beginUniqueWork(
+                                         "uploadPost",
+                                        ExistingWorkPolicy.KEEP,
+                                        uploadPostRequest
+                                    ).enqueue()
                             }
                         }
                     ) {

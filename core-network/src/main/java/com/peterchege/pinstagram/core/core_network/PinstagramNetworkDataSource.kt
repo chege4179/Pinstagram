@@ -32,10 +32,9 @@ interface  PinstagramNetworkDataSource {
     suspend fun signUpUser(signUpBody: SignUpBody):SignUpResponse
 
     suspend fun uploadPost(
-        assets:List<MediaAsset>,
-        user:User,
+        assets:List<MultipartBody.Part>,
+        userId:String,
         caption:String,
-        context:Context,
     ):UploadPostResponse
 
     suspend fun getUserById(userId:String) :GetUserByIdResponse

@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":core-datastore"))
     implementation(project(":compose-image-picker"))
     implementation(project(":core-ui"))
+    implementation(project(":core-work"))
 
 
     implementation(libs.android.coreKtx)
@@ -71,7 +72,7 @@ dependencies {
 
     implementation(libs.kotlin.collections.immutable)
 
-
+    implementation(libs.work.runtime)
 
     // coil compose
     implementation(libs.coil.compose)

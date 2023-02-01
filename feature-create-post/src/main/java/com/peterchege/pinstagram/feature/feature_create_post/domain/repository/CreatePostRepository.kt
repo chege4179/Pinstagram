@@ -19,6 +19,7 @@ import android.content.Context
 import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.response_models.UploadPostResponse
+import okhttp3.MultipartBody
 
 interface CreatePostRepository {
 
@@ -28,7 +29,7 @@ interface CreatePostRepository {
 
     suspend fun insertMediaAsset(mediaAsset: MediaAsset)
 
-    suspend fun uploadPost(assets:List<MediaAsset>,user:User,context: Context, caption:String):UploadPostResponse
+    suspend fun uploadPost(assets:List<MultipartBody.Part>,userId:String, caption:String):UploadPostResponse
 
 
 }

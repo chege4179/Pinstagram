@@ -29,6 +29,7 @@ import com.peterchege.pinstagram.core.core_room.database.PinstagramLocalDataSour
 import com.peterchege.pinstagram.core.core_room.entities.toEntity
 import com.peterchege.pinstagram.core.core_room.entities.toExternalModel
 import com.peterchege.pinstagram.feature.feature_create_post.domain.repository.CreatePostRepository
+import okhttp3.MultipartBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
@@ -48,9 +49,13 @@ class CreatePostRepositoryImpl @Inject constructor(
         return db.db.mediaAssetEntityDao.insertMediaAsset(mediaAssetEntity = mediaAsset.toEntity())
     }
 
-    override suspend fun uploadPost(assets: List<MediaAsset>, user: User,context: Context, caption:String):UploadPostResponse {
+    override suspend fun uploadPost(
+        assets: List<MultipartBody.Part>,
+        userId: String,
+        caption: String
+    ): UploadPostResponse {
 
-        return api.uploadPost(assets = assets,user = user, context = context, caption = caption)
+        return api.uploadPost(assets = assets,userId = userId,caption = caption)
     }
 
 

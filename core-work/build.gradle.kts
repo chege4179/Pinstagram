@@ -16,6 +16,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -34,8 +35,22 @@ dependencies {
     implementation(project(":core-network"))
     implementation(project(":core-model"))
     implementation(project(":core-room"))
+    implementation(project(":core-network"))
+    implementation(project(":core-common"))
 
-    
+
     implementation(libs.work.runtime)
+
+    implementation(libs.android.coreKtx)
+    implementation(libs.okhttp.logging)
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit.kotlin.serialization)
+
+    implementation(libs.android.dagger.hilt)
+    implementation(libs.android.hilt.ext.work)
+
+
+    kapt(libs.android.hilt.compiler)
 
 }

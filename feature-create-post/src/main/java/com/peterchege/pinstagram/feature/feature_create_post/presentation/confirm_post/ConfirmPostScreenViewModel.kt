@@ -31,6 +31,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 
@@ -67,12 +68,11 @@ class ConfirmPostScreenViewModel @Inject constructor(
         }
     }
 
-    fun uploadPost(context: Context, scaffoldState: ScaffoldState, user: User){
+    fun uploadPost( scaffoldState: ScaffoldState, user: User,requestFiles:List<MultipartBody.Part>){
         viewModelScope.launch {
             val response = createPostRepository.uploadPost(
-                assets = mediaAssets.value,
-                user = user,
-                context = context,
+                assets = requestFiles,
+                userId = user.userId,
                 caption = _caption.value
             )
             scaffoldState.snackbarHostState.showSnackbar(
