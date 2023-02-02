@@ -23,6 +23,7 @@ import com.peterchege.pinstagram.core.core_model.response_models.SignUpResponse
 
 import com.peterchege.pinstagram.feature.feature_auth.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class FakeAuthRepository :AuthRepository {
     override suspend fun loginUser(loginBody: LoginBody): LoginResponse {
@@ -60,6 +61,28 @@ class FakeAuthRepository :AuthRepository {
         TODO("Not yet implemented")
     }
 
+    override fun getLoggedInUser(): Flow<User?> {
+        return flow {
+            User(
+                bio = "",
+                createdAt = "",
+                createdOn = "",
+                email = "",
+                following = emptyList(),
+                followers = emptyList(),
+                fullName = "",
+                userId = "",
+                username = "",
+                profileImageUrl = "",
+                password = "",
+
+                )
+        }
+    }
+
+    override suspend fun setLoggedInUser(user: User) {
+
+    }
 
 
 }
