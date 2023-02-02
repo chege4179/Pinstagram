@@ -1,4 +1,3 @@
-
 name: Distribute Android App
 
 on: [push]
@@ -12,6 +11,10 @@ jobs:
           touch firebase_distribution_key.json
           echo ${{ secrets.FIREBASE_DISTRIBUTION_KEY }} >> firebase_distribution_key.json
           cat firebase_distribution_key.json
+      - uses: finnp/create-file-action@master
+        env:
+          FILE_NAME: "firebase_distribution_key.json"
+          FILE_DATA: ${{ secrets.FIREBASE_DISTRIBUTION_KEY }}
       - uses: actions/checkout@v2
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
