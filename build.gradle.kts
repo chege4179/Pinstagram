@@ -60,3 +60,4 @@ spotless {
         licenseHeaderFile(rootProject.file("spotless/LICENSE.txt"), "(^(?![\\/ ]\\*).*$)")
     }
 }
+tasks.named("build") { finalizedBy("spotlessApply") }

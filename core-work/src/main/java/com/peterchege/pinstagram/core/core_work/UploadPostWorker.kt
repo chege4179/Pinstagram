@@ -18,6 +18,7 @@ package com.peterchege.pinstagram.core.core_work
 import android.content.Context
 import android.net.Uri
 import android.provider.SyncStateContract
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.*
@@ -50,14 +51,18 @@ class UploadPostWorker (
     override suspend fun doWork(): Result {
         val userId = inputData.getString("userId")
         val caption = inputData.getString("caption")
-        val assets = inputData.getString("assets")
-
-        val requestFiles = Gson().fromJson(assets, Array<MultipartBody.Part>::class.java).toList()
+        //val assets = inputData.getString("assets")
+        val uris = inputData.getString("uris")?.split("||")
+        val requestFiles = uris?.map {
+            UriToFile(context = context).prepareImagePart(Uri.parse(it), getRandomString(10))
+        }
+        //val requestFiles = Gson().fromJson(assets, Array<MultipartBody.Part>::class.java).toList()
         startForegroundService()
+        val TAG = "UPLOAD_WORKER"
 
         try {
             val response = api.uploadPost(
-                assets = requestFiles,
+                assets = requestFiles!!,
                 userId = userId!!,
                 caption = caption!!,
             )
@@ -73,7 +78,9 @@ class UploadPostWorker (
             }
 
         } catch (e: HttpException) {
+            Log.e(TAG,e.localizedMessage ?:"An error occurred")
             failureForegroundService("Could not reach server at the moment")
+            Result.retry()
 
             Result.failure(
                 workDataOf(
@@ -84,8 +91,10 @@ class UploadPostWorker (
             )
 
         } catch (e: IOException) {
+            Log.e(TAG,e.localizedMessage ?:"An error occurred")
 
             failureForegroundService(msg = "The server is down ....Please try again later")
+            Result.retry()
             Result.failure(
                 workDataOf(
                     WorkerKeys.MSG to "The server is down ....Please try again later",
@@ -141,6 +150,12 @@ class UploadPostWorker (
             )
         )
 
+    }
+    fun getRandomString(length: Int) : String {
+        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+        return (1..length)
+            .map { allowedChars.random() }
+            .joinToString("")
     }
 
 }

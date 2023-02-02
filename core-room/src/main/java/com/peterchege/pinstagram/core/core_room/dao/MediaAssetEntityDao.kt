@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.Flow
 interface MediaAssetEntityDao {
 
     @Query("SELECT * FROM mediaAssets")
-    suspend fun getMediaAssets(): List<MediaAssetEntity>
+    fun getMediaAssets(): Flow<List<MediaAssetEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMediaAsset(mediaAssetEntity: MediaAssetEntity)

@@ -43,11 +43,23 @@ class ConfirmPostScreenViewModel @Inject constructor(
 ) :ViewModel() {
     val user = userDataStoreRepository.getLoggedInUser()
 
-    val _mediaAssets = mutableStateOf<List<MediaAsset>>(emptyList())
-    val mediaAssets : State<List<MediaAsset>> = _mediaAssets
+    val mediaAssetsEntities = createPostRepository.getAllMediaAssets()
+
 
     val _caption = mutableStateOf("")
     val caption: State<String> = _caption
+
+    val _combinedUrisState = mutableStateOf("")
+    val combinedUrisState: State<String> = _combinedUrisState
+
+    fun onChangeCombinedUris(combinedUris:String){
+        _combinedUrisState.value = combinedUris
+
+    }
+
+    suspend fun showSnackBar(text:String){
+        _eventFlow.emit(UiEvent.ShowSnackbar(uiText = text))
+    }
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -60,26 +72,6 @@ class ConfirmPostScreenViewModel @Inject constructor(
     suspend fun clearMediaAssets(){
         createPostRepository.deleteAllMediaAssets()
 
-    }
-    fun getMediaAssets(){
-        viewModelScope.launch {
-            Log.e("Create Post Screen","Get Media Assets ")
-            _mediaAssets.value = createPostRepository.getAllMediaAssets()
-        }
-    }
-
-    fun uploadPost( scaffoldState: ScaffoldState, user: User,requestFiles:List<MultipartBody.Part>){
-        viewModelScope.launch {
-            val response = createPostRepository.uploadPost(
-                assets = requestFiles,
-                userId = user.userId,
-                caption = _caption.value
-            )
-            scaffoldState.snackbarHostState.showSnackbar(
-                message = response.msg
-            )
-            createPostRepository.deleteAllMediaAssets()
-        }
     }
 
 }

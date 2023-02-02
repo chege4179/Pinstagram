@@ -57,6 +57,9 @@ class SelectPostScreensViewModel @Inject constructor(
             }
         }
     }
+    suspend fun deleteAllInitialMediaAssets(){
+        createPostRepository.deleteAllMediaAssets()
+    }
     suspend fun clearMediaAssets(){
         createPostRepository.deleteAllMediaAssets()
     }

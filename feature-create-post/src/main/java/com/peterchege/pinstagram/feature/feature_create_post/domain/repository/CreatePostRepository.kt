@@ -19,11 +19,13 @@ import android.content.Context
 import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.response_models.UploadPostResponse
+import com.peterchege.pinstagram.core.core_room.entities.MediaAssetEntity
+import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 
 interface CreatePostRepository {
 
-    suspend fun getAllMediaAssets():List<MediaAsset>
+    fun getAllMediaAssets(): Flow<List<MediaAssetEntity>>
 
     suspend fun deleteAllMediaAssets()
 

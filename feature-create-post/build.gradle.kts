@@ -68,6 +68,8 @@ dependencies {
     implementation(libs.compose.compiler)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.runtimeLivedata)
+
     implementation(libs.navigation.compose)
 
     implementation(libs.kotlin.collections.immutable)

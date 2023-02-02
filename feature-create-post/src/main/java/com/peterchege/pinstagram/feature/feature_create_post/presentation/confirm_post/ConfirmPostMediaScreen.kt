@@ -17,14 +17,13 @@ package com.peterchege.pinstagram.feature.feature_create_post.presentation.confi
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
@@ -43,6 +42,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.gson.Gson
 import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_network.util.UriToFile
+import com.peterchege.pinstagram.core.core_room.entities.toExternalModel
 
 import com.peterchege.pinstagram.core.core_ui.PagerIndicator
 import com.peterchege.pinstagram.core.core_ui.VideoPreview
@@ -61,9 +61,40 @@ fun ConfirmPostMediaScreen(
 
     ) {
     val user = viewModel.user.collectAsState(initial = null)
-    val scope = rememberCoroutineScope()
+
     val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val mediaAssets = viewModel.mediaAssetsEntities
+        .collectAsState(initial = emptyList())
+        .value
+        .map { it.toExternalModel() }
+
+    val postArticleParams = workDataOf(
+        "caption" to viewModel.caption.value,
+        "userId" to (user.value?.userId ?: ""),
+        "uris" to viewModel.combinedUrisState.value,
+    )
+    val uploadPostRequest = OneTimeWorkRequestBuilder<UploadPostWorker>()
+        .setInputData(postArticleParams)
+        .setConstraints(
+            Constraints.Builder()
+                .setRequiredNetworkType(
+                    NetworkType.CONNECTED
+                )
+                .build()
+        )
+        .build()
+
+    val workManager = WorkManager.getInstance(context)
+    val uploadWorkInfo = workManager
+        .getWorkInfosForUniqueWorkLiveData("uploadPost")
+        .observeAsState()
+        .value
+    val workInfo = remember(key1 = uploadWorkInfo) {
+        uploadWorkInfo?.find { it.id == uploadPostRequest.id }
+    }
+
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
@@ -78,13 +109,33 @@ fun ConfirmPostMediaScreen(
             }
         }
     }
-    LaunchedEffect(key1 = true) {
-        viewModel.getMediaAssets()
+
+    LaunchedEffect(key1 = true, ){
+        when(workInfo?.state) {
+            WorkInfo.State.RUNNING -> {
+
+            }
+            WorkInfo.State.SUCCEEDED -> {
+
+                viewModel.showSnackBar("Upload finished")
+            }
+            WorkInfo.State.FAILED -> {
+                viewModel.showSnackBar("Upload failed")
+            }
+            WorkInfo.State.CANCELLED -> {
+                viewModel.showSnackBar("Upload started")
+            }
+            WorkInfo.State.ENQUEUED -> {
+                viewModel.showSnackBar("Upload enqueued")
+            }
+            WorkInfo.State.BLOCKED -> {
+                viewModel.showSnackBar("Upload blocked")
+            }
+            else -> {
+
+            }
+        }
     }
-    val workManager = WorkManager.getInstance(context)
-
-
-
     Scaffold(
         scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxSize(),
@@ -94,148 +145,139 @@ fun ConfirmPostMediaScreen(
             )
         }
     ) {
-        LazyColumn(
+        Box(
             modifier = Modifier.fillMaxSize()
-        ) {
-            item {
-                val pagerState1 = rememberPagerState(initialPage = 0)
-                val coroutineScope = rememberCoroutineScope()
-                HorizontalPager(
-                    count = viewModel.mediaAssets.value.size,
-                    state = pagerState1
-                ) { image ->
-                    val asset = viewModel.mediaAssets.value[image]
-                    if (asset.isVideo()) {
-                        VideoPreview(uriString = asset.uriString)
-                    } else {
-                        Box(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            SubcomposeAsyncImage(
-                                model = viewModel.mediaAssets.value[image].uriString,
-                                loading = {
-                                    Box(modifier = Modifier.fillMaxSize()) {
-                                        CircularProgressIndicator(
-                                            modifier = Modifier.align(
-                                                Alignment.Center
+        ){
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                item {
+                    val pagerState1 = rememberPagerState(initialPage = 0)
+                    val coroutineScope = rememberCoroutineScope()
+                    HorizontalPager(
+                        count = mediaAssets.size,
+                        state = pagerState1
+                    ) { image ->
+                        val asset = mediaAssets[image]
+                        if (asset.isVideo()) {
+                            VideoPreview(uriString = asset.uriString)
+                        } else {
+                            Box(
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                SubcomposeAsyncImage(
+                                    model = mediaAssets[image].uriString,
+                                    loading = {
+                                        Box(modifier = Modifier.fillMaxSize()) {
+                                            CircularProgressIndicator(
+                                                modifier = Modifier.align(
+                                                    Alignment.Center
+                                                )
                                             )
-                                        )
-                                    }
-                                },
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(300.dp),
-                                contentDescription = "Post Assets"
-                            )
-                        }
-                    }
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(20.dp)
-                ) {
-                    PagerIndicator(
-                        modifier = Modifier.align(Alignment.Center),
-                        pagerState = pagerState1
-                    ) {
-                        coroutineScope.launch {
-                            pagerState1.scrollToPage(it)
-                        }
-                    }
-                }
-
-            }
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = viewModel.caption.value,
-                        placeholder = {
-                            Text(text = "Enter Caption")
-                        },
-                        onValueChange = {
-                            viewModel.onChangeCaption(it)
-                        })
-
-                }
-
-            }
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(80.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-
-                    ) {
-                    Button(onClick = {
-                        scope.launch {
-                            viewModel.clearMediaAssets()
-                        }
-                        navController.popBackStack()
-                    }) {
-                        Text(
-                            text = "Cancel"
-                        )
-
-                    }
-
-                    Button(
-                        onClick = {
-                            if(user.value != null){
-                                val requestFiles = viewModel.mediaAssets.value.map {
-                                    UriToFile(context = context).prepareImagePart(Uri.parse(it.uriString), it.filename)
-                                }
-//                                viewModel.uploadPost(
-//                                    requestFiles = requestFiles,
-//                                    scaffoldState = scaffoldState,
-//                                    user = user.value!!
-//                                )
-                                val requestFilesString = Gson().toJson(requestFiles)
-                                val postArticleParams = workDataOf(
-                                    "caption" to viewModel.caption.value,
-                                    "userId" to user.value!!.userId,
-                                    "assets" to requestFilesString,
-
+                                        }
+                                    },
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(300.dp),
+                                    contentDescription = "Post Assets"
                                 )
-                                val uploadPostRequest = OneTimeWorkRequestBuilder<UploadPostWorker>()
-                                    .setInputData(postArticleParams)
-                                    .setConstraints(
-                                        Constraints.Builder()
-                                            .setRequiredNetworkType(
-                                                NetworkType.CONNECTED
-                                            )
-                                            .build()
-                                    )
-                                    .build()
-                                workManager
-                                    .beginUniqueWork(
-                                         "uploadPost",
-                                        ExistingWorkPolicy.KEEP,
-                                        uploadPostRequest
-                                    ).enqueue()
                             }
                         }
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(20.dp)
                     ) {
-                        Text(
-                            text = "Post ${viewModel.mediaAssets.value.size}"
-                        )
+                        PagerIndicator(
+                            modifier = Modifier.align(Alignment.Center),
+                            pagerState = pagerState1
+                        ) {
+                            coroutineScope.launch {
+                                pagerState1.scrollToPage(it)
+                            }
+                        }
+                    }
+
+                }
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 10.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        TextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = viewModel.caption.value,
+                            placeholder = {
+                                Text(text = "Enter Caption")
+                            },
+                            onValueChange = {
+                                viewModel.onChangeCaption(it)
+                            })
 
                     }
 
                 }
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(80.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically,
 
+                        ) {
+                        Button(onClick = {
+                            scope.launch {
+                                viewModel.clearMediaAssets()
+                            }
+                            navController.popBackStack()
+                        }) {
+                            Text(
+                                text = "Cancel"
+                            )
+
+                        }
+
+                        Button(
+                            onClick = {
+                                if (user.value != null) {
+                                    val uris = mediaAssets.map { it.uriString }
+                                    val combinedUris = uris.joinToString("||")
+                                    viewModel.onChangeCombinedUris(combinedUris = combinedUris)
+
+                                    workManager
+                                        .beginUniqueWork(
+                                            "uploadPost",
+                                            ExistingWorkPolicy.KEEP,
+                                            uploadPostRequest
+                                        ).enqueue()
+                                }
+                            }
+                        ) {
+                            Text(
+                                text = "Post ${mediaAssets.size}"
+                            )
+
+                        }
+
+                    }
+                }
+            }
+            when(workInfo?.state) {
+                WorkInfo.State.RUNNING -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+                else -> {
+
+                }
             }
         }
+
     }
 }

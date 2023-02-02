@@ -185,7 +185,11 @@ private fun DisplayBottomBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = stringResource(R.string.text_select_tip), fontSize = 12.sp, color = Color.Gray)
+            Text(
+                text = stringResource(R.string.text_select_tip),
+                fontSize = 12.sp,
+                color = Color.Gray
+            )
             AppBarButton(
                 size = viewModel.selectedList.size,
                 onPicked = { onPicked(viewModel.selectedList) }

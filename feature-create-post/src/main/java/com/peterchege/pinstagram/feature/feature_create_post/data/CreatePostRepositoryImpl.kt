@@ -26,9 +26,12 @@ import com.peterchege.pinstagram.core.core_network.PinstgramAPI
 import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
 import com.peterchege.pinstagram.core.core_room.database.PinstagramDatabase
 import com.peterchege.pinstagram.core.core_room.database.PinstagramLocalDataSource
+import com.peterchege.pinstagram.core.core_room.entities.MediaAssetEntity
 import com.peterchege.pinstagram.core.core_room.entities.toEntity
 import com.peterchege.pinstagram.core.core_room.entities.toExternalModel
 import com.peterchege.pinstagram.feature.feature_create_post.domain.repository.CreatePostRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -39,8 +42,8 @@ class CreatePostRepositoryImpl @Inject constructor(
     private val api:RetrofitPinstagramNetwork,
 ):CreatePostRepository{
 
-    override suspend fun getAllMediaAssets(): List<MediaAsset> {
-        return db.db.mediaAssetEntityDao.getMediaAssets().map { it.toExternalModel() }
+    override  fun getAllMediaAssets(): Flow<List<MediaAssetEntity>> {
+        return db.db.mediaAssetEntityDao.getMediaAssets()
     }
     override suspend fun deleteAllMediaAssets() {
         return db.db.mediaAssetEntityDao.deleteAllMediaAssets()

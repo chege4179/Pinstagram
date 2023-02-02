@@ -70,15 +70,11 @@ android {
     }
 
 }
-
-
-
-
-
-
-
-
-
+configurations {
+    debugImplementation {
+        exclude(group = "junit", module = "junit")
+    }
+}
 dependencies {
     implementation(project(":core-datastore"))
     implementation(project(":core-common"))
