@@ -24,7 +24,7 @@ import javax.inject.Inject
 class GetLoggedInUserProfileUseCase @Inject constructor(
   private val repository: ProfileRepository
 ) {
-    suspend operator fun invoke(): Flow<Resource<GetUserByIdResponse>> {
+    operator fun invoke(): Flow<Resource<GetUserByIdResponse>> {
         return repository.getLoggedInUserById()
     }
 }

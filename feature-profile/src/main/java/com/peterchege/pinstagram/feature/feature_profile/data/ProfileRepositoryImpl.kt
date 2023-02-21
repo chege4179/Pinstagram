@@ -39,7 +39,7 @@ class ProfileRepositoryImpl @Inject constructor(
     }
     val TAG = "PROFILE_REPOSITORY"
 
-    override suspend fun getLoggedInUserById(): Flow<Resource<GetUserByIdResponse>> =
+    override fun getLoggedInUserById(): Flow<Resource<GetUserByIdResponse>> =
         channelFlow {
             send(Resource.Loading())
             try {

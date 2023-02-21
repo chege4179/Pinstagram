@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.Flow
 interface ProfileRepository {
 
     suspend fun getUserById(userId:String): GetUserByIdResponse
-    suspend fun getLoggedInUserById(): Flow<Resource<GetUserByIdResponse>>
+    fun getLoggedInUserById(): Flow<Resource<GetUserByIdResponse>>
 
 
 

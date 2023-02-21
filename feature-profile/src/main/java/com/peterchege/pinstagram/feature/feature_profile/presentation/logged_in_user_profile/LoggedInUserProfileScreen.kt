@@ -21,6 +21,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -48,10 +49,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.response_models.Post
@@ -60,79 +63,102 @@ data class ImageWithText(
     val image: ImageVector,
     val text: String
 )
+
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalFoundationApi
 @Composable
 fun LoggedInUserProfileScreen(
-    bottomNavController:NavController,
+    bottomNavController: NavController,
     navHostController: NavHostController,
     viewModel: LoggedInUserProfileScreenViewModel = hiltViewModel()
 ) {
-    val user = viewModel.user.value
+    val user = viewModel.user.collectAsStateWithLifecycle()
     var selectedTabIndex by remember {
         mutableStateOf(0)
     }
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
-        if (viewModel.isLoading.value){
-            Box(
-                modifier = Modifier.fillMaxSize()
-            ){
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-        }else{
-            if (user !=null){
-                Column(
+        when (user.value) {
+            is Resource.Loading -> {
+                Box(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    TopBar(
-                        viewModel = viewModel,
-                        name = user.username,
-                        modifier = Modifier
-                            .padding(10.dp),
-                        navController = navHostController
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
+            is Resource.Error -> {
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = "An unexpected error occurred"
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    ProfileSection( user = user, posts = viewModel.posts.value)
-                    Spacer(modifier = Modifier.height(25.dp))
-                    ButtonSection(modifier = Modifier.fillMaxWidth())
-                    Spacer(modifier = Modifier.height(10.dp))
-                    PostTabView(
-                        imageWithTexts = listOf(
-                            ImageWithText(
-                                image = Icons.Outlined.GridOn,
-                                text = "Posts"
-                            ),
-                            ImageWithText(
-                                image = Icons.Outlined.Videocam,
-                                text = "Reels"
-                            ),
-                            ImageWithText(
-                                image = Icons.Outlined.Tv,
-                                text = "IGTV"
-                            ),
+                }
 
-                            )
-                    ) {
-                        selectedTabIndex = it
-                    }
-                    when(selectedTabIndex) {
-                        0 ->  PostSection(
-                            posts = viewModel.posts.value,
-                            modifier = Modifier.fillMaxWidth(),
+            }
+            is Resource.Success -> {
+                val posts  = user.value.data?.posts ?: emptyList()
+                user.value.data?.user?.let { user ->
+                    Column(
+                        modifier = Modifier.fillMaxSize()
+                    ){
+                        LazyColumn(
+                            modifier = Modifier.fillMaxHeight(fraction = 0.5f)
+                        ) {
+                            item {
+                                TopBar(
+                                    viewModel = viewModel,
+                                    name = user.username,
+                                    modifier = Modifier
+                                        .padding(10.dp),
+                                    navController = navHostController
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                ProfileSection(user = user, posts = posts)
+                                Spacer(modifier = Modifier.height(25.dp))
+                                ButtonSection(modifier = Modifier.fillMaxWidth())
+                                Spacer(modifier = Modifier.height(10.dp))
+                                PostTabView(
+                                    imageWithTexts = listOf(
+                                        ImageWithText(
+                                            image = Icons.Outlined.GridOn,
+                                            text = "Posts"
+                                        ),
+                                        ImageWithText(
+                                            image = Icons.Outlined.Videocam,
+                                            text = "Reels"
+                                        ),
+                                        ImageWithText(
+                                            image = Icons.Outlined.Tv,
+                                            text = "IGTV"
+                                        ),
+
+                                        )
+                                ) {
+                                    selectedTabIndex = it
+                                }
+
+                            }
+
+                        }
+                        PostSection(
+                            posts = posts,
+                            modifier = Modifier.fillMaxWidth().fillMaxWidth(),
                             onClick = {
-                                navHostController.navigate(Screens.PROFILE_LIST_SCREEN +"/${it}")
+                                navHostController.navigate(Screens.PROFILE_LIST_SCREEN + "/${it}")
                             }
                         )
-
-
                     }
+
 
 
                 }
+
             }
         }
+
     }
 
 }
@@ -169,7 +195,7 @@ fun TopBar(
             onClick = {
 
             }
-        ){
+        ) {
             Icon(
                 imageVector = Icons.Outlined.Notifications,
                 contentDescription = "Back",
@@ -178,10 +204,10 @@ fun TopBar(
             )
         }
         IconButton(
-            onClick={
+            onClick = {
                 expanded = true
             }
-        ){
+        ) {
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
@@ -206,7 +232,7 @@ fun TopBar(
 @Composable
 fun ProfileSection(
     modifier: Modifier = Modifier,
-    user:User,
+    user: User,
     posts: List<Post>
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -223,7 +249,7 @@ fun ProfileSection(
                     .weight(3f)
             )
             Spacer(modifier = Modifier.width(16.dp))
-            StatSection(modifier = Modifier.weight(7f) , user = user, posts = posts)
+            StatSection(modifier = Modifier.weight(7f), user = user, posts = posts)
         }
         ProfileDescription(
             displayName = user.fullName,
@@ -256,7 +282,7 @@ fun RoundImage(
 }
 
 @Composable
-fun StatSection(modifier: Modifier = Modifier, user:User,posts:List<Post>) {
+fun StatSection(modifier: Modifier = Modifier, user: User, posts: List<Post>) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
@@ -321,7 +347,7 @@ fun ProfileDescription(
             letterSpacing = letterSpacing,
             lineHeight = lineHeight
         )
-        if(followedBy.isNotEmpty()) {
+        if (followedBy.isNotEmpty()) {
             Text(
                 text = buildAnnotatedString {
                     val boldStyle = SpanStyle(
@@ -333,11 +359,11 @@ fun ProfileDescription(
                         pushStyle(boldStyle)
                         append(name)
                         pop()
-                        if(index < followedBy.size - 1) {
+                        if (index < followedBy.size - 1) {
                             append(", ")
                         }
                     }
-                    if(otherCount > 2) {
+                    if (otherCount > 2) {
                         append(" and ")
                         pushStyle(boldStyle)
                         append("$otherCount others")
@@ -404,14 +430,14 @@ fun ActionButton(
             )
             .padding(6.dp)
     ) {
-        if(text != null) {
+        if (text != null) {
             Text(
                 text = text,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp
             )
         }
-        if(icon != null) {
+        if (icon != null) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
@@ -451,7 +477,7 @@ fun PostTabView(
                 Icon(
                     imageVector = item.image,
                     contentDescription = item.text,
-                    tint = if(selectedTabIndex == index) Color.Black else inactiveColor,
+                    tint = if (selectedTabIndex == index) Color.Black else inactiveColor,
                     modifier = Modifier
                         .padding(10.dp)
                         .size(20.dp)
@@ -466,9 +492,9 @@ fun PostTabView(
 fun PostSection(
     posts: List<Post>,
     modifier: Modifier = Modifier,
-    onClick : (postId:String) -> Unit
+    onClick: (postId: String) -> Unit
 ) {
-    if (posts.isNotEmpty()){
+    if (posts.isNotEmpty()) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
             modifier = modifier
@@ -476,7 +502,7 @@ fun PostSection(
         ) {
             items(items = posts) {
                 SubcomposeAsyncImage(
-                    model =it.postContent[0].postMediaURL,
+                    model = it.postContent[0].postMediaURL,
                     loading = {
                         Box(modifier = Modifier.fillMaxSize()) {
                             CircularProgressIndicator(

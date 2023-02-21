@@ -1,6 +1,9 @@
 # Android Instagram Application
 
-This is a fully modularized android application built with Jetpack Compose
+This is a fully modularized android application built with Jetpack Compose.The purpose 
+of this project was to learn how to implement a multi-module architecture in android
+development
+
 
 # The App is under constant development and most of it features are not finished
 
@@ -17,7 +20,7 @@ The app has 3 types of modules
 4. Some of the google accompanist libraries for extra features
 5. Room Library for offline saved posts
 6. Push notifications for likes and comments (Firebase messaging)
-7. Cloudinary for storing images and retrieving them via url
+7. Cloudinary for storing images and retrieving them via URL
 8. MVVM Clean architecture
 9. DataStore to store user login info
 

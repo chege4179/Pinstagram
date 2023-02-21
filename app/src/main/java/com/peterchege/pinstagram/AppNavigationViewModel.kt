@@ -26,9 +26,7 @@ import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
 import com.peterchege.pinstagram.feature.feature_auth.domain.repository.AuthRepository
 //import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,6 +38,11 @@ class AppNavigationViewModel @Inject constructor(
 
 
     val loggedInUser  = authRepository.getLoggedInUser()
+        .stateIn(
+            scope = viewModelScope,
+            initialValue = null,
+            started = SharingStarted.WhileSubscribed(5000)
+        )
 
 
 }

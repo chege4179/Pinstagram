@@ -29,9 +29,7 @@ import com.peterchege.pinstagram.core.core_model.response_models.Post
 import com.peterchege.pinstagram.feature.feature_profile.domain.use_cases.GetLoggedInUserProfileUseCase
 import com.peterchege.pinstagram.feature.feature_profile.domain.use_cases.GetUserProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,49 +40,24 @@ class LoggedInUserProfileScreenViewModel @Inject constructor(
     private val getLoggedInUserProfileUseCase: GetLoggedInUserProfileUseCase,
 ):ViewModel() {
 
+
+    val user = getLoggedInUserProfileUseCase()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue= Resource.Loading()
+        )
+
+
+
     
     val TAG = "LOGGED_IN_USER"
 
-    private val _isLoading = mutableStateOf(false)
-    val isLoading: State<Boolean> = _isLoading
-
-    private val _msg = mutableStateOf("")
-    val msg: State<String> = _msg
 
     val _posts = mutableStateOf<List<Post>>(emptyList())
     val posts : State<List<Post>> = _posts
 
-    val _user = mutableStateOf<User?>(null)
-    val user : State<User?> = _user
 
-    init {
-        viewModelScope.launch {
-            getLoggedInUserProfileUseCase().onEach { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        Log.e(TAG,"success")
-                        _isLoading.value = false
-                        _msg.value = result.data!!.msg
-                        _posts.value = result.data!!.posts
-                        _user.value = result.data!!.user
-
-
-                    }
-                    is Resource.Error -> {
-                        Log.e(TAG,"error")
-                        _isLoading.value = false
-                        _msg.value = result.data!!.msg
-                    }
-                    is Resource.Loading -> {
-                        Log.e(TAG,"loading")
-                        _isLoading.value = true
-
-                    }
-                }
-            }.launchIn(viewModelScope)
-        }
-
-    }
 
     fun logOutUser(navController: NavController){
         navController.navigate(Screens.LOGIN_SCREEN)
