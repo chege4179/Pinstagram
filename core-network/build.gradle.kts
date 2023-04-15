@@ -66,6 +66,10 @@ dependencies {
 
     kapt(libs.android.hilt.compiler)
 
+    debugImplementation(libs.chucker.debug)
+    releaseImplementation(libs.chucker.release)
+
+
     testImplementation(libs.test.junit4)
     androidTestImplementation(libs.android.test.junit4)
     androidTestImplementation(libs.io.mockk.mockk)

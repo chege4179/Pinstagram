@@ -46,7 +46,7 @@ class UploadPostWorker (
      private val context: Context,
      workerParams: WorkerParameters,
 ) :  CoroutineWorker(context,workerParams) {
-    private val api = RetrofitPinstagramNetwork()
+    private val api = RetrofitPinstagramNetwork(context = context)
 
     override suspend fun doWork(): Result {
         val userId = inputData.getString("userId")

@@ -22,7 +22,8 @@ import com.peterchege.pinstagram.core.core_room.entities.MediaAssetEntity
 
 @Database(
     entities = [MediaAssetEntity::class],
-    version = 1
+    version = 1,
+    exportSchema = true
 )
 abstract class PinstagramDatabase: RoomDatabase() {
 

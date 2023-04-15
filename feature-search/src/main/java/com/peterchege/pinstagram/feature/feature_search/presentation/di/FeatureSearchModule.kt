@@ -15,12 +15,14 @@
  */
 package com.peterchege.pinstagram.feature.feature_search.presentation.di
 
+import android.content.Context
 import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
 import com.peterchege.pinstagram.feature.feature_search.presentation.data.SearchRepositoryImpl
 import com.peterchege.pinstagram.feature.feature_search.presentation.domain.repository.SearchRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -32,9 +34,9 @@ object FeatureSearchModule {
 
     @Provides
     @Singleton
-    fun provideProfileRepository(): SearchRepository {
+    fun provideProfileRepository(@ApplicationContext context: Context): SearchRepository {
         return SearchRepositoryImpl(
-            api = RetrofitPinstagramNetwork()
+            api = RetrofitPinstagramNetwork(context = context)
         )
 
     }

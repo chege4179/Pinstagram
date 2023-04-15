@@ -37,7 +37,7 @@ object FeatureProfileModule {
         @ApplicationContext context: Context
     ): ProfileRepository {
         return ProfileRepositoryImpl(
-            api = RetrofitPinstagramNetwork(),
+            api = RetrofitPinstagramNetwork(context = context),
             userDataStoreRepository = UserDataStoreRepository(context = context)
 
         )

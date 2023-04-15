@@ -17,6 +17,8 @@ package com.peterchege.pinstagram.core.core_network.retrofit
 
 import android.content.Context
 import android.net.Uri
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 
 import com.peterchege.pinstagram.core.core_common.Constants
 import com.peterchege.pinstagram.core.core_common.Constants.BASE_URL
@@ -28,27 +30,38 @@ import com.peterchege.pinstagram.core.core_model.response_models.*
 import com.peterchege.pinstagram.core.core_network.PinstagramNetworkDataSource
 import com.peterchege.pinstagram.core.core_network.PinstgramAPI
 import com.peterchege.pinstagram.core.core_network.util.UriToFile
+import dagger.Provides
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 
-class RetrofitPinstagramNetwork : PinstagramNetworkDataSource {
+class RetrofitPinstagramNetwork @Inject constructor(
+    @ApplicationContext context: Context
+): PinstagramNetworkDataSource {
 
-    private fun makeOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .connectTimeout(1200, TimeUnit.SECONDS)
-            .readTimeout(1200, TimeUnit.SECONDS)
-            .writeTimeout(900, TimeUnit.SECONDS)
-            .build()
-    }
+    private val client =  OkHttpClient.Builder()
+        .addInterceptor(
+            ChuckerInterceptor.Builder(context = context)
+                .collector(ChuckerCollector(context = context))
+                .maxContentLength(length = 250000L)
+                .redactHeaders(headerNames = emptySet())
+                .alwaysReadResponseBody(enable = false)
+                .build()
+        )
+        .connectTimeout(1200, TimeUnit.SECONDS)
+        .readTimeout(1200, TimeUnit.SECONDS)
+        .writeTimeout(900, TimeUnit.SECONDS)
+        .build()
 
     private val networkApi = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(Constants.BASE_URL)
-        .client(makeOkHttpClient())
+        .baseUrl(BASE_URL)
+        .client(client)
         .build()
         .create(PinstgramAPI::class.java)
 

@@ -16,6 +16,7 @@
 package com.peterchege.pinstagram.feature.feature_create_post.di
 
 import android.app.Application
+import android.content.Context
 import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
 import com.peterchege.pinstagram.core.core_room.database.PinstagramLocalDataSource
 import com.peterchege.pinstagram.feature.feature_create_post.data.CreatePostRepositoryImpl
@@ -24,6 +25,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -34,8 +36,8 @@ object FeatureCreatePostModule {
 
     @Provides
     @Singleton
-    fun providePinstagramApi(): RetrofitPinstagramNetwork {
-        return RetrofitPinstagramNetwork()
+    fun providePinstagramApi(@ApplicationContext context: Context): RetrofitPinstagramNetwork {
+        return RetrofitPinstagramNetwork(context = context)
     }
     @Provides
     @Singleton
@@ -45,9 +47,9 @@ object FeatureCreatePostModule {
 
     @Provides
     @Singleton
-    fun provideCreatePostRepository(app:Application): CreatePostRepository {
+    fun provideCreatePostRepository(app:Application,@ApplicationContext context: Context): CreatePostRepository {
         return CreatePostRepositoryImpl(
-            api = RetrofitPinstagramNetwork(),
+            api = RetrofitPinstagramNetwork(context = context),
             db = PinstagramLocalDataSource(app = app),
         )
     }

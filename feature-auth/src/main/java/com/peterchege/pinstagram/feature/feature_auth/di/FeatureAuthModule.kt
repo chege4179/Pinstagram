@@ -40,7 +40,7 @@ object FeatureAuthModule {
         context : Context
     ):AuthRepository {
         return AuthRepositoryImpl(
-            api = RetrofitPinstagramNetwork(),
+            api = RetrofitPinstagramNetwork(context = context),
             userDataStoreRepository = UserDataStoreRepository(context),
         )
 

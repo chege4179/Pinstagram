@@ -15,10 +15,12 @@
  */
 package com.peterchege.pinstagram.core.core_network
 
+import android.content.Context
 import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -29,8 +31,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providePinstagramApi(): RetrofitPinstagramNetwork {
-        return RetrofitPinstagramNetwork()
+    fun providePinstagramApi(@ApplicationContext context: Context): RetrofitPinstagramNetwork {
+        return RetrofitPinstagramNetwork(context = context)
     }
 
 }
