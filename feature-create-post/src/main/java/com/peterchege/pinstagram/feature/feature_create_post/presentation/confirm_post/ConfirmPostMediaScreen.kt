@@ -16,8 +16,6 @@
 package com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post
 
 import android.annotation.SuppressLint
-import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 
@@ -39,16 +37,12 @@ import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.google.gson.Gson
 import com.peterchege.pinstagram.core.core_common.UiEvent
-import com.peterchege.pinstagram.core.core_network.util.UriToFile
 import com.peterchege.pinstagram.core.core_room.entities.toExternalModel
 
 import com.peterchege.pinstagram.core.core_ui.PagerIndicator
 import com.peterchege.pinstagram.core.core_ui.VideoPreview
-import com.peterchege.pinstagram.core.core_work.UploadPostWorker
-import com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post.ConfirmPostScreenViewModel
-import com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post.SelectPostScreensViewModel
+import com.peterchege.pinstagram.core.core_work.upload_post.UploadPostWorker
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

@@ -1,26 +1,29 @@
 [versions]
-compose = "1.3.2"
+compose = "1.4.3"
 composecompiler = "1.2.0"
-coroutines = "1.6.0"
+coroutines = "1.7.1"
 espresso = "3.5.1"
+gradle = "8.0.2"
 gradleplugin = "7.1.3"
 hilt = "2.45"
 kotlin = "1.8.20"
-lifecycle = "2.5.0"
-room = "2.4.2"
+kotlinGradlePlugin = "1.8.20"
+kotlinSerialization = "1.8.21"
+lifecycle = "2.6.1"
+room = "2.5.1"
 ktor = "2.0.3"
-exoplayer = "2.18.1"
-splash = "1.0.0-rc01"
+exoplayer = "2.18.7"
+splash = "1.1.0-alpha01"
 hiltExt = "1.0.0"
 retrofit = "2.9.0"
-retrofitKotlinxSerializationJson = "0.8.0"
+retrofitKotlinxSerializationJson = "1.0.0"
 okhttp = "4.10.0"
 kotlinSerializationJson = "1.8.0"
-materialIconsExtended="1.4.0-alpha01"
+materialIconsExtended="1.5.0-beta01"
 
 [libraries]
-android-appCompat = "androidx.appcompat:appcompat:1.5.1"
-android-coreKtx = "androidx.core:core-ktx:1.10.0"
+android-appCompat = "androidx.appcompat:appcompat:1.6.1"
+android-coreKtx = "androidx.core:core-ktx:1.10.1"
 
 # dagger hilt
 android-dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
@@ -30,28 +33,28 @@ android-hilt-androidx-compiler = "androidx.hilt:hilt-compiler:1.0.0"
 android-hilt-ext-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltExt" }
 
 
-android-material = "com.google.android.material:material:1.7.0"
+android-material = "com.google.android.material:material:1.9.0"
 
 
 androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splash" }
 
 coil-compose = "io.coil-kt:coil-compose:2.3.0"
 
-accompanist-pager = "com.google.accompanist:accompanist-pager:0.24.3-alpha"
-accompanist-pager-indicator = "com.google.accompanist:accompanist-pager-indicators:0.24.3-alpha"
+accompanist-pager = "com.google.accompanist:accompanist-pager:0.28.0"
+accompanist-pager-indicator = "com.google.accompanist:accompanist-pager-indicators:0.28.0"
 
 
-compose-activity = "androidx.activity:activity-compose:1.5.0"
-compose-compiler = "androidx.compose.compiler:compiler:1.2.0"
-compose-material = "androidx.compose.material:material:1.4.0-alpha03"
+compose-activity = "androidx.activity:activity-compose:1.7.2"
+compose-compiler = "androidx.compose.compiler:compiler:1.4.7"
+compose-material = "androidx.compose.material:material:1.5.0-beta01"
 compose-materialIcons = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 compose-runtimeLivedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
-compose-preview-customview = "androidx.customview:customview:1.2.0-alpha01"
-compose-preview-customview-poolingcontainer = "androidx.customview:customview-poolingcontainer:1.0.0-rc01"
-compose-constraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02"
+compose-preview-customview = "androidx.customview:customview:1.2.0-alpha02"
+compose-preview-customview-poolingcontainer = "androidx.customview:customview-poolingcontainer:1.0.0"
+compose-constraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha10"
 
 
 
@@ -63,20 +66,26 @@ androidx-compose-foundation-layout = { group = "androidx.compose.foundation", na
 
 
 
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 gson-gson = "com.google.code.gson:gson:2.9.0"
+hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
+
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
+kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlinSerialization" }
+
 
 lifecycle-livedataKtx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
 lifecycle-runtimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
-lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha04"
+lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 
 lottie-compose = "com.airbnb.android:lottie-compose:5.0.3"
 
 
 paging-common = "androidx.paging:paging-common-ktx:3.1.1"
-paging-compose = "androidx.paging:paging-compose:1.0.0-alpha14"
+paging-compose = "androidx.paging:paging-compose:1.0.0-alpha20"
 navigation-compose = "androidx.navigation:navigation-compose:2.5.3"
 
 retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
@@ -91,8 +100,8 @@ room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 
 datastore = "androidx.datastore:datastore-preferences:1.0.0"
-work-runtime = "androidx.work:work-runtime-ktx:2.7.1"
-kotlin-serialization-json ="org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+work-runtime = "androidx.work:work-runtime-ktx:2.8.1"
+kotlin-serialization-json ="org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
 kotlin-collections-immutable =  "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
 
 timber = "com.jakewharton.timber:timber:5.0.1"
@@ -107,8 +116,8 @@ chucker-release = "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 # Testing Libraries
 
 
-test-robolectric = "org.robolectric:robolectric:4.8.1"
-test-navigation = "androidx.navigation:navigation-testing:2.5.0"
+test-robolectric = "org.robolectric:robolectric:4.10.2"
+test-navigation = "androidx.navigation:navigation-testing:2.5.3"
 
 compose-ui-test-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 android-hilt-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
@@ -120,11 +129,11 @@ android-test-junit4 = "androidx.test.ext:junit-ktx:1.1.5"
 # test implementation
 test-androidx-core = "androidx.test:core-ktx:1.5.0"
 test-junit4 = "junit:junit:4.13.2"
-android-arch-core-testing = "androidx.arch.core:core-testing:2.1.0"
+android-arch-core-testing = "androidx.arch.core:core-testing:2.2.0"
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 google-truth = "com.google.truth:truth:1.1.3"
 okhttp-mockwebserver = "com.squareup.okhttp3:mockwebserver:4.9.3"
-io-mockk-mockk = "io.mockk:mockk:1.10.5"
+io-mockk-mockk = "io.mockk:mockk:1.13.5"
 
 mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:4.1.0"
 mockito-inline = "org.mockito:mockito-inline:3.11.2"
@@ -140,7 +149,7 @@ dagger-hilt-android-testing = "com.google.dagger:hilt-android-testing:2.45"
 #kapt android Test
 
 # Instrumentation tests
-io-mockk-mockk-android = "io.mockk:mockk-android:1.10.5"
+io-mockk-mockk-android = "io.mockk:mockk-android:1.13.4"
 androidx-test-runner = "androidx.test:runner:1.5.2"
 
 

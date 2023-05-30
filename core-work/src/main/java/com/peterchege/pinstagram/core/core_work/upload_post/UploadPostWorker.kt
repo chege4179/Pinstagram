@@ -13,30 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.core.core_work
+package com.peterchege.pinstagram.core.core_work.upload_post
 
 import android.content.Context
 import android.net.Uri
-import android.provider.SyncStateContract
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.hilt.work.HiltWorker
 import androidx.work.*
-import com.google.gson.Gson
 import com.peterchege.pinstagram.core.core_common.Constants
-import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
 import com.peterchege.pinstagram.core.core_network.util.UriToFile
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.qualifiers.ApplicationContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
+import com.peterchege.pinstagram.core.core_work.WorkerKeys
 import retrofit2.HttpException
 import java.io.IOException
-import javax.inject.Inject
 import kotlin.random.Random
 
 

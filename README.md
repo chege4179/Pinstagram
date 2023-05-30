@@ -5,7 +5,7 @@ of this project was to learn how to implement a multi-module architecture in and
 development
 
 
-# The App is under constant development and most of it features are not finished
+## ⚠️⚠️⚠️ The App is under constant development and most of it features are not finished
 
 The app has 3 types of modules
 
@@ -26,6 +26,6 @@ The app has 3 types of modules
 
 
 ## Backend Application
-The backend application is built on node.js with the express.js(Typescript) framework to store and 
+The backend application is built on node.js with the Express.js (Typescript) framework to store and 
 retrieve information of the application.The database used is Postgres SQL
 

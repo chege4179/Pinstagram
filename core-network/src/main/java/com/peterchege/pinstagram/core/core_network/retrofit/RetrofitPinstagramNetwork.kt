@@ -19,6 +19,7 @@ import android.content.Context
 import android.net.Uri
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 import com.peterchege.pinstagram.core.core_common.Constants
 import com.peterchege.pinstagram.core.core_common.Constants.BASE_URL
@@ -32,6 +33,8 @@ import com.peterchege.pinstagram.core.core_network.PinstgramAPI
 import com.peterchege.pinstagram.core.core_network.util.UriToFile
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -58,8 +61,12 @@ class RetrofitPinstagramNetwork @Inject constructor(
         .writeTimeout(900, TimeUnit.SECONDS)
         .build()
 
+    private val networkJson = Json {
+        ignoreUnknownKeys = true
+    }
+
     private val networkApi = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(networkJson.asConverterFactory("application/json".toMediaType()))
         .baseUrl(BASE_URL)
         .client(client)
         .build()
@@ -76,8 +83,6 @@ class RetrofitPinstagramNetwork @Inject constructor(
     override suspend fun signUpUser(signUpBody: SignUpBody): SignUpResponse {
         return networkApi.signUpUser(signUpBody = signUpBody)
     }
-
-
 
     override suspend fun uploadPost(
         assets: List<MultipartBody.Part>,
