@@ -25,14 +25,12 @@ android {
     compileSdk = 33
 
     defaultConfig {
+        minSdk = 21
         testInstrumentationRunner = "com.peterchege.pinstagram.feature.feature_auth.HiltTestRunner"
     }
 
 
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 33
-    }
+
 
     buildFeatures {
         compose = true

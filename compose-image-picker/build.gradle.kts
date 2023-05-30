@@ -36,33 +36,41 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.3.2"
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
     implementation(project(":core-model"))
 
-    implementation ("androidx.core:core-ktx:1.9.0")
-    implementation ("androidx.appcompat:appcompat:1.5.1")
-    implementation ("androidx.compose.material3:material3:1.0.1")
-    implementation ("androidx.compose.ui:ui:1.3.2")
+    implementation (libs.android.coreKtx)
+    implementation (libs.android.appCompat)
+    implementation (libs.androidx.material3)
+    implementation (libs.compose.ui)
 
-    implementation ("com.google.accompanist:accompanist-pager:0.27.0")
-    implementation ("com.google.accompanist:accompanist-pager-indicators:0.27.0")
-    implementation ("com.google.accompanist:accompanist-navigation-animation:0.27.0")
-    implementation ("com.google.accompanist:accompanist-permissions:0.27.0")
+    implementation (libs.accompanist.pager)
+    implementation (libs.accompanist.pager.indicator)
+    implementation (libs.accompanist.navigation.animation)
+    implementation (libs.accompanist.permissions)
 
-    implementation ("androidx.navigation:navigation-compose:2.5.3")
-    implementation ("io.coil-kt:coil-compose:2.2.2")
-    implementation ("io.coil-kt:coil-video:2.2.2")
-    implementation ("io.coil-kt:coil-gif:2.2.2")
+    implementation (libs.navigation.compose)
+    implementation (libs.coil.compose)
+    implementation (libs.coil.video)
+    implementation (libs.coil.gif)
 
-    implementation ("com.google.android.exoplayer:exoplayer-core:2.18.2")
-    implementation ("com.google.android.exoplayer:exoplayer-ui:2.18.2")
+    implementation (libs.exoplayer.core)
+    implementation (libs.exoplayer.ui)
 
 
-    testImplementation( "junit:junit:4.13.2")
-    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation( libs.test.junit4)
+    androidTestImplementation (libs.androidx.junit)
+    androidTestImplementation (libs.android.test.espresso)
 
     
 }
