@@ -32,11 +32,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core-network"))
-    implementation(project(":core-model"))
-    implementation(project(":core-room"))
-    implementation(project(":core-network"))
-    implementation(project(":core-common"))
+    implementation(project(":core:core-network"))
+    implementation(project(":core:core-model"))
+    implementation(project(":core:core-room"))
+    implementation(project(":core:core-network"))
+    implementation(project(":core:core-common"))
 
 
     implementation(libs.work.runtime)

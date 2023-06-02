@@ -22,15 +22,18 @@ plugins {
 }
 
 android {
-    namespace = "com.peterchege.pinstagram.feature.feature_search"
+    namespace = "com.peterchege.pinstagram.feature.feature_notifications"
+
+
     compileSdk = 33
 
-    buildFeatures {
-        compose = true
-    }
     defaultConfig {
         minSdk = 21
         targetSdk = 33
+    }
+
+    buildFeatures {
+        compose = true
     }
 
     composeOptions {
@@ -40,11 +43,10 @@ android {
 
 dependencies {
 
-    implementation(project(":core-common"))
-    implementation(project(":core-model"))
-    implementation(project(":core-datastore"))
-    implementation(project(":core-network"))
-    implementation(project(":core-ui"))
+    implementation(project(":core:core-common"))
+    implementation(project(":core:core-model"))
+    implementation(project(":core:core-datastore"))
+    implementation(project(":core:core-network"))
 
 
 
@@ -73,12 +75,12 @@ dependencies {
     implementation(libs.android.hilt.navigation.compose)
 
 
-    //datastore
-    implementation(libs.datastore)
 
     implementation(libs.android.dagger.hilt)
+    implementation(libs.android.hilt.ext.work)
+    implementation(libs.android.hilt.compiler)
     kapt(libs.android.hilt.compiler)
 
 
-    implementation(libs.retrofit.core)
+
 }

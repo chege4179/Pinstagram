@@ -76,20 +76,20 @@ configurations {
     }
 }
 dependencies {
-    implementation(project(":core-datastore"))
-    implementation(project(":core-common"))
-    implementation(project(":core-model"))
-    implementation(project(":core-network"))
-    implementation(project(":core-room"))
+    implementation(project(":core:core-datastore"))
+    implementation(project(":core:core-common"))
+    implementation(project(":core:core-model"))
+    implementation(project(":core:core-network"))
+    implementation(project(":core:core-room"))
 
 
-    implementation(project(":feature-auth"))
-    implementation(project(":feature-feed"))
-    implementation(project(":feature-create-post"))
-    implementation(project(":feature-search"))
-    implementation(project(":feature-notifications"))
-    implementation(project(":feature-profile"))
-    implementation(project(":feature-comments"))
+    implementation(project(":feature:feature-auth"))
+    implementation(project(":feature:feature-feed"))
+    implementation(project(":feature:feature-create-post"))
+    implementation(project(":feature:feature-search"))
+    implementation(project(":feature:feature-notifications"))
+    implementation(project(":feature:feature-profile"))
+    implementation(project(":feature:feature-comments"))
 
 
     implementation(libs.android.coreKtx)

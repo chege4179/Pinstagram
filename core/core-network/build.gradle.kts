@@ -37,12 +37,13 @@ plugins {
 }
 
 android {
-    namespace = "com.peterchege.pinstagram.core.core_datastore"
+    namespace = "com.peterchege.pinstagram.core.core_network"
     compileSdk = 33
     defaultConfig {
         minSdk = 21
-
+        targetSdk = 33
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -50,22 +51,41 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+
+
 }
 
 dependencies {
-    implementation(project(":core-model"))
+
+    implementation(project(":core:core-model"))
+    implementation(project(":core:core-common"))
+
+    implementation(libs.android.coreKtx)
+    implementation(libs.okhttp.logging)
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit.kotlin.serialization)
 
 
-    implementation(libs.datastore)
+    implementation(libs.kotlin.coroutines.android)
     implementation(libs.kotlin.serialization.json)
-    implementation(libs.kotlin.collections.immutable)
-
 
     implementation(libs.android.dagger.hilt)
-    implementation(libs.android.coreKtx)
 
     kapt(libs.android.hilt.compiler)
 
-    api(libs.test.junit4)
-    //androidTestImplementation(libs.android.test.junit4)
+    debugImplementation(libs.chucker.debug)
+    releaseImplementation(libs.chucker.release)
+
+
+    testImplementation(libs.test.junit4)
+    androidTestImplementation(libs.android.test.junit4)
+    androidTestImplementation(libs.io.mockk.mockk)
+
+    androidTestImplementation(libs.okhttp.mockwebserver)
+    androidTestImplementation(libs.google.truth)
+
+
+
 }
