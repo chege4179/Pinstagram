@@ -44,8 +44,8 @@ android {
 
 dependencies {
 
-    implementation(project(":core-model"))
-    implementation(project(":core-common"))
+    implementation(project(":core:core-model"))
+    implementation(project(":core:core-common"))
 
 
 

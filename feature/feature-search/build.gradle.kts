@@ -19,22 +19,18 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
-    //id ("dagger.hilt.android.plugin")
 }
 
 android {
-    namespace = "com.peterchege.pinstagram.feature.feature_feed"
+    namespace = "com.peterchege.pinstagram.feature.feature_search"
     compileSdk = 33
-
-
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 33
-        testInstrumentationRunner = "com.peterchege.pinstagram.feature.feature_feed.HiltTestRunner"
-    }
 
     buildFeatures {
         compose = true
+    }
+    defaultConfig {
+        minSdk = 21
+        targetSdk = 33
     }
 
     composeOptions {
@@ -44,15 +40,21 @@ android {
 
 dependencies {
 
-    implementation(project(":core-common"))
-    implementation(project(":core-network"))
-    implementation(project(":core-ui"))
-    implementation(project(":core-model"))
+    implementation(project(":core:core-common"))
+    implementation(project(":core:core-model"))
+    implementation(project(":core:core-datastore"))
+    implementation(project(":core:core-network"))
+    implementation(project(":core:core-ui"))
+
+
+
 
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
     implementation(libs.android.material)
-
+    testImplementation(libs.test.junit4)
+    androidTestImplementation(libs.android.test.junit4)
+    androidTestImplementation(libs.android.test.espresso)
 
     //compose
     implementation(libs.compose.activity)
@@ -67,31 +69,16 @@ dependencies {
     implementation(libs.lifecycle.runtimeKtx)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.livedataKtx)
-    implementation(libs.lifecycle.runtime.compose)
 
     implementation(libs.android.hilt.navigation.compose)
-    implementation(libs.android.hilt.androidx.compiler)
 
+
+    //datastore
+    implementation(libs.datastore)
 
     implementation(libs.android.dagger.hilt)
     kapt(libs.android.hilt.compiler)
 
+
     implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter.gson)
-
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.mockito.inline)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.test.junit4)
-    testImplementation(libs.android.arch.core.testing)
-    testImplementation(libs.kotlin.coroutines.test)
-
-    debugImplementation(libs.compose.ui.test.manifest)
-    androidTestImplementation(libs.dagger.hilt.android.testing)
-    androidTestImplementation(libs.android.test.compose)
-    kaptAndroidTest (libs.android.hilt.compiler)
-    testImplementation(libs.test.junit4)
-    androidTestImplementation(libs.android.test.junit4)
-    androidTestImplementation(libs.android.test.espresso)
-
 }

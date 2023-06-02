@@ -47,7 +47,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core-model"))
+    implementation(project(":core:core-model"))
 
     implementation (libs.android.coreKtx)
     implementation (libs.android.appCompat)

@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id ("kotlin-kapt")
-    //id ("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
 }
 
 android {
-    namespace = "com.peterchege.pinstagram.feature.feature_auth"
+    namespace = "com.peterchege.pinstagram.feature.feature_profile"
     compileSdk = 33
 
     defaultConfig {
         minSdk = 21
-        testInstrumentationRunner = "com.peterchege.pinstagram.feature.feature_auth.HiltTestRunner"
+        targetSdk = 33
     }
-
-
-
 
     buildFeatures {
         compose = true
@@ -42,17 +40,22 @@ android {
 }
 
 dependencies {
-    implementation(project(":core-common"))
-    implementation(project(":core-model"))
-    implementation(project(":core-datastore"))
-    implementation(project(":core-network"))
-    implementation(project(":core-room"))
+
+    implementation(project(":core:core-common"))
+    implementation(project(":core:core-model"))
+    implementation(project(":core:core-datastore"))
+    implementation(project(":core:core-network"))
+    implementation(project(":core:core-ui"))
+
 
 
 
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
     implementation(libs.android.material)
+    testImplementation(libs.test.junit4)
+    androidTestImplementation(libs.android.test.junit4)
+    androidTestImplementation(libs.android.test.espresso)
 
     //compose
     implementation(libs.compose.activity)
@@ -61,6 +64,8 @@ dependencies {
     implementation(libs.compose.compiler)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.materialIcons)
+    implementation(libs.lifecycle.runtime.compose)
 
     //lifecycle
 
@@ -70,26 +75,12 @@ dependencies {
 
     implementation(libs.android.hilt.navigation.compose)
 
-    implementation(libs.androidx.compose.foundation)
-    implementation(libs.androidx.compose.foundation.layout)
-
+    implementation(libs.retrofit.core)
+    implementation(libs.coil.compose)
 
 
     implementation(libs.android.dagger.hilt)
     kapt(libs.android.hilt.compiler)
-    kapt(libs.android.hilt.androidx.compiler)
-
-
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter.gson)
-
-    debugImplementation(libs.compose.ui.test.manifest)
-    androidTestImplementation(libs.dagger.hilt.android.testing)
-    androidTestImplementation(libs.android.test.compose)
-    kaptAndroidTest (libs.android.hilt.compiler)
-    testImplementation(libs.test.junit4)
-    androidTestImplementation(libs.android.test.junit4)
-    androidTestImplementation(libs.android.test.espresso)
 
 
 }

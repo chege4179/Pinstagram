@@ -19,18 +19,18 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
+    //id ("dagger.hilt.android.plugin")
+}
 
-}
-buildscript{
-    
-}
 android {
-    namespace = "com.peterchege.pinstagram.feature.feature_create_post"
+    namespace = "com.peterchege.pinstagram.feature.feature_feed"
     compileSdk = 33
+
 
     defaultConfig {
         minSdk = 21
         targetSdk = 33
+        testInstrumentationRunner = "com.peterchege.pinstagram.feature.feature_feed.HiltTestRunner"
     }
 
     buildFeatures {
@@ -44,22 +44,15 @@ android {
 
 dependencies {
 
-    implementation(project(":core-common"))
-    implementation(project(":core-model"))
-    implementation(project(":core-room"))
-    implementation(project(":core-network"))
-    implementation(project(":core-datastore"))
-    implementation(project(":compose-image-picker"))
-    implementation(project(":core-ui"))
-    implementation(project(":core-work"))
-
+    implementation(project(":core:core-common"))
+    implementation(project(":core:core-network"))
+    implementation(project(":core:core-ui"))
+    implementation(project(":core:core-model"))
 
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
     implementation(libs.android.material)
-    testImplementation(libs.test.junit4)
-    androidTestImplementation(libs.android.test.junit4)
-    androidTestImplementation(libs.android.test.espresso)
+
 
     //compose
     implementation(libs.compose.activity)
@@ -68,38 +61,37 @@ dependencies {
     implementation(libs.compose.compiler)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.runtimeLivedata)
-
-    implementation(libs.navigation.compose)
-
-    implementation(libs.kotlin.collections.immutable)
-
-    implementation(libs.work.runtime)
-
-    // coil compose
-    implementation(libs.coil.compose)
 
     //lifecycle
+
     implementation(libs.lifecycle.runtimeKtx)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.livedataKtx)
+    implementation(libs.lifecycle.runtime.compose)
 
     implementation(libs.android.hilt.navigation.compose)
+    implementation(libs.android.hilt.androidx.compiler)
 
 
     implementation(libs.android.dagger.hilt)
     kapt(libs.android.hilt.compiler)
 
-
-
-    implementation(libs.androidx.compose.foundation)
-    implementation(libs.androidx.compose.foundation.layout)
-
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pager.indicator)
-
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.gson)
 
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.test.junit4)
+    testImplementation(libs.android.arch.core.testing)
+    testImplementation(libs.kotlin.coroutines.test)
+
+    debugImplementation(libs.compose.ui.test.manifest)
+    androidTestImplementation(libs.dagger.hilt.android.testing)
+    androidTestImplementation(libs.android.test.compose)
+    kaptAndroidTest (libs.android.hilt.compiler)
+    testImplementation(libs.test.junit4)
+    androidTestImplementation(libs.android.test.junit4)
+    androidTestImplementation(libs.android.test.espresso)
 
 }

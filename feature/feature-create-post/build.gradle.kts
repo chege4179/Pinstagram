@@ -19,12 +19,13 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
+
 }
-
+buildscript{
+    
+}
 android {
-    namespace = "com.peterchege.pinstagram.feature.feature_notifications"
-
-
+    namespace = "com.peterchege.pinstagram.feature.feature_create_post"
     compileSdk = 33
 
     defaultConfig {
@@ -43,12 +44,14 @@ android {
 
 dependencies {
 
-    implementation(project(":core-common"))
-    implementation(project(":core-model"))
-    implementation(project(":core-datastore"))
-    implementation(project(":core-network"))
-
-
+    implementation(project(":core:core-common"))
+    implementation(project(":core:core-model"))
+    implementation(project(":core:core-room"))
+    implementation(project(":core:core-network"))
+    implementation(project(":core:core-datastore"))
+    implementation(project(":compose-image-picker"))
+    implementation(project(":core:core-ui"))
+    implementation(project(":core:core-work"))
 
 
     implementation(libs.android.coreKtx)
@@ -65,9 +68,18 @@ dependencies {
     implementation(libs.compose.compiler)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.runtimeLivedata)
+
+    implementation(libs.navigation.compose)
+
+    implementation(libs.kotlin.collections.immutable)
+
+    implementation(libs.work.runtime)
+
+    // coil compose
+    implementation(libs.coil.compose)
 
     //lifecycle
-
     implementation(libs.lifecycle.runtimeKtx)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.livedataKtx)
@@ -75,12 +87,19 @@ dependencies {
     implementation(libs.android.hilt.navigation.compose)
 
 
-
     implementation(libs.android.dagger.hilt)
-    implementation(libs.android.hilt.ext.work)
-    implementation(libs.android.hilt.compiler)
     kapt(libs.android.hilt.compiler)
 
+
+
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.foundation.layout)
+
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicator)
+
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.gson)
 
 
 }

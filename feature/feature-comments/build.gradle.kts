@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id ("kotlin-kapt")
 }
 
 android {
-    namespace = "com.peterchege.pinstagram.core.core_ui"
+    namespace = "com.peterchege.pinstagram.feature.feature_comments"
     compileSdk = 33
 
     defaultConfig {
@@ -30,25 +33,20 @@ android {
     buildFeatures {
         compose = true
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.7"
     }
-
-
-
-
 }
 
 dependencies {
-    implementation(project(":core-model"))
+
+    implementation(project(":core:core-common"))
+    implementation(project(":core:core-model"))
+    implementation(project(":core:core-network"))
+    implementation(project(":core:core-datastore"))
+    implementation(project(":core:core-ui"))
+
 
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
@@ -62,23 +60,41 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.material)
     implementation(libs.compose.compiler)
-    implementation(libs.compose.materialIcons)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
     implementation(libs.navigation.compose)
 
+    implementation(libs.kotlin.collections.immutable)
+
+
+
+    // coil compose
+    implementation(libs.coil.compose)
+
+    //lifecycle
+    implementation(libs.lifecycle.runtimeKtx)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.livedataKtx)
+
+    implementation(libs.android.hilt.navigation.compose)
+
+
+    implementation(libs.android.dagger.hilt)
+    kapt(libs.android.hilt.compiler)
+
+
+
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.foundation.layout)
 
-    implementation(libs.coil.compose)
-
-    //pager
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicator)
 
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.gson)
 
-    // exoplayer
-    implementation(libs.exoplayer.ui)
-    implementation(libs.exoplayer.dash)
-    implementation(libs.exoplayer.core)
+
+
+
+
 }
