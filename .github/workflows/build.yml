@@ -21,7 +21,7 @@ jobs:
           gradle-home-cache-cleanup: true
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew assembleDebug
 
       - name: Upload a Build Artifact (APK)
         uses: actions/upload-artifact@v2.2.4
