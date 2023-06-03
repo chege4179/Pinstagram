@@ -32,6 +32,13 @@ android {
         targetSdk = 33
         testInstrumentationRunner = "com.peterchege.pinstagram.feature.feature_feed.HiltTestRunner"
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 
     buildFeatures {
         compose = true

@@ -29,7 +29,13 @@ android {
         testInstrumentationRunner = "com.peterchege.pinstagram.feature.feature_auth.HiltTestRunner"
     }
 
-
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 
 
     buildFeatures {
