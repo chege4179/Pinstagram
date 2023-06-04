@@ -13,24 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen
+package com.peterchege.pinstagram.core.core_work
 
-data class RegistrationFormState(
-    val username:String = "",
-    val usernameError:String? = null,
+import androidx.work.WorkInfo
 
-    val fullName:String = "",
-    val fullNameError:String? = null,
+object WorkConstants {
 
-    val email: String = "",
-    val emailError: String? = null,
+    const val uploadPostWorkerName = "upload_post"
 
-    val password: String = "",
-    val passwordError: String? = null,
+    const val syncFeedWorkName = "sync_feed"
 
-    val repeatedPassword: String = "",
-    val repeatedPasswordError: String? = null,
 
-    val acceptedTerms: Boolean = false,
-    val termsError: String? = null
-)
+}
+
+val List<WorkInfo>.anyRunning get() = any { it.state == WorkInfo.State.RUNNING }

@@ -69,10 +69,12 @@ dependencies {
     implementation(libs.compose.ui.tooling)
 
     //lifecycle
-
     implementation(libs.lifecycle.runtimeKtx)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.livedataKtx)
+    implementation(libs.lifecycle.runtime.compose)
+    
+
 
     implementation(libs.android.hilt.navigation.compose)
 
@@ -87,7 +89,7 @@ dependencies {
 
 
     implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter.gson)
+
 
     debugImplementation(libs.compose.ui.test.manifest)
     androidTestImplementation(libs.dagger.hilt.android.testing)

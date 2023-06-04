@@ -22,6 +22,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -32,35 +33,76 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 //import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.RegistrationFormEvent
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
+
+@Composable
+fun SignUpScreen(
+    navController: NavController,
+    viewModel: SignUpScreenViewModel = hiltViewModel()
+
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    SignUpScreenContent(
+        navController = navController,
+        uiState = uiState,
+        eventFlow = viewModel.eventFlow,
+        onChangeFullName = { viewModel.onEvent(RegistrationFormEvent.FullNameChanged(it)) },
+        onChangeUsername = { viewModel.onEvent(RegistrationFormEvent.UsernameChanged(it)) },
+        onChangeEmail = { viewModel.onEvent(RegistrationFormEvent.EmailChanged(it)) },
+        onChangePassword = { viewModel.onEvent(RegistrationFormEvent.PasswordChanged(it)) },
+        onChangeRepeatedPassword = {
+            viewModel.onEvent(
+                RegistrationFormEvent.RepeatedPasswordChanged(
+                    it
+                )
+            )
+        },
+        onSubmit = {
+            viewModel.onEvent(
+                RegistrationFormEvent.Submit
+            )
+        }
+    )
+
+}
 
 
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun SignUpScreen(
+fun SignUpScreenContent(
     navController: NavController,
-    signUpScreenViewModel: SignUpScreenViewModel = hiltViewModel()
+    uiState: SignUpFormState,
+    eventFlow: SharedFlow<UiEvent>,
+    onChangeFullName: (String) -> Unit,
+    onChangeUsername: (String) -> Unit,
+    onChangeEmail: (String) -> Unit,
+    onChangePassword: (String) -> Unit,
+    onChangeRepeatedPassword: (String) -> Unit,
+    onSubmit: () -> Unit,
 
-) {
+    ) {
     val scaffoldState = rememberScaffoldState()
-    val state = signUpScreenViewModel.state
+
     val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(key1 = true) {
-        signUpScreenViewModel.eventFlow.collectLatest { event ->
+        eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.uiText
                     )
                 }
+
                 is UiEvent.Navigate -> {
                     navController.navigate(route = event.route)
                 }
@@ -78,11 +120,12 @@ fun SignUpScreen(
             verticalArrangement = Arrangement.Center
         ) {
             TextField(
-                value = state.fullName,
+                value = uiState.fullName,
                 onValueChange = {
-                    signUpScreenViewModel.onEvent(RegistrationFormEvent.FullNameChanged(it))
+                    onChangeFullName(it)
+
                 },
-                isError = state.fullNameError != null,
+                isError = uiState.fullNameError != null,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(text = "Full Name")
@@ -91,20 +134,21 @@ fun SignUpScreen(
                     keyboardType = KeyboardType.Text
                 )
             )
-            if (state.fullNameError != null) {
+            if (uiState.fullNameError != null) {
                 Text(
-                    text = state.fullNameError,
+                    text = uiState.fullNameError,
                     color = MaterialTheme.colors.error,
                     modifier = Modifier.align(Alignment.End)
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
             TextField(
-                value = state.username,
+                value = uiState.username,
                 onValueChange = {
-                    signUpScreenViewModel.onEvent(RegistrationFormEvent.UsernameChanged(it))
+                    onChangeUsername(it)
+
                 },
-                isError = state.usernameError != null,
+                isError = uiState.usernameError != null,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(text = "Username")
@@ -113,20 +157,20 @@ fun SignUpScreen(
                     keyboardType = KeyboardType.Text
                 )
             )
-            if (state.usernameError != null) {
+            if (uiState.usernameError != null) {
                 Text(
-                    text = state.usernameError,
+                    text = uiState.usernameError,
                     color = MaterialTheme.colors.error,
                     modifier = Modifier.align(Alignment.End)
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
             TextField(
-                value = state.email,
+                value = uiState.email,
                 onValueChange = {
-                    signUpScreenViewModel.onEvent(RegistrationFormEvent.EmailChanged(it))
+                    onChangeEmail(it)
                 },
-                isError = state.emailError != null,
+                isError = uiState.emailError != null,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(text = "Email")
@@ -135,9 +179,9 @@ fun SignUpScreen(
                     keyboardType = KeyboardType.Email
                 )
             )
-            if (state.emailError != null) {
+            if (uiState.emailError != null) {
                 Text(
-                    text = state.emailError,
+                    text = uiState.emailError,
                     color = MaterialTheme.colors.error,
                     modifier = Modifier.align(Alignment.End)
                 )
@@ -145,11 +189,11 @@ fun SignUpScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             TextField(
-                value = state.password,
+                value = uiState.password,
                 onValueChange = {
-                    signUpScreenViewModel.onEvent(RegistrationFormEvent.PasswordChanged(it))
+                    onChangePassword(it)
                 },
-                isError = state.passwordError != null,
+                isError = uiState.passwordError != null,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(text = "Password")
@@ -159,9 +203,9 @@ fun SignUpScreen(
                 ),
                 visualTransformation = PasswordVisualTransformation()
             )
-            if (state.passwordError != null) {
+            if (uiState.passwordError != null) {
                 Text(
-                    text = state.passwordError,
+                    text = uiState.passwordError,
                     color = MaterialTheme.colors.error,
                     modifier = Modifier.align(Alignment.End)
                 )
@@ -169,11 +213,12 @@ fun SignUpScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             TextField(
-                value = state.repeatedPassword,
+                value = uiState.repeatedPassword,
                 onValueChange = {
-                    signUpScreenViewModel.onEvent(RegistrationFormEvent.RepeatedPasswordChanged(it))
+                    onChangeRepeatedPassword(it)
+
                 },
-                isError = state.repeatedPasswordError != null,
+                isError = uiState.repeatedPasswordError != null,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(text = "Repeat password")
@@ -183,9 +228,9 @@ fun SignUpScreen(
                 ),
                 visualTransformation = PasswordVisualTransformation()
             )
-            if (state.repeatedPasswordError != null) {
+            if (uiState.repeatedPasswordError != null) {
                 Text(
-                    text = state.repeatedPasswordError,
+                    text = uiState.repeatedPasswordError,
                     color = MaterialTheme.colors.error,
                     modifier = Modifier.align(Alignment.End)
                 )
@@ -198,14 +243,14 @@ fun SignUpScreen(
                     .height(50.dp),
                 onClick = {
                     keyboardController?.hide()
-                    signUpScreenViewModel.onEvent(RegistrationFormEvent.Submit)
+                    onSubmit()
                 }
             )
             {
-                if (signUpScreenViewModel.isLoading.value) {
+                if (uiState.isLoading) {
                     CircularProgressIndicator(color = Color.White)
-                }else{
-                    Text("Sign Up")
+                } else {
+                    Text(text = "Sign Up")
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -214,7 +259,7 @@ fun SignUpScreen(
                     .fillMaxWidth()
                     .height(50.dp),
                 onClick = {
-                    navController.navigate(Screens.LOGIN_SCREEN)
+                    navController.navigate(route = Screens.LOGIN_SCREEN)
                 }) {
                 Text(text = "Login")
             }

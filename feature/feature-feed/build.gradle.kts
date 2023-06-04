@@ -84,7 +84,7 @@ dependencies {
     kapt(libs.android.hilt.compiler)
 
     implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter.gson)
+
 
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.mockito.inline)

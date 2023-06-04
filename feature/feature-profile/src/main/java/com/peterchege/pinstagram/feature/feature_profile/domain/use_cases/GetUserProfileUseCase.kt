@@ -17,6 +17,7 @@ package com.peterchege.pinstagram.feature.feature_profile.domain.use_cases
 
 import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_model.response_models.GetUserByIdResponse
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 import com.peterchege.pinstagram.feature.feature_profile.domain.repository.ProfileRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -32,11 +33,18 @@ class GetUserProfileUseCase @Inject constructor(
         try {
             emit(Resource.Loading<GetUserByIdResponse>())
             val response = repository.getUserById( userId = userId)
-            if (response.success) {
-                emit(Resource.Success(response))
-            }else{
-                emit(Resource.Error<GetUserByIdResponse>( message = "Server error"))
+            when(response){
+                is NetworkResult.Success -> {
+                    emit(Resource.Success(response.data))
+                }
+                is NetworkResult.Error -> {
+                    emit(Resource.Error<GetUserByIdResponse>(message = response.message ?:"An unexpected error occurred"))
+                }
+                is NetworkResult.Exception -> {
+                    emit(Resource.Error<GetUserByIdResponse>( message = "Server error"))
+                }
             }
+
 
         }catch (e: HttpException){
             emit(

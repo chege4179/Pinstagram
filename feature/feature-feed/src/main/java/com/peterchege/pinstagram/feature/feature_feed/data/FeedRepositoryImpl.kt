@@ -16,15 +16,15 @@
 package com.peterchege.pinstagram.feature.feature_feed.data
 
 import com.peterchege.pinstagram.core.core_model.response_models.AllPostResponse
-import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
+import com.peterchege.pinstagram.core.core_network.repository.NetworkDataSource
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 import com.peterchege.pinstagram.feature.feature_feed.domain.repository.FeedRepository
-import javax.inject.Inject
 
 class FeedRepositoryImpl (
-    private val api:RetrofitPinstagramNetwork
+    private val api: NetworkDataSource
 ): FeedRepository {
 
-    override suspend fun getFeedPosts(): AllPostResponse {
+    override suspend fun getFeedPosts(): NetworkResult<AllPostResponse> {
         return api.getFeedPosts()
     }
 

@@ -20,14 +20,15 @@ import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
 import com.peterchege.pinstagram.core.core_model.response_models.LoginResponse
 import com.peterchege.pinstagram.core.core_model.response_models.SignUpResponse
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
 
-    suspend fun loginUser(loginBody: LoginBody):LoginResponse
+    suspend fun loginUser(loginBody: LoginBody):NetworkResult<LoginResponse>
 
 
-    suspend fun signUpUser(signUpBody: SignUpBody):SignUpResponse
+    suspend fun signUpUser(signUpBody: SignUpBody):NetworkResult<SignUpResponse>
 
     fun getLoggedInUser(): Flow<User?>
 

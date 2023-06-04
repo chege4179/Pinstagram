@@ -20,21 +20,22 @@ import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
 import com.peterchege.pinstagram.core.core_model.response_models.*
 import okhttp3.MultipartBody
+import retrofit2.Response
 import retrofit2.http.*
 
 interface PinstgramAPI {
     @GET("/post/allPosts")
-    suspend fun getFeedPosts():AllPostResponse
+    suspend fun getFeedPosts(): Response<AllPostResponse>
 
     @POST("user/login")
     suspend fun loginUser(
         @Body loginBody :LoginBody
-    ): LoginResponse
+    ): Response<LoginResponse>
 
     @POST("user/signup")
     suspend fun signUpUser(
         @Body signUpBody:SignUpBody
-    ):SignUpResponse
+    ):Response<SignUpResponse>
 
     @Multipart
     @POST("/post/create")
@@ -42,15 +43,15 @@ interface PinstgramAPI {
         @Part assets:List<MultipartBody.Part>,
         @Part("userId") userId: String,
         @Part("caption") caption:String,
-    ): UploadPostResponse
+    ):Response<UploadPostResponse>
 
     @GET("/user/single/{userId}")
     suspend fun getUserById(
         @Path("userId") userId:String
-    ):GetUserByIdResponse
+    ):Response<GetUserByIdResponse>
 
     @GET("/user/search")
     suspend fun searchUsers(
         @Query("username") username:String
-    ):SearchUserResponse
+    ):Response<SearchUserResponse>
 }

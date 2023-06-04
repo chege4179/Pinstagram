@@ -17,6 +17,7 @@ package com.peterchege.pinstagram.feature.feature_search.presentation.domain.use
 
 import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_model.response_models.SearchUserResponse
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 import com.peterchege.pinstagram.feature.feature_search.presentation.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -31,11 +32,16 @@ class SearchUseCase @Inject constructor(
         emit(Resource.Loading())
         try {
             val response = searchRepository.searchUsers(username = username)
-            if (response.success){
-                emit(Resource.Success(data = response))
-            }else{
-                emit(Resource.Error(message = response.msg))
-
+            when(response){
+                is NetworkResult.Error -> {
+                    emit(Resource.Error(message = response.message ?:"An unexpected error occurred"))
+                }
+                is NetworkResult.Success -> {
+                    emit(Resource.Success(data = response.data))
+                }
+                is NetworkResult.Exception -> {
+                    emit(Resource.Error(message = "An unexpected error occurred"))
+                }
             }
         }catch (e:HttpException){
             emit(Resource.Error(message = e.localizedMessage ?: "An unexpected error occurred"))

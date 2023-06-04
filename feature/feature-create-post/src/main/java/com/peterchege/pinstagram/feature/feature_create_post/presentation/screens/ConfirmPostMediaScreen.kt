@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_create_post.presentation.confirm_post
+package com.peterchege.pinstagram.feature.feature_create_post.presentation.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.work.*
 import coil.compose.SubcomposeAsyncImage
@@ -38,59 +39,68 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.peterchege.pinstagram.core.core_common.UiEvent
+import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset
+import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_room.entities.toExternalModel
 
 import com.peterchege.pinstagram.core.core_ui.PagerIndicator
 import com.peterchege.pinstagram.core.core_ui.VideoPreview
 import com.peterchege.pinstagram.core.core_work.upload_post.UploadPostWorker
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.CreatePostScreenViewModel
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.UploadPostFormState
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+@Composable
+fun ConfirmPostMediaScreen(
+    navController: NavController,
+    viewModel: CreatePostScreenViewModel = hiltViewModel(),
+){
+    val user by viewModel.user.collectAsStateWithLifecycle()
+    val isUploading by viewModel.isUploading.collectAsStateWithLifecycle()
+    val formState by viewModel.formState.collectAsStateWithLifecycle()
+
+
+    ConfirmPostMediaScreenContent(
+        formState = formState,
+        eventFlow = viewModel.eventFlow,
+        navController = navController,
+        onChangeCaption = { viewModel.setCaption(it) },
+        onChangeMediaAssets = { viewModel.setMediaAssets(it) },
+        onSubmit = { viewModel.startUpload(it) },
+        user = user,
+        isUploading = isUploading
+    )
+
+
+}
+
 
 @OptIn(ExperimentalPagerApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ConfirmPostMediaScreen(
-    navController: NavController,
-    viewModel: ConfirmPostScreenViewModel = hiltViewModel(),
+fun ConfirmPostMediaScreenContent(
+    formState:UploadPostFormState,
+    eventFlow: SharedFlow<UiEvent>,
+    navController:NavController,
+    onChangeCaption:(String) -> Unit,
+    onChangeMediaAssets:(List<MediaAsset>) -> Unit,
+    onSubmit:(String) -> Unit,
+    user: User?,
+    isUploading:Boolean,
+
 
     ) {
-    val user = viewModel.user.collectAsState(initial = null)
+
 
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val mediaAssets = viewModel.mediaAssetsEntities
-        .collectAsState(initial = emptyList())
-        .value
-        .map { it.toExternalModel() }
 
-    val postArticleParams = workDataOf(
-        "caption" to viewModel.caption.value,
-        "userId" to (user.value?.userId ?: ""),
-        "uris" to viewModel.combinedUrisState.value,
-    )
-    val uploadPostRequest = OneTimeWorkRequestBuilder<UploadPostWorker>()
-        .setInputData(postArticleParams)
-        .setConstraints(
-            Constraints.Builder()
-                .setRequiredNetworkType(
-                    NetworkType.CONNECTED
-                )
-                .build()
-        )
-        .build()
-
-    val workManager = WorkManager.getInstance(context)
-    val uploadWorkInfo = workManager
-        .getWorkInfosForUniqueWorkLiveData("uploadPost")
-        .observeAsState()
-        .value
-    val workInfo = remember(key1 = uploadWorkInfo) {
-        uploadWorkInfo?.find { it.id == uploadPostRequest.id }
-    }
 
     LaunchedEffect(key1 = true) {
-        viewModel.eventFlow.collectLatest { event ->
+        eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
@@ -104,32 +114,7 @@ fun ConfirmPostMediaScreen(
         }
     }
 
-    LaunchedEffect(key1 = true, ){
-        when(workInfo?.state) {
-            WorkInfo.State.RUNNING -> {
 
-            }
-            WorkInfo.State.SUCCEEDED -> {
-
-                viewModel.showSnackBar("Upload finished")
-            }
-            WorkInfo.State.FAILED -> {
-                viewModel.showSnackBar("Upload failed")
-            }
-            WorkInfo.State.CANCELLED -> {
-                viewModel.showSnackBar("Upload started")
-            }
-            WorkInfo.State.ENQUEUED -> {
-                viewModel.showSnackBar("Upload enqueued")
-            }
-            WorkInfo.State.BLOCKED -> {
-                viewModel.showSnackBar("Upload blocked")
-            }
-            else -> {
-
-            }
-        }
-    }
     Scaffold(
         scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxSize(),
@@ -149,10 +134,10 @@ fun ConfirmPostMediaScreen(
                     val pagerState1 = rememberPagerState(initialPage = 0)
                     val coroutineScope = rememberCoroutineScope()
                     HorizontalPager(
-                        count = mediaAssets.size,
+                        count = formState.mediaAssets.size,
                         state = pagerState1
                     ) { image ->
-                        val asset = mediaAssets[image]
+                        val asset = formState.mediaAssets[image]
                         if (asset.isVideo()) {
                             VideoPreview(uriString = asset.uriString)
                         } else {
@@ -160,7 +145,7 @@ fun ConfirmPostMediaScreen(
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 SubcomposeAsyncImage(
-                                    model = mediaAssets[image].uriString,
+                                    model = formState.mediaAssets[image].uriString,
                                     loading = {
                                         Box(modifier = Modifier.fillMaxSize()) {
                                             CircularProgressIndicator(
@@ -206,12 +191,12 @@ fun ConfirmPostMediaScreen(
 
                         TextField(
                             modifier = Modifier.fillMaxWidth(),
-                            value = viewModel.caption.value,
+                            value = formState.caption,
                             placeholder = {
                                 Text(text = "Enter Caption")
                             },
                             onValueChange = {
-                                viewModel.onChangeCaption(it)
+                                onChangeCaption(it)
                             })
 
                     }
@@ -228,7 +213,8 @@ fun ConfirmPostMediaScreen(
                         ) {
                         Button(onClick = {
                             scope.launch {
-                                viewModel.clearMediaAssets()
+                                onChangeMediaAssets(emptyList())
+
                             }
                             navController.popBackStack()
                         }) {
@@ -240,22 +226,13 @@ fun ConfirmPostMediaScreen(
 
                         Button(
                             onClick = {
-                                if (user.value != null) {
-                                    val uris = mediaAssets.map { it.uriString }
-                                    val combinedUris = uris.joinToString("||")
-                                    viewModel.onChangeCombinedUris(combinedUris = combinedUris)
-
-                                    workManager
-                                        .beginUniqueWork(
-                                            "uploadPost",
-                                            ExistingWorkPolicy.KEEP,
-                                            uploadPostRequest
-                                        ).enqueue()
+                                if (user != null) {
+                                    onSubmit(user.userId)
                                 }
                             }
                         ) {
                             Text(
-                                text = "Post ${mediaAssets.size}"
+                                text = "Post ${formState.mediaAssets.size}"
                             )
 
                         }
@@ -263,13 +240,8 @@ fun ConfirmPostMediaScreen(
                     }
                 }
             }
-            when(workInfo?.state) {
-                WorkInfo.State.RUNNING -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-                else -> {
-
-                }
+            if (isUploading){
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
 

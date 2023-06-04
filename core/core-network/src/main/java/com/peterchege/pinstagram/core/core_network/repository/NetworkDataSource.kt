@@ -13,34 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.core.core_network
+package com.peterchege.pinstagram.core.core_network.repository
 
-import android.content.Context
-import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset
-import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
 import com.peterchege.pinstagram.core.core_model.response_models.*
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 import okhttp3.MultipartBody
 
-interface  PinstagramNetworkDataSource {
+interface NetworkDataSource {
 
-    suspend fun loginUser(loginBody: LoginBody):LoginResponse
+    suspend fun loginUser(loginBody: LoginBody):NetworkResult<LoginResponse>
 
-    suspend fun getFeedPosts(): AllPostResponse
+    suspend fun getFeedPosts(): NetworkResult<AllPostResponse>
 
-    suspend fun signUpUser(signUpBody: SignUpBody):SignUpResponse
+    suspend fun signUpUser(signUpBody: SignUpBody):NetworkResult<SignUpResponse>
 
     suspend fun uploadPost(
         assets:List<MultipartBody.Part>,
         userId:String,
         caption:String,
-    ):UploadPostResponse
+    ):NetworkResult<UploadPostResponse>
 
-    suspend fun getUserById(userId:String) :GetUserByIdResponse
+    suspend fun getUserById(userId:String) :NetworkResult<GetUserByIdResponse>
 
 
-    suspend fun searchUsers(username:String):SearchUserResponse
+    suspend fun searchUsers(username:String):NetworkResult<SearchUserResponse>
 
 
 

@@ -15,8 +15,11 @@
  */
 package com.peterchege.pinstagram.core.core_model.response_models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CommentAuthor(
-    val bio: Any,
+    val bio: String,
     val createdAt: String,
     val createdOn: String,
     val email: String,

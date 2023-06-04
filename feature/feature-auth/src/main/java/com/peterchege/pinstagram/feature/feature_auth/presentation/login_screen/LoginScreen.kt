@@ -15,54 +15,72 @@
  */
 package com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen
 
+//import androidx.hilt.navigation.compose.hiltViewModel
 import android.annotation.SuppressLint
-import android.graphics.Paint
-import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.compose.material.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-//import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_common.TestTags
 import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.LoginFormEvent
-import com.peterchege.pinstagram.feature.feature_auth.domain.validation.RegistrationFormEvent
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 
-@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-@OptIn(ExperimentalComposeUiApi::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    loginScreenViewModel: LoginScreenViewModel = hiltViewModel()
+    viewModel: LoginScreenViewModel = hiltViewModel()
+){
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LoginScreenContent(
+        eventFlow = viewModel.eventFlow,
+        uiState = uiState,
+        onChangeEmail = { viewModel.onEvent(LoginFormEvent.EmailChanged(it)) },
+        onChangePassword = { viewModel.onEvent(LoginFormEvent.PasswordChanged(it)) },
+        onSubmit = { viewModel.submitData() },
+        navController = navController
+    )
+
+}
+
+
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+@OptIn(ExperimentalComposeUiApi::class)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun LoginScreenContent(
+    eventFlow:SharedFlow<UiEvent>,
+    uiState:LoginFormState,
+    onChangeEmail:(String) -> Unit,
+    onChangePassword:(String) -> Unit,
+    onSubmit:() -> Unit,
+    navController: NavController,
 ) {
-
-
-    val state = loginScreenViewModel.state
-
     val scaffoldState = rememberScaffoldState()
     val keyboardController = LocalSoftwareKeyboardController.current
     LaunchedEffect(key1 = true) {
-        loginScreenViewModel.eventFlow.collectLatest { event ->
+        eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
@@ -90,12 +108,17 @@ fun LoginScreen(
                     .padding(32.dp),
                 verticalArrangement = Arrangement.Center
             ) {
+                Text(
+                    text = "Pinstagram App",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                )
                 TextField(
-                    value = state.email,
+                    value = uiState.email,
                     onValueChange = {
-                        loginScreenViewModel.onEvent(LoginFormEvent.EmailChanged(it))
+                        onChangeEmail(it)
                     },
-                    isError = state.emailError != null,
+                    isError = uiState.emailError != null,
                     modifier = Modifier
                         .fillMaxWidth()
                         .testTag(TestTags.LOGIN_EMAIL_FIELD)
@@ -107,9 +130,9 @@ fun LoginScreen(
                         keyboardType = KeyboardType.Email
                     )
                 )
-                if (state.emailError != null) {
+                if (uiState.emailError != null) {
                     Text(
-                        text = state.emailError,
+                        text = uiState.emailError,
                         color = MaterialTheme.colors.error,
                         modifier = Modifier.align(Alignment.End)
                     )
@@ -117,11 +140,11 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 TextField(
-                    value = state.password,
+                    value = uiState.password,
                     onValueChange = {
-                        loginScreenViewModel.onEvent(LoginFormEvent.PasswordChanged(it))
+                        onChangePassword(it)
                     },
-                    isError = state.passwordError != null,
+                    isError = uiState.passwordError != null,
                     modifier = Modifier
                         .fillMaxWidth()
                         .testTag(TestTags.LOGIN_PASSWORD_FIELD)
@@ -134,9 +157,9 @@ fun LoginScreen(
                     ),
                     visualTransformation = PasswordVisualTransformation()
                 )
-                if (state.passwordError != null) {
+                if (uiState.passwordError != null) {
                     Text(
-                        text = state.passwordError,
+                        text = uiState.passwordError,
                         color = MaterialTheme.colors.error,
                         modifier = Modifier.align(Alignment.End)
                     )
@@ -145,20 +168,17 @@ fun LoginScreen(
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(50.dp)
-
-
-                    ,
+                        .height(50.dp),
                     onClick = {
                         keyboardController?.hide()
-                        loginScreenViewModel.submitData()
+                        onSubmit()
                     }
                 )
                 {
-                    if (loginScreenViewModel.isLoading.value) {
+                    if (uiState.isLoading) {
                         CircularProgressIndicator(color = Color.White)
                     }else{
-                        Text("Login")
+                        Text(text = "Login")
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))

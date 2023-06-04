@@ -16,14 +16,15 @@
 package com.peterchege.pinstagram.feature.feature_search.presentation.data
 
 import com.peterchege.pinstagram.core.core_model.response_models.SearchUserResponse
-import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
+import com.peterchege.pinstagram.core.core_network.repository.NetworkDataSource
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 import com.peterchege.pinstagram.feature.feature_search.presentation.domain.repository.SearchRepository
 import javax.inject.Inject
 
 class SearchRepositoryImpl @Inject constructor(
-    private val api:RetrofitPinstagramNetwork
+    private val api: NetworkDataSource,
 ):SearchRepository {
-    override suspend fun searchUsers(username: String): SearchUserResponse {
+    override suspend fun searchUsers(username: String): NetworkResult<SearchUserResponse> {
         return api.searchUsers(username = username)
     }
 

@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_search.presentation.di
+package com.peterchege.pinstagram.core.core_work.di
 
 import android.content.Context
-import com.peterchege.pinstagram.core.core_network.repository.NetworkDataSource
-import com.peterchege.pinstagram.feature.feature_search.presentation.data.SearchRepositoryImpl
-import com.peterchege.pinstagram.feature.feature_search.presentation.domain.repository.SearchRepository
+import com.peterchege.pinstagram.core.core_work.upload_post.UploadPostWorkManager
+import com.peterchege.pinstagram.core.core_work.upload_post.UploadPostWorkManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,21 +25,17 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
-object FeatureSearchModule {
+object WorkModule {
 
 
     @Provides
     @Singleton
-    fun provideProfileRepository(
+    fun provideUploadPostWorkManager(
         @ApplicationContext context: Context,
-        api:NetworkDataSource
-    ): SearchRepository {
-        return SearchRepositoryImpl(
-            api = api
-        )
+    ): UploadPostWorkManager {
+        return UploadPostWorkManagerImpl(context = context)
 
     }
 

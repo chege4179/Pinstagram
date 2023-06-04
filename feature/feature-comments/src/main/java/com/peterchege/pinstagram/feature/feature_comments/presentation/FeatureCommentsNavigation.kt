@@ -13,10 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.core.core_work
+package com.peterchege.pinstagram.feature.feature_comments.presentation
 
-object WorkerKeys {
-    const val MSG = "MSG"
-    const val IS_LOADING = "IS_LOADING"
-    const val SUCCESS ="SUCCESS"
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.navigation
+import com.peterchege.pinstagram.core.core_common.Screens
+
+
+@Composable
+fun NavGraphBuilder.FeatureCommentsNavigation(){
+    navigation(
+        startDestination = Screens.COMMENTS_SCREEN,
+        route = Screens.COMMENTS_SCREEN,
+    ){
+
+    }
 }

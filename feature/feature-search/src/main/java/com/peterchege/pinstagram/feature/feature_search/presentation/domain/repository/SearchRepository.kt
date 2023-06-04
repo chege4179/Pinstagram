@@ -16,10 +16,11 @@
 package com.peterchege.pinstagram.feature.feature_search.presentation.domain.repository
 
 import com.peterchege.pinstagram.core.core_model.response_models.SearchUserResponse
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 
 interface SearchRepository {
 
 
-    suspend fun searchUsers(username:String):SearchUserResponse
+    suspend fun searchUsers(username:String): NetworkResult<SearchUserResponse>
 
 }

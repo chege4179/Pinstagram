@@ -98,7 +98,7 @@ dependencies {
     implementation(libs.accompanist.pager.indicator)
 
     implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter.gson)
+
 
 
 

@@ -15,36 +15,40 @@
  */
 package com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen
 
-import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.peterchege.pinstagram.core.core_common.Resource
-import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
-import com.peterchege.pinstagram.feature.feature_auth.domain.use_case.LoginUseCase
-import com.peterchege.pinstagram.feature.feature_auth.domain.validation.*
-import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.SignUpScreenViewModel
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
+import com.peterchege.pinstagram.feature.feature_auth.domain.repository.AuthRepository
+import com.peterchege.pinstagram.feature.feature_auth.domain.validation.LoginFormEvent
+import com.peterchege.pinstagram.feature.feature_auth.domain.validation.validateEmail
+import com.peterchege.pinstagram.feature.feature_auth.domain.validation.validatePassword
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+data class LoginFormState(
+    val email: String = "",
+    val emailError: String? = null,
+    val password: String = "",
+    val passwordError: String? = null,
+    val isLoading:Boolean = false,
+
+)
 
 @HiltViewModel
 class LoginScreenViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase,
+    private val authRepository: AuthRepository,
 
 ) : ViewModel() {
 
-    var state by mutableStateOf(LoginFormState())
-
-    private val _isLoading = mutableStateOf(false)
-    val isLoading: State<Boolean> = _isLoading
+    private val _uiState = MutableStateFlow(LoginFormState())
+    val uiState = _uiState.asStateFlow()
 
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
@@ -53,10 +57,10 @@ class LoginScreenViewModel @Inject constructor(
     fun onEvent(event: LoginFormEvent) {
         when (event) {
             is LoginFormEvent.EmailChanged -> {
-                state = state.copy(email = event.email)
+                _uiState.value = _uiState.value.copy(email = event.email)
             }
             is LoginFormEvent.PasswordChanged -> {
-                state = state.copy(password = event.password)
+                _uiState.value = uiState.value.copy(password = event.password)
             }
             else -> {
 
@@ -65,9 +69,8 @@ class LoginScreenViewModel @Inject constructor(
     }
 
     fun submitData() {
-        val emailResult = validateEmail(state.email)
-        val passwordResult = validatePassword(state.password)
-
+        val emailResult = validateEmail(_uiState.value.email)
+        val passwordResult = validatePassword(_uiState.value.password)
 
         val hasError = listOf(
             emailResult,
@@ -75,38 +78,31 @@ class LoginScreenViewModel @Inject constructor(
         ).any { !it.successful }
 
         if (hasError) {
-            state = state.copy(
+            _uiState.value = _uiState.value.copy(
                 emailError = emailResult.errorMessage,
                 passwordError = passwordResult.errorMessage,
             )
             return
         }
-        val loginBody = LoginBody(email = state.email, password = state.password)
-        Log.e("view model","here")
-        loginUseCase(loginUser = loginBody).onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    Log.e("success","success")
-                    _isLoading.value = false
-                    _eventFlow.emit(UiEvent.ShowSnackbar(uiText = "Login Successful"))
-                    _eventFlow.emit(UiEvent.Navigate(route = Screens.BOTTOM_TAB_NAVIGATION))
+        _uiState.value = _uiState.value.copy(isLoading = true)
+        val loginBody = LoginBody(email = _uiState.value.email, password = _uiState.value.password)
 
-
+        viewModelScope.launch {
+            val response = authRepository.loginUser(loginBody = loginBody)
+            when (response) {
+                is NetworkResult.Success -> {
+                    _uiState.value = _uiState.value.copy(isLoading = false)
                 }
-                is Resource.Error -> {
-                    Log.e("error","error")
-                    _isLoading.value = false
-                    _eventFlow.emit(UiEvent.ShowSnackbar(
-                        uiText = result.message ?: "An unexpected error occurred"))
-
+                is NetworkResult.Error -> {
+                    _uiState.value = _uiState.value.copy(isLoading = false)
+                    _eventFlow.emit(UiEvent.ShowSnackbar(uiText = "${response.code} ${response.message}"))
                 }
-                is Resource.Loading -> {
-                    Log.e("loading","loading")
-                    _isLoading.value = true
-
+                is NetworkResult.Exception -> {
+                    _uiState.value = _uiState.value.copy(isLoading = false)
+                    _eventFlow.emit(UiEvent.ShowSnackbar(uiText = "${response.e.message}"))
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
 }

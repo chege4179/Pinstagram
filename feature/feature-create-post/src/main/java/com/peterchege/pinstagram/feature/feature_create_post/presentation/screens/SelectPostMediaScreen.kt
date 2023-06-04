@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post
+package com.peterchege.pinstagram.feature.feature_create_post.presentation.screens
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -26,12 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.peterchege.compose_image_picker.view.AssetPicker
 import com.peterchege.compose_image_picker.constant.AssetPickerConfig
 import com.peterchege.compose_image_picker.data.PickerPermissions
 import com.peterchege.compose_image_picker.data.toMediaAsset
 import com.peterchege.pinstagram.core.core_common.Screens
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.CreatePostScreenViewModel
 import kotlinx.coroutines.launch
 
 
@@ -39,8 +39,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SelectPostMediaScreen(
     bottomNavController: NavController,
-    navHostController: NavHostController,
-    viewModel: SelectPostScreensViewModel = hiltViewModel()
+    navHostController: NavController,
+    viewModel: CreatePostScreenViewModel = hiltViewModel()
 
 ) {
     val scope = rememberCoroutineScope()

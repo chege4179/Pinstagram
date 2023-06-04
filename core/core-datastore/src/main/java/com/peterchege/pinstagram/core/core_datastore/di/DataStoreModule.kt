@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.core.core_network
+package com.peterchege.pinstagram.core.core_datastore.di
 
 import android.content.Context
-import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
+import com.peterchege.pinstagram.core.core_datastore.repository.UserDataStoreRepository
+import com.peterchege.pinstagram.core.core_datastore.repository.UserDataStoreRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,13 +27,16 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object DataStoreModule {
 
-
-    @Provides
     @Singleton
-    fun providePinstagramApi(@ApplicationContext context: Context): RetrofitPinstagramNetwork {
-        return RetrofitPinstagramNetwork(context = context)
+    @Provides
+    fun provideDataStoreRepository(
+        @ApplicationContext context: Context
+    ): UserDataStoreRepository {
+        return UserDataStoreRepositoryImpl(context = context)
     }
+
+
 
 }

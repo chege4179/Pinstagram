@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.runtimeLivedata)
+    implementation(libs.lifecycle.runtime.compose)
 
     implementation(libs.navigation.compose)
 
@@ -106,7 +107,7 @@ dependencies {
     implementation(libs.accompanist.pager.indicator)
 
     implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter.gson)
+
 
 
 }

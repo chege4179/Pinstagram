@@ -23,7 +23,9 @@ import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
-import com.peterchege.pinstagram.feature.feature_auth.domain.use_case.SignUpUseCase
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
+import com.peterchege.pinstagram.feature.feature_auth.domain.repository.AuthRepository
+
 import com.peterchege.pinstagram.feature.feature_auth.domain.validation.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -34,35 +36,35 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpScreenViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCase,
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    var state by mutableStateOf(RegistrationFormState())
+    private val _uiState = MutableStateFlow(SignUpFormState())
+    val uiState = _uiState.asStateFlow()
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private val _isLoading = mutableStateOf(false)
-    val isLoading: State<Boolean> = _isLoading
+
     fun onEvent(event: RegistrationFormEvent) {
         when (event) {
             is RegistrationFormEvent.EmailChanged -> {
-                state = state.copy(email = event.email)
+                _uiState.value = _uiState.value.copy(email = event.email)
             }
             is RegistrationFormEvent.PasswordChanged -> {
-                state = state.copy(password = event.password)
+                _uiState.value = _uiState.value.copy(password = event.password)
             }
             is RegistrationFormEvent.RepeatedPasswordChanged -> {
-                state = state.copy(repeatedPassword = event.repeatedPassword)
+                _uiState.value = _uiState.value.copy(repeatedPassword = event.repeatedPassword)
             }
             is RegistrationFormEvent.AcceptTerms -> {
-                state = state.copy(acceptedTerms = event.isAccepted)
+                _uiState.value = _uiState.value.copy(acceptedTerms = event.isAccepted)
             }
             is RegistrationFormEvent.UsernameChanged -> {
-                state = state.copy(username = event.username)
+                _uiState.value = _uiState.value.copy(username = event.username)
             }
             is RegistrationFormEvent.FullNameChanged -> {
-                state = state.copy(fullName = event.fullName)
+                _uiState.value = _uiState.value.copy(fullName = event.fullName)
             }
             is RegistrationFormEvent.Submit -> {
                 submitData()
@@ -71,62 +73,83 @@ class SignUpScreenViewModel @Inject constructor(
     }
 
     private fun submitData() {
-        val emailResult = validateEmail(email = state.email)
-        val passwordResult = validatePassword(password = state.password)
+        val emailResult = validateEmail(email = _uiState.value.email)
+        val passwordResult = validatePassword(password = _uiState.value.password)
         val repeatedPasswordResult = validateRepeatedPassword(
-            password= state.password,repeatedPassword =  state.repeatedPassword
+            password= _uiState.value.password,repeatedPassword =  _uiState.value.repeatedPassword
         )
-        val termsResult = validateTerms(acceptedTerms = state.acceptedTerms)
-        val usernameResult = validateUsername(username = state.username)
-        val fullNameResult = validateFullName(fullName = state.fullName)
+        val termsResult = validateTerms(acceptedTerms = _uiState.value.acceptedTerms)
+        val usernameResult = validateUsername(username = _uiState.value.username)
+        val fullNameResult = validateFullName(fullName = _uiState.value.fullName)
 
-        val hasError = listOf(
-            emailResult,
-            passwordResult,
-            repeatedPasswordResult,
-            termsResult,
-            usernameResult,
-            fullNameResult
-        ).any { !it.successful }
-
-        if (hasError) {
-            state = state.copy(
-                emailError = emailResult.errorMessage,
-                passwordError = passwordResult.errorMessage,
-                repeatedPasswordError = repeatedPasswordResult.errorMessage,
-                termsError = termsResult.errorMessage,
-                usernameError = usernameResult.errorMessage,
-                fullNameError = fullNameResult.errorMessage,
-
-            )
-            return
-        }
+//        val hasError = listOf(
+//            emailResult,
+//            passwordResult,
+//            repeatedPasswordResult,
+//            termsResult,
+//            usernameResult,
+//            fullNameResult
+//        ).any { !it.successful }
+//
+//        if (hasError) {
+//            _uiState.value = _uiState.value.copy(
+//                emailError = emailResult.errorMessage,
+//                passwordError = passwordResult.errorMessage,
+//                repeatedPasswordError = repeatedPasswordResult.errorMessage,
+//                termsError = termsResult.errorMessage,
+//                usernameError = usernameResult.errorMessage,
+//                fullNameError = fullNameResult.errorMessage,
+//
+//            )
+//            return
+//        }
         val signUpBody = SignUpBody(
-            username = state.username,
-            fullName = state.fullName,
-            email = state.email,
-            password = state.password
+            username = _uiState.value.username,
+            fullName = _uiState.value.fullName,
+            email = _uiState.value.email,
+            password = _uiState.value.password
         )
-        signUpUseCase(signUpBody = signUpBody).onEach { result ->
-            when(result){
-                is Resource.Success -> {
-                    _isLoading.value = false
-                    _eventFlow.emit(UiEvent.ShowSnackbar(uiText = "Account created successfully"))
-                    _eventFlow.emit(UiEvent.Navigate(route = Screens.LOGIN_SCREEN))
-
+        viewModelScope.launch {
+            val response = authRepository.signUpUser(signUpBody = signUpBody)
+            when (response) {
+                is NetworkResult.Success -> {
+                    _uiState.value = _uiState.value.copy(isLoading = false)
                 }
-                is Resource.Loading -> {
-                    _isLoading.value = true
-
+                is NetworkResult.Error -> {
+                    _uiState.value = _uiState.value.copy(isLoading = false)
+                    _eventFlow.emit(UiEvent.ShowSnackbar(uiText = "${response.code} ${response.message}"))
                 }
-                is Resource.Error -> {
-                    _isLoading.value = false
-                    _eventFlow.emit(UiEvent.ShowSnackbar(uiText = result.message ?: "An unexpected error occurred "))
+                is NetworkResult.Exception -> {
+                    _uiState.value = _uiState.value.copy(isLoading = false)
+                    _eventFlow.emit(UiEvent.ShowSnackbar(uiText = "${response.e.message}"))
                 }
-
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
 
 }
+
+
+
+data class SignUpFormState(
+    val username:String = "",
+    val usernameError:String? = null,
+
+    val fullName:String = "",
+    val fullNameError:String? = null,
+
+    val email: String = "",
+    val emailError: String? = null,
+
+    val password: String = "",
+    val passwordError: String? = null,
+
+    val repeatedPassword: String = "",
+    val repeatedPasswordError: String? = null,
+
+    val acceptedTerms: Boolean = false,
+    val termsError: String? = null,
+
+    val isLoading :Boolean = false,
+)

@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen
+package com.peterchege.pinstagram.core.core_network.util
 
-data class LoginFormState(
-    val email: String = "",
-    val emailError: String? = null,
-    val password: String = "",
-    val passwordError: String? = null,
-)
+
+
+sealed class NetworkResult<T : Any> {
+    class Success<T: Any>(val data: T) : NetworkResult<T>()
+    class Error<T: Any>(val code: Int, val message: String?) : NetworkResult<T>()
+    class Exception<T: Any>(val e: Throwable) : NetworkResult<T>()
+}

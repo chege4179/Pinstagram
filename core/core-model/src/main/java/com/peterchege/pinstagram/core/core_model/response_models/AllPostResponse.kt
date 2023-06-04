@@ -15,6 +15,9 @@
  */
 package com.peterchege.pinstagram.core.core_model.response_models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class AllPostResponse(
     val msg: String,
     val posts: List<Post>,

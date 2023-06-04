@@ -16,8 +16,9 @@
 package com.peterchege.pinstagram.feature.feature_feed.domain.repository
 
 import com.peterchege.pinstagram.core.core_model.response_models.AllPostResponse
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 
 interface FeedRepository {
 
-    suspend fun getFeedPosts():AllPostResponse
+    suspend fun getFeedPosts():NetworkResult<AllPostResponse>
 }

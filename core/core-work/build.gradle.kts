@@ -46,11 +46,12 @@ dependencies {
 
 
     implementation(libs.work.runtime)
+    implementation(libs.lifecycle.livedataKtx)
 
     implementation(libs.android.coreKtx)
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter.gson)
+
     implementation(libs.retrofit.kotlin.serialization)
 
     implementation(libs.android.dagger.hilt)

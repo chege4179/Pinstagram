@@ -17,11 +17,12 @@ package com.peterchege.pinstagram.feature.feature_profile.domain.repository
 
 import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_model.response_models.GetUserByIdResponse
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {
 
-    suspend fun getUserById(userId:String): GetUserByIdResponse
+    suspend fun getUserById(userId:String):NetworkResult<GetUserByIdResponse>
     fun getLoggedInUserById(): Flow<Resource<GetUserByIdResponse>>
 
 

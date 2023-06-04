@@ -13,20 +13,22 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/compose-image-picker" />
-            <option value="$PROJECT_DIR$/core-common" />
-            <option value="$PROJECT_DIR$/core-datastore" />
-            <option value="$PROJECT_DIR$/core-model" />
-            <option value="$PROJECT_DIR$/core-network" />
-            <option value="$PROJECT_DIR$/core-room" />
-            <option value="$PROJECT_DIR$/core-ui" />
-            <option value="$PROJECT_DIR$/core-work" />
-            <option value="$PROJECT_DIR$/feature-auth" />
-            <option value="$PROJECT_DIR$/feature-comments" />
-            <option value="$PROJECT_DIR$/feature-create-post" />
-            <option value="$PROJECT_DIR$/feature-feed" />
-            <option value="$PROJECT_DIR$/feature-notifications" />
-            <option value="$PROJECT_DIR$/feature-profile" />
-            <option value="$PROJECT_DIR$/feature-search" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core/core-common" />
+            <option value="$PROJECT_DIR$/core/core-datastore" />
+            <option value="$PROJECT_DIR$/core/core-model" />
+            <option value="$PROJECT_DIR$/core/core-network" />
+            <option value="$PROJECT_DIR$/core/core-room" />
+            <option value="$PROJECT_DIR$/core/core-ui" />
+            <option value="$PROJECT_DIR$/core/core-work" />
+            <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/feature-auth" />
+            <option value="$PROJECT_DIR$/feature/feature-comments" />
+            <option value="$PROJECT_DIR$/feature/feature-create-post" />
+            <option value="$PROJECT_DIR$/feature/feature-feed" />
+            <option value="$PROJECT_DIR$/feature/feature-notifications" />
+            <option value="$PROJECT_DIR$/feature/feature-profile" />
+            <option value="$PROJECT_DIR$/feature/feature-search" />
           </set>
         </option>
       </GradleProjectSettings>

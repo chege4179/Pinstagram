@@ -15,6 +15,9 @@
  */
 package com.peterchege.pinstagram.core.core_model.request_models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class SignUpBody (
     val username:String,
     val fullName:String,

@@ -15,6 +15,10 @@
  */
 package com.peterchege.pinstagram.core.core_model.response_models
 
+import kotlinx.serialization.Serializable
+
+
+@Serializable
 data class PostMedia(
     val postMediaId: String,
     val postMediaType: String,

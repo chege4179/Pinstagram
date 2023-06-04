@@ -20,7 +20,8 @@ import android.util.Log
 import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_datastore.repository.UserDataStoreRepository
 import com.peterchege.pinstagram.core.core_model.response_models.GetUserByIdResponse
-import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
+import com.peterchege.pinstagram.core.core_network.repository.NetworkDataSource
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 import com.peterchege.pinstagram.feature.feature_profile.domain.repository.ProfileRepository
 import kotlinx.coroutines.flow.*
 
@@ -29,11 +30,11 @@ import retrofit2.HttpException
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
-    private val api: RetrofitPinstagramNetwork,
+    private val api: NetworkDataSource,
     private val userDataStoreRepository: UserDataStoreRepository,
 
     ) : ProfileRepository {
-    override suspend fun getUserById(userId: String): GetUserByIdResponse  {
+    override suspend fun getUserById(userId: String): NetworkResult<GetUserByIdResponse> {
         return api.getUserById(userId = userId)
 
     }
@@ -57,10 +58,16 @@ class ProfileRepositoryImpl @Inject constructor(
                         )
                     )
                     val response = api.getUserById(user.userId)
-                    if (response.success) {
-                        send(Resource.Success(data = response))
-                    } else {
-                        send(Resource.Error(message = response.msg))
+                    when(response){
+                        is NetworkResult.Error -> {
+                            send(Resource.Error(message = response.message ?:"An exception occurred"))
+                        }
+                        is NetworkResult.Success -> {
+                            send(Resource.Success(data = response.data))
+                        }
+                        is NetworkResult.Exception -> {
+                            send(Resource.Error(message = response.e.message ?:"An exception occurred"))
+                        }
                     }
                 }
 

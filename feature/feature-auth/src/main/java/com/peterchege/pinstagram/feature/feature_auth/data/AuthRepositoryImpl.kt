@@ -16,32 +16,29 @@
 package com.peterchege.pinstagram.feature.feature_auth.data
 
 
-import com.peterchege.pinstagram.core.core_common.Constants
 import com.peterchege.pinstagram.core.core_datastore.repository.UserDataStoreRepository
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_model.request_models.SignUpBody
 import com.peterchege.pinstagram.core.core_model.response_models.LoginResponse
 import com.peterchege.pinstagram.core.core_model.response_models.SignUpResponse
-import com.peterchege.pinstagram.core.core_network.PinstgramAPI
-import com.peterchege.pinstagram.core.core_network.retrofit.RetrofitPinstagramNetwork
+import com.peterchege.pinstagram.core.core_network.repository.NetworkDataSource
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 import com.peterchege.pinstagram.feature.feature_auth.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 
 class AuthRepositoryImpl @Inject constructor (
-    private val api:RetrofitPinstagramNetwork,
+    private val api: NetworkDataSource,
     private val userDataStoreRepository: UserDataStoreRepository,
 
-) :AuthRepository {
-    override suspend fun loginUser(loginBody: LoginBody): LoginResponse {
+    ) :AuthRepository {
+    override suspend fun loginUser(loginBody: LoginBody): NetworkResult<LoginResponse> {
         return  api.loginUser(loginBody = loginBody)
 
     }
-    override suspend fun signUpUser(signUpBody: SignUpBody): SignUpResponse {
+    override suspend fun signUpUser(signUpBody: SignUpBody): NetworkResult<SignUpResponse> {
         return api.signUpUser(signUpBody = signUpBody)
     }
     override fun getLoggedInUser(): Flow<User?> {

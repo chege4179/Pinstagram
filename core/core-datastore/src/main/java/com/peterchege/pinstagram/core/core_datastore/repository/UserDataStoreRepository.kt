@@ -22,22 +22,28 @@ import com.peterchege.pinstagram.core.core_model.external_models.User
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+interface UserDataStoreRepository {
+    fun getLoggedInUser(): Flow<User?>
 
+    suspend fun setLoggedInUser(user: User)
+
+    suspend fun unsetLoggedInUser()
+}
 
 val Context.userDataStore by dataStore("user.json", UserInfoSerializer)
-class UserDataStoreRepository @Inject constructor(
+class UserDataStoreRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
-){
+):UserDataStoreRepository{
 
-    fun getLoggedInUser(): Flow<User?> {
+    override fun getLoggedInUser(): Flow<User?> {
         return context.userDataStore.data
     }
-    suspend fun setLoggedInUser(user: User) {
+    override suspend fun setLoggedInUser(user: User) {
         context.userDataStore.updateData {
             user
         }
     }
-    suspend fun unsetLoggedInUser() {
+    override suspend fun unsetLoggedInUser() {
         context.userDataStore.updateData {
             null
         }

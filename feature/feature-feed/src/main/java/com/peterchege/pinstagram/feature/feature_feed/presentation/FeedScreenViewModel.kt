@@ -24,56 +24,63 @@ import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_model.response_models.Post
+import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 import com.peterchege.pinstagram.feature.feature_feed.data.FeedRepositoryImpl
-import com.peterchege.pinstagram.feature.feature_feed.domain.use_cases.GetFeedUseCase
+import com.peterchege.pinstagram.feature.feature_feed.domain.repository.FeedRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 import javax.inject.Inject
 
+
+sealed interface FeedScreenUiState {
+    object Loading : FeedScreenUiState
+    data class Error(val message: String) :FeedScreenUiState
+    data class Success(val posts: List<Post>):FeedScreenUiState
+}
+
 @HiltViewModel
 class FeedScreenViewModel  @Inject constructor(
-    getFeedUseCase: GetFeedUseCase,
+    private val repository: FeedRepository,
 ):ViewModel() {
 
-    private val _isLoading = mutableStateOf(false)
-    val isLoading: State<Boolean> = _isLoading
-
-    val _posts = mutableStateOf<List<Post>>(emptyList())
-    val posts : State<List<Post>> = _posts
+    private val _uiState = MutableStateFlow<FeedScreenUiState>(FeedScreenUiState.Loading)
+    val uiState = _uiState.asStateFlow()
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     init {
-        getFeedPosts(getFeedUseCase = getFeedUseCase)
+        getFeedPosts()
     }
 
-    fun getFeedPosts(getFeedUseCase: GetFeedUseCase){
-        getFeedUseCase().onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    Log.e("success","success")
-                    _isLoading.value = false
-                    _posts.value = result.data!!.posts
+    fun getFeedPosts(){
+        viewModelScope.launch {
+            _uiState.value = FeedScreenUiState.Loading
+            val response = repository.getFeedPosts()
+            when(response){
+                is NetworkResult.Error -> {
+                    _uiState.value = FeedScreenUiState.Error(message = response.message
+                        ?: "An unexpected error occurred")
+                }
+                is NetworkResult.Success -> {
+                    if (response.data.success){
+                        _uiState.value = FeedScreenUiState.Success(posts = response.data.posts)
+                    }else{
+                        _uiState.value = FeedScreenUiState.Error(message =response.data.msg)
+                    }
 
                 }
-                is Resource.Error -> {
-                    Log.e("error","error")
-                    _isLoading.value = false
-                    _eventFlow.emit(UiEvent.ShowSnackbar(
-                        uiText = result.data?.msg ?: "An unexpected error occurred"
-                    ))
-                }
-                is Resource.Loading -> {
-                    Log.e("loading","loading")
-                    _isLoading.value = true
-
+                is NetworkResult.Exception -> {
+                    _uiState.value = FeedScreenUiState.Error(message ="An unexpected error occurred")
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 }

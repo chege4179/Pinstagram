@@ -104,9 +104,8 @@ navigation-compose = "androidx.navigation:navigation-compose:2.5.3"
 
 retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
-retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson",version.ref = "retrofit" }
 okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
-
+retrofit-converter-moshi = "com.squareup.retrofit2:converter-moshi:2.4.0"
 
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
@@ -115,7 +114,7 @@ room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 
 datastore = "androidx.datastore:datastore-preferences:1.0.0"
 work-runtime = "androidx.work:work-runtime-ktx:2.8.1"
-kotlin-serialization-json ="org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
+kotlin-serialization-json ="org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 kotlin-collections-immutable =  "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
 
 timber = "com.jakewharton.timber:timber:5.0.1"

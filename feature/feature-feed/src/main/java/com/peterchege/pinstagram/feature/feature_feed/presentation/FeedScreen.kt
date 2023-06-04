@@ -16,34 +16,64 @@
 package com.peterchege.pinstagram.feature.feature_feed.presentation
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.peterchege.pinstagram.core.core_common.TestTags
 import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_ui.PostItem
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+
 @Composable
 fun FeedScreen(
     bottomNavController: NavController,
     navHostController: NavHostController,
     viewModel: FeedScreenViewModel = hiltViewModel()
+){
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    FeedScreenContent(
+        bottomNavController = bottomNavController,
+        navHostController =navHostController ,
+        uiState = uiState,
+        eventFlow = viewModel.eventFlow,
+        retryCallBack = { viewModel.getFeedPosts() }
+    )
+
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun FeedScreenContent(
+    bottomNavController: NavController,
+    navHostController: NavHostController,
+    uiState: FeedScreenUiState,
+    eventFlow:SharedFlow<UiEvent>,
+    retryCallBack:() -> Unit,
+
 ) {
     val scaffoldState = rememberScaffoldState()
     LaunchedEffect(key1 = true) {
-        viewModel.eventFlow.collectLatest { event ->
+        eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
@@ -67,22 +97,47 @@ fun FeedScreen(
             )
         }
     ) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-
-        ){
-
-            if (viewModel.isLoading.value){
-                CircularProgressIndicator(modifier = Modifier
-                    .align(Alignment.Center)
-                    .testTag(TestTags.FEED_LOADING_CIRCULAR_INDICATOR)
-                )
-            }else{
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ){
-                    items(viewModel.posts.value){
-                        PostItem(post = it)
+        when(uiState){
+            is FeedScreenUiState.Loading -> {
+                Box(modifier = Modifier.fillMaxSize()){
+                    CircularProgressIndicator(modifier = Modifier
+                        .align(Alignment.Center)
+                        .testTag(TestTags.FEED_LOADING_CIRCULAR_INDICATOR)
+                    )
+                }
+            }
+            is FeedScreenUiState.Error -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Text(text = uiState.message)
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Button(
+                        onClick = { retryCallBack() }
+                    ){
+                        Text(text = "Retry")
+                    }
+                }
+            }
+            is FeedScreenUiState.Success -> {
+                val posts = uiState.posts
+                if (posts.isEmpty()){
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Text(text = "No posts were found")
+                    }
+                }else{
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize()
+                    ){
+                        items(items =  posts){
+                            PostItem(post = it)
+                        }
                     }
                 }
             }

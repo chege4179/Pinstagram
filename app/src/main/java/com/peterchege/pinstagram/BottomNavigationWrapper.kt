@@ -36,9 +36,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_model.external_models.BottomNavItem
-import com.peterchege.pinstagram.feature.feature_create_post.presentation.select_post.SelectPostMediaScreen
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.CreatePostScreenViewModel
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.FeatureCreatePostNavigation
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.screens.ConfirmPostMediaScreen
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.screens.SelectPostMediaScreen
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.sharedViewModel
 import com.peterchege.pinstagram.feature.feature_feed.presentation.FeedScreen
 import com.peterchege.pinstagram.feature.feature_notifications.presentation.NotificationScreen
 import com.peterchege.pinstagram.feature.feature_profile.presentation.logged_in_user_profile.LoggedInUserProfileScreen
@@ -59,7 +64,7 @@ fun BottomNavBar(
         backgroundColor = Color.DarkGray,
         elevation = 5.dp
     ) {
-        items.forEach{ item ->
+        items.forEach { item ->
             val selected = item.route == backStackEntry.value?.destination?.route
             BottomNavigationItem(
                 selected =selected ,
@@ -119,7 +124,7 @@ fun BottomNavigationWrapper(
                     ),
                     BottomNavItem(
                         name="Create",
-                        route = Screens.SELECT_POST_MEDIA_SCREEN  ,
+                        route = Screens.FEATURE_CREATE_POST_NAVIGATION  ,
                         icon = Icons.Default.Add
                     ),
 
@@ -175,10 +180,19 @@ fun BottomNavigation(
         ){
             SearchScreen(bottomNavController = navController, navHostController = navHostController)
         }
-        composable(
-            route = Screens.SELECT_POST_MEDIA_SCREEN
+        navigation(
+            startDestination = Screens.SELECT_POST_MEDIA_SCREEN,
+            route = Screens.FEATURE_CREATE_POST_NAVIGATION
         ){
-            SelectPostMediaScreen(bottomNavController = navController, navHostController = navHostController)
+
+            composable(route = Screens.CONFIRM_POST_MEDIA_SCREEN){ entry ->
+                val viewModel = entry.sharedViewModel<CreatePostScreenViewModel>(navController = navController)
+                ConfirmPostMediaScreen(navController = navController, viewModel = viewModel)
+            }
+            composable(route = Screens.SELECT_POST_MEDIA_SCREEN){ entry ->
+                val viewModel = entry.sharedViewModel<CreatePostScreenViewModel>(navController = navController)
+                SelectPostMediaScreen(bottomNavController = navController, navHostController = navController,viewModel = viewModel)
+            }
         }
         composable(
             route = Screens.NOTIFICATION_SCREEN
