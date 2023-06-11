@@ -13,15 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.core.core_model.response_models
+package com.peterchege.pinstagram.feature.feature_feed.presentation
 
-import com.peterchege.pinstagram.core.core_model.external_models.User
-import kotlinx.serialization.Serializable
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import com.peterchege.pinstagram.core.core_common.Screens
 
+fun NavController.navigateToUserProfile(userId:String){
+//    this.navigate(Screens.)
+}
+fun NavController.navigateToFeedScreen(){
+    this.navigate(route = Screens.FEED_SCREEN)
+}
 
-@Serializable
-data class SearchUserResponse(
-    val msg: String,
-    val success: Boolean,
-    val users: List<PostCreator>
-)
+fun NavGraphBuilder.feedScreen(){
+    composable(
+        route = Screens.FEED_SCREEN
+    ){
+        FeedScreen()
+    }
+}

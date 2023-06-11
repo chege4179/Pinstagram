@@ -26,7 +26,7 @@ data class Post(
     val postCaption: String,
     val postId: String,
     val likes: List<User>,
-    val postCreator: User,
+    val postCreator: PostCreator,
     val postAuthorId: String,
     val views: List<User>,
     val postContent: List<PostMedia>,

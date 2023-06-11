@@ -78,7 +78,7 @@ class FeedScreenViewModel  @Inject constructor(
 
                 }
                 is NetworkResult.Exception -> {
-                    _uiState.value = FeedScreenUiState.Error(message ="An unexpected error occurred")
+                    _uiState.value = FeedScreenUiState.Error(message = "An exception occurred")
                 }
             }
         }

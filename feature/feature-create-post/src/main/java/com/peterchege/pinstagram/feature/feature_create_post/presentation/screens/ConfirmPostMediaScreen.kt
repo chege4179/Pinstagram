@@ -18,21 +18,15 @@ package com.peterchege.pinstagram.feature.feature_create_post.presentation.scree
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-
 import androidx.compose.ui.unit.dp
-
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import androidx.work.*
 import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -41,11 +35,8 @@ import com.google.accompanist.pager.rememberPagerState
 import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_model.external_models.MediaAsset
 import com.peterchege.pinstagram.core.core_model.external_models.User
-import com.peterchege.pinstagram.core.core_room.entities.toExternalModel
-
 import com.peterchege.pinstagram.core.core_ui.PagerIndicator
 import com.peterchege.pinstagram.core.core_ui.VideoPreview
-import com.peterchege.pinstagram.core.core_work.upload_post.UploadPostWorker
 import com.peterchege.pinstagram.feature.feature_create_post.presentation.CreatePostScreenViewModel
 import com.peterchege.pinstagram.feature.feature_create_post.presentation.UploadPostFormState
 import kotlinx.coroutines.flow.SharedFlow
@@ -54,7 +45,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ConfirmPostMediaScreen(
-    navController: NavController,
+
     viewModel: CreatePostScreenViewModel = hiltViewModel(),
 ){
     val user by viewModel.user.collectAsStateWithLifecycle()
@@ -65,7 +56,6 @@ fun ConfirmPostMediaScreen(
     ConfirmPostMediaScreenContent(
         formState = formState,
         eventFlow = viewModel.eventFlow,
-        navController = navController,
         onChangeCaption = { viewModel.setCaption(it) },
         onChangeMediaAssets = { viewModel.setMediaAssets(it) },
         onSubmit = { viewModel.startUpload(it) },
@@ -83,7 +73,6 @@ fun ConfirmPostMediaScreen(
 fun ConfirmPostMediaScreenContent(
     formState:UploadPostFormState,
     eventFlow: SharedFlow<UiEvent>,
-    navController:NavController,
     onChangeCaption:(String) -> Unit,
     onChangeMediaAssets:(List<MediaAsset>) -> Unit,
     onSubmit:(String) -> Unit,
@@ -108,7 +97,7 @@ fun ConfirmPostMediaScreenContent(
                     )
                 }
                 is UiEvent.Navigate -> {
-                    navController.navigate(route = event.route)
+
                 }
             }
         }
@@ -216,7 +205,7 @@ fun ConfirmPostMediaScreenContent(
                                 onChangeMediaAssets(emptyList())
 
                             }
-                            navController.popBackStack()
+
                         }) {
                             Text(
                                 text = "Cancel"

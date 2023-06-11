@@ -15,13 +15,37 @@
  */
 package com.peterchege.pinstagram.core.core_model.response_models
 
+import com.peterchege.pinstagram.core.core_model.external_models.Follower
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class SearchUserResponse(
-    val msg: String,
-    val success: Boolean,
-    val users: List<PostCreator>
+data class PostCreator(
+    val bio: String?,
+    val createdAt: String,
+    val createdOn: String,
+    val email: String,
+    val fullName: String,
+    val password: String,
+    val profileImageUrl: String,
+    val userId: String,
+    val username: String
 )
+
+
+fun PostCreator.toUser():User {
+    return User(
+        bio = bio,
+        createdAt = createdAt,
+        createdOn = createdOn,
+        email = email,
+        fullName = fullName,
+        password = password,
+        profileImageUrl = profileImageUrl,
+        userId = userId,
+        username = username,
+        following = emptyList(),
+        followers = emptyList(),
+    )
+}

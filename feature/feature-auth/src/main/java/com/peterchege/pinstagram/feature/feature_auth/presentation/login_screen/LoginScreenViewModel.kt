@@ -17,6 +17,7 @@ package com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_common.UiEvent
 import com.peterchege.pinstagram.core.core_model.request_models.LoginBody
 import com.peterchege.pinstagram.core.core_network.util.NetworkResult
@@ -68,7 +69,7 @@ class LoginScreenViewModel @Inject constructor(
         }
     }
 
-    fun submitData() {
+    fun submitData(navigateToDashBoard:() -> Unit) {
         val emailResult = validateEmail(_uiState.value.email)
         val passwordResult = validatePassword(_uiState.value.password)
 
@@ -92,6 +93,12 @@ class LoginScreenViewModel @Inject constructor(
             when (response) {
                 is NetworkResult.Success -> {
                     _uiState.value = _uiState.value.copy(isLoading = false)
+                    if (response.data.success){
+                        response.data.user?.let {
+                            authRepository.setLoggedInUser(user = it)
+                            navigateToDashBoard()
+                        }
+                    }
                 }
                 is NetworkResult.Error -> {
                     _uiState.value = _uiState.value.copy(isLoading = false)

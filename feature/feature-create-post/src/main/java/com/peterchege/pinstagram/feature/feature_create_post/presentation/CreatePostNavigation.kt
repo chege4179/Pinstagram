@@ -19,22 +19,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.feature.feature_create_post.presentation.screens.ConfirmPostMediaScreen
 import com.peterchege.pinstagram.feature.feature_create_post.presentation.screens.SelectPostMediaScreen
 
+fun NavController.navigateToConfirmPostScreen(){
+    this.navigate(route = Screens.CONFIRM_POST_MEDIA_SCREEN)
+}
+fun NavController.navigateToSelectPostScreen(){
+    this.navigate(route = Screens.SELECT_POST_MEDIA_SCREEN)
+}
 
-@Composable
-fun NavGraphBuilder.FeatureCreatePostNavigation(navController:NavController) {
-    val navController = rememberNavController()
+fun NavGraphBuilder.createPostScreen(
+    navController:NavHostController,
+    navigateToFeedScreen:() -> Unit,
+) {
+
     navigation(
         startDestination = Screens.SELECT_POST_MEDIA_SCREEN,
         route = Screens.FEATURE_CREATE_POST_NAVIGATION
@@ -42,11 +48,15 @@ fun NavGraphBuilder.FeatureCreatePostNavigation(navController:NavController) {
 
         composable(route = Screens.CONFIRM_POST_MEDIA_SCREEN){ entry ->
             val viewModel = entry.sharedViewModel<CreatePostScreenViewModel>(navController = navController)
-            ConfirmPostMediaScreen(navController = navController, viewModel = viewModel)
+            ConfirmPostMediaScreen(viewModel = viewModel)
         }
         composable(route = Screens.SELECT_POST_MEDIA_SCREEN){ entry ->
             val viewModel = entry.sharedViewModel<CreatePostScreenViewModel>(navController = navController)
-            SelectPostMediaScreen(bottomNavController = navController, navHostController = navController,viewModel = viewModel)
+            SelectPostMediaScreen(
+                navigateToFeedScreen = navigateToFeedScreen,
+                navigateToConfirmPostScreen = navController::navigateToConfirmPostScreen,
+                viewModel = viewModel
+            )
         }
     }
 }

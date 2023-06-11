@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_profile.presentation.logged_in_user_profile
+package com.peterchege.pinstagram.feature.feature_profile.presentation.auth_user_profile
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -22,7 +22,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -50,14 +49,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
-import com.peterchege.pinstagram.core.core_common.Resource
-import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_model.external_models.User
 import com.peterchege.pinstagram.core.core_model.response_models.Post
+import com.peterchege.pinstagram.core.core_network.util.NetworkStatus
 
 data class ImageWithText(
     val image: ImageVector,
@@ -67,53 +63,82 @@ data class ImageWithText(
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalFoundationApi
 @Composable
-fun LoggedInUserProfileScreen(
-    bottomNavController: NavController,
-    navHostController: NavHostController,
-    viewModel: LoggedInUserProfileScreenViewModel = hiltViewModel()
+fun AuthUserProfileScreen(
+    viewModel: AuthUserProfileScreenViewModel = hiltViewModel()
 ) {
-    val user = viewModel.user.collectAsStateWithLifecycle()
+    val networkStatus by viewModel.networkStatus.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val authUser by viewModel.authUser.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 = authUser) {
+        authUser?.let {
+            viewModel.loadAuthUserInfo(userId = it.userId)
+        }
+    }
+
+
+    AuthUserProfileScreenContent(
+        uiState = uiState,
+        networkStatus = networkStatus,
+        logOutUser = { viewModel.logOutUser()  },
+        navigateToProfilePostList = {  }
+    )
+
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@ExperimentalFoundationApi
+@Composable
+fun AuthUserProfileScreenContent(
+    uiState: AuthUserProfileScreenUiState,
+    networkStatus: NetworkStatus,
+    logOutUser: () -> Unit,
+    navigateToProfilePostList: (String) -> Unit,
+
+    ) {
+
     var selectedTabIndex by remember {
         mutableStateOf(0)
     }
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
-        when (user.value) {
-            is Resource.Loading -> {
+        when (uiState) {
+            is AuthUserProfileScreenUiState.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
-            is Resource.Error -> {
+
+            is AuthUserProfileScreenUiState.Error -> {
                 Box(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Text(
                         modifier = Modifier.align(Alignment.Center),
-                        text = "An unexpected error occurred"
+                        text = uiState.message
                     )
                 }
 
             }
-            is Resource.Success -> {
-                val posts  = user.value.data?.posts ?: emptyList()
-                user.value.data?.user?.let { user ->
+
+            is AuthUserProfileScreenUiState.Success -> {
+                val posts = uiState.posts
+                val userInfo = uiState.user
+                userInfo.let { user ->
                     Column(
                         modifier = Modifier.fillMaxSize()
-                    ){
+                    ) {
                         LazyColumn(
                             modifier = Modifier.fillMaxHeight(fraction = 0.5f)
                         ) {
                             item {
                                 TopBar(
-                                    viewModel = viewModel,
+                                    logOutUser = logOutUser,
                                     name = user.username,
                                     modifier = Modifier
                                         .padding(10.dp),
-                                    navController = navHostController
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 ProfileSection(user = user, posts = posts)
@@ -145,13 +170,14 @@ fun LoggedInUserProfileScreen(
                         }
                         PostSection(
                             posts = posts,
-                            modifier = Modifier.fillMaxWidth().fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxWidth(),
                             onClick = {
-                                navHostController.navigate(Screens.PROFILE_LIST_SCREEN + "/${it}")
+                                navigateToProfilePostList(it)
                             }
                         )
                     }
-
 
 
                 }
@@ -167,8 +193,7 @@ fun LoggedInUserProfileScreen(
 fun TopBar(
     name: String,
     modifier: Modifier = Modifier,
-    viewModel: LoggedInUserProfileScreenViewModel,
-    navController: NavController,
+    logOutUser: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -212,9 +237,11 @@ fun TopBar(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                DropdownMenuItem(onClick = {
-                    viewModel.logOutUser(navController = navController)
-                }) {
+                DropdownMenuItem(
+                    onClick = {
+                        logOutUser()
+
+                    }) {
                     Text("Log Out ")
                 }
             }

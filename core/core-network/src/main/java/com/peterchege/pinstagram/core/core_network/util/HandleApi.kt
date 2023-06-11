@@ -32,6 +32,7 @@ suspend fun <T : Any> handleApi(
     } catch (e: HttpException) {
         NetworkResult.Error(code = e.code(), message = e.message())
     } catch (e: Throwable) {
+        println("The error causing this is ----->" + e.localizedMessage)
         NetworkResult.Exception(e)
     }
 }

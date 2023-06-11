@@ -22,33 +22,58 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import com.peterchege.pinstagram.core.core_common.Screens
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.peterchege.pinstagram.core.core_common.UiEvent
+import com.peterchege.pinstagram.core.core_model.response_models.toUser
 import com.peterchege.pinstagram.core.core_ui.ProfileCard
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
+
+@Composable
+fun SearchScreen(
+    viewModel: SearchScreenViewModel = hiltViewModel(),
+    navigateToUserProfile: (String) -> Unit,
+) {
+    val searchFormState by viewModel.searchFormState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    SearchScreenContent(
+
+        eventFlow = viewModel.eventFlow,
+        uiState = uiState,
+        searchFormState = searchFormState,
+        onSearchText = { viewModel.onChangeUsername(it) },
+        navigateToUserProfile = navigateToUserProfile
+    )
+
+
+}
+
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun SearchScreen(
-    bottomNavController: NavController,
-    navHostController: NavHostController,
-    viewModel: SearchScreenViewModel = hiltViewModel()
+fun SearchScreenContent(
+    navigateToUserProfile: (String) -> Unit,
+    eventFlow: SharedFlow<UiEvent>,
+    uiState: SearchScreenUiState,
+    searchFormState: String,
+    onSearchText: (String) -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
     LaunchedEffect(key1 = true) {
-        viewModel.eventFlow.collectLatest { event ->
+        eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(message = event.uiText)
                 }
+
                 is UiEvent.Navigate -> {
-                    navHostController.navigate(route = event.route)
+
                 }
             }
         }
@@ -64,35 +89,62 @@ fun SearchScreen(
         ) {
             TextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = viewModel.username.value,
+                value = searchFormState,
                 onValueChange = {
-                    viewModel.onChangeUsername(it)
+                    onSearchText(it)
                 },
                 placeholder = {
                     Text(text = "Search Username")
                 }
             )
-            if (viewModel.isLoading.value) {
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            when (uiState) {
+                is SearchScreenUiState.Loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
                 }
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(items = viewModel.users.value) { user ->
-                        ProfileCard(
-                            user = user,
-                            onProfileNavigate = {
-                                navHostController.navigate(Screens.USER_PROFILE_SCREEN)
 
-                            },
-                        )
+                is SearchScreenUiState.Error -> {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Text(text = uiState.message)
+                    }
+
+                }
+
+                is SearchScreenUiState.Idle -> {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Text(text = "Start searching ")
+                    }
+                }
+
+                is SearchScreenUiState.Success -> {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(items = uiState.searchResults) { user ->
+                            ProfileCard(
+                                user = user.toUser(),
+                                onProfileNavigate = {
+                                    navigateToUserProfile(it)
+
+
+                                },
+                            )
+                        }
                     }
                 }
             }
+
         }
 
 

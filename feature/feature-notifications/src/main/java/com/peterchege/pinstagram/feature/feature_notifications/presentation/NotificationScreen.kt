@@ -16,25 +16,32 @@
 package com.peterchege.pinstagram.feature.feature_notifications.presentation
 
 import android.annotation.SuppressLint
+import android.app.Notification
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NotificationScreen(
-    bottomNavController: NavController,
-    navHostController: NavHostController
+    viewModel: NotificationScreenViewModel = hiltViewModel()
 ) {
+    NotificationScreenContent()
+
+}
+
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun NotificationScreenContent(){
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
         Text(text = "Notification Screen")
 
     }
-
 }

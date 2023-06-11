@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.core.core_model.response_models
+package com.peterchege.pinstagram.feature.feature_search.presentation.presentation
 
-import com.peterchege.pinstagram.core.core_model.external_models.User
-import kotlinx.serialization.Serializable
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import com.peterchege.pinstagram.core.core_common.Screens
 
-
-@Serializable
-data class SearchUserResponse(
-    val msg: String,
-    val success: Boolean,
-    val users: List<PostCreator>
-)
+fun NavGraphBuilder.searchScreen(
+    navigateToUserProfile:(String) -> Unit
+){
+    composable(
+        route = Screens.SEARCH_SCREEN
+    ){
+        SearchScreen(navigateToUserProfile = navigateToUserProfile)
+    }
+}

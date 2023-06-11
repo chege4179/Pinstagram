@@ -15,31 +15,44 @@
  */
 package com.peterchege.pinstagram.feature.feature_auth.presentation
 
-import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
-import androidx.navigation.compose.rememberNavController
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.feature.feature_auth.presentation.login_screen.LoginScreen
 import com.peterchege.pinstagram.feature.feature_auth.presentation.signup_screen.SignUpScreen
 
 
-@Composable
-fun NavGraphBuilder.FeatureAuthNavigation() {
-    val navController = rememberNavController()
-    navigation(
-        startDestination = Screens.LOGIN_SCREEN,
-        route = Screens.FEATURE_AUTH_NAVIGATION
-    ){
-        composable(route = Screens.LOGIN_SCREEN){
-            LoginScreen(navController = navController)
-        }
-        composable(route = Screens.SIGN_UP_SCREEN){
-            SignUpScreen(navController = navController)
-        }
-    }
+fun NavController.navigateToLoginScreen(){
+    this.navigate(route = Screens.LOGIN_SCREEN)
+}
+fun NavController.navigateToSignUpScreen(){
+    this.navigate(route = Screens.SIGN_UP_SCREEN)
+}
+fun NavController.navigateToDashboard(){
+    this.navigate(route = Screens.BOTTOM_TAB_NAVIGATION)
+}
 
+
+fun NavGraphBuilder.loginScreen(
+    navigateToSignUpScreen:() -> Unit,
+    navigateToDashboard:() -> Unit
+){
+    composable(route = Screens.LOGIN_SCREEN){
+        LoginScreen(
+            navigateToSignUpScreen = navigateToSignUpScreen,
+            navigateToDashBoard = navigateToDashboard,
+        )
+    }
+}
+
+fun NavGraphBuilder.signUpScreen(
+    navigateToLoginScreen: () -> Unit
+){
+    composable(route = Screens.SIGN_UP_SCREEN){
+        SignUpScreen(
+            navigateToLoginScreen = navigateToLoginScreen,
+        )
+    }
 }
 

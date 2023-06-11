@@ -45,15 +45,12 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun FeedScreen(
-    bottomNavController: NavController,
-    navHostController: NavHostController,
     viewModel: FeedScreenViewModel = hiltViewModel()
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     FeedScreenContent(
-        bottomNavController = bottomNavController,
-        navHostController =navHostController ,
+
         uiState = uiState,
         eventFlow = viewModel.eventFlow,
         retryCallBack = { viewModel.getFeedPosts() }
@@ -64,8 +61,6 @@ fun FeedScreen(
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun FeedScreenContent(
-    bottomNavController: NavController,
-    navHostController: NavHostController,
     uiState: FeedScreenUiState,
     eventFlow:SharedFlow<UiEvent>,
     retryCallBack:() -> Unit,
@@ -81,7 +76,6 @@ fun FeedScreenContent(
                     )
                 }
                 is UiEvent.Navigate -> {
-                    navHostController.navigate(route = event.route)
                 }
             }
         }

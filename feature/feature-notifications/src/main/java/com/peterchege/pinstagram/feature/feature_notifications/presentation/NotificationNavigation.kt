@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.feature.feature_profile.domain.use_cases
+package com.peterchege.pinstagram.feature.feature_notifications.presentation
 
-import com.peterchege.pinstagram.core.core_common.Resource
-import com.peterchege.pinstagram.core.core_model.response_models.GetUserByIdResponse
-import com.peterchege.pinstagram.feature.feature_profile.domain.repository.ProfileRepository
-import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import com.peterchege.pinstagram.core.core_common.Screens
 
-class GetLoggedInUserProfileUseCase @Inject constructor(
-  private val repository: ProfileRepository
-) {
-    operator fun invoke(): Flow<Resource<GetUserByIdResponse>> {
-        return repository.getLoggedInUserById()
+fun NavController.navigateToNotificationScreen(){
+    this.navigate(route = Screens.NOTIFICATION_SCREEN)
+}
+
+fun NavGraphBuilder.notificationScreen(){
+    composable(
+        route = Screens.NOTIFICATION_SCREEN
+    ){
+        NotificationScreen()
     }
 }

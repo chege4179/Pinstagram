@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -39,15 +40,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.peterchege.pinstagram.core.core_common.Screens
 import com.peterchege.pinstagram.core.core_model.external_models.BottomNavItem
-import com.peterchege.pinstagram.feature.feature_create_post.presentation.CreatePostScreenViewModel
-import com.peterchege.pinstagram.feature.feature_create_post.presentation.FeatureCreatePostNavigation
-import com.peterchege.pinstagram.feature.feature_create_post.presentation.screens.ConfirmPostMediaScreen
-import com.peterchege.pinstagram.feature.feature_create_post.presentation.screens.SelectPostMediaScreen
-import com.peterchege.pinstagram.feature.feature_create_post.presentation.sharedViewModel
-import com.peterchege.pinstagram.feature.feature_feed.presentation.FeedScreen
-import com.peterchege.pinstagram.feature.feature_notifications.presentation.NotificationScreen
-import com.peterchege.pinstagram.feature.feature_profile.presentation.logged_in_user_profile.LoggedInUserProfileScreen
-import com.peterchege.pinstagram.feature.feature_search.presentation.presentation.SearchScreen
+import com.peterchege.pinstagram.feature.feature_create_post.presentation.createPostScreen
+import com.peterchege.pinstagram.feature.feature_feed.presentation.feedScreen
+import com.peterchege.pinstagram.feature.feature_feed.presentation.navigateToFeedScreen
+import com.peterchege.pinstagram.feature.feature_feed.presentation.navigateToUserProfile
+import com.peterchege.pinstagram.feature.feature_notifications.presentation.notificationScreen
+import com.peterchege.pinstagram.feature.feature_profile.presentation.authUserProfileScreen
+import com.peterchege.pinstagram.feature.feature_search.presentation.presentation.searchScreen
 
 
 @ExperimentalMaterialApi
@@ -170,41 +169,24 @@ fun BottomNavigation(
         navController = navController,
         startDestination = Screens.FEED_SCREEN){
 
-        composable(
-            route = Screens.FEED_SCREEN
-        ){
-            FeedScreen(bottomNavController = navController, navHostController = navHostController)
-        }
-        composable(
-            route = Screens.SEARCH_SCREEN
-        ){
-            SearchScreen(bottomNavController = navController, navHostController = navHostController)
-        }
-        navigation(
-            startDestination = Screens.SELECT_POST_MEDIA_SCREEN,
-            route = Screens.FEATURE_CREATE_POST_NAVIGATION
-        ){
-
-            composable(route = Screens.CONFIRM_POST_MEDIA_SCREEN){ entry ->
-                val viewModel = entry.sharedViewModel<CreatePostScreenViewModel>(navController = navController)
-                ConfirmPostMediaScreen(navController = navController, viewModel = viewModel)
-            }
-            composable(route = Screens.SELECT_POST_MEDIA_SCREEN){ entry ->
-                val viewModel = entry.sharedViewModel<CreatePostScreenViewModel>(navController = navController)
-                SelectPostMediaScreen(bottomNavController = navController, navHostController = navController,viewModel = viewModel)
-            }
-        }
-        composable(
-            route = Screens.NOTIFICATION_SCREEN
-        ){
-            NotificationScreen(bottomNavController = navController,navHostController=  navHostController)
-        }
-        composable(
-            route = Screens.LOGGED_IN_USER_PROFILE_SCREEN
-        ){
-            LoggedInUserProfileScreen(navController, navHostController = navHostController)
-        }
-
+        feedScreen()
+        searchScreen(
+            navigateToUserProfile = navHostController::navigateToUserProfile
+        )
+        createPostScreen(
+            navController = navController,
+            navigateToFeedScreen = navController::navigateToFeedScreen
+        )
+        notificationScreen()
+        authUserProfileScreen()
     }
 
+}
+
+
+@OptIn(ExperimentalMaterialApi::class)
+fun NavGraphBuilder.dashboard(navController:NavHostController){
+    composable(route = Screens.BOTTOM_TAB_NAVIGATION){
+        BottomNavigationWrapper(navHostController = navController)
+    }
 }

@@ -16,6 +16,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id ("kotlin-kapt")
 }
 
 android {
@@ -36,7 +37,8 @@ android {
 }
 
 dependencies {
-
-
     implementation(libs.android.coreKtx)
+    implementation(libs.android.dagger.hilt)
+    implementation(libs.kotlin.coroutines.android)
+    kapt(libs.android.hilt.compiler)
 }

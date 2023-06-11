@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pinstagram.core.core_model.response_models
+package com.peterchege.pinstagram.feature.feature_notifications.presentation
 
-import com.peterchege.pinstagram.core.core_model.external_models.User
-import kotlinx.serialization.Serializable
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 
-@Serializable
-data class SearchUserResponse(
-    val msg: String,
-    val success: Boolean,
-    val users: List<PostCreator>
-)
+@HiltViewModel
+class NotificationScreenViewModel @Inject constructor(
+
+) :ViewModel(){
+
+
+
+}

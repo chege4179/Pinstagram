@@ -29,33 +29,8 @@ class GetUserProfileUseCase @Inject constructor(
     private val repository: ProfileRepository,
 
     ) {
-    operator fun invoke(userId:String) : Flow<Resource<GetUserByIdResponse>> = flow {
-        try {
-            emit(Resource.Loading<GetUserByIdResponse>())
-            val response = repository.getUserById( userId = userId)
-            when(response){
-                is NetworkResult.Success -> {
-                    emit(Resource.Success(response.data))
-                }
-                is NetworkResult.Error -> {
-                    emit(Resource.Error<GetUserByIdResponse>(message = response.message ?:"An unexpected error occurred"))
-                }
-                is NetworkResult.Exception -> {
-                    emit(Resource.Error<GetUserByIdResponse>( message = "Server error"))
-                }
-            }
+    suspend operator fun invoke(userId:String) : NetworkResult<GetUserByIdResponse>{
+        return repository.getUserById( userId = userId)
 
-
-        }catch (e: HttpException){
-            emit(
-                Resource.Error<GetUserByIdResponse>(
-                    message = e.localizedMessage ?: "Server error"))
-
-        }catch (e: IOException){
-            emit(
-                Resource.Error<GetUserByIdResponse>(
-                    message = "Could not reach server... Please check your internet connection"))
-
-        }
     }
 }

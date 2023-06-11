@@ -45,13 +45,13 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SignUpScreen(
-    navController: NavController,
+    navigateToLoginScreen:() -> Unit,
     viewModel: SignUpScreenViewModel = hiltViewModel()
 
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     SignUpScreenContent(
-        navController = navController,
+        navigateToLoginScreen = navigateToLoginScreen,
         uiState = uiState,
         eventFlow = viewModel.eventFlow,
         onChangeFullName = { viewModel.onEvent(RegistrationFormEvent.FullNameChanged(it)) },
@@ -69,7 +69,8 @@ fun SignUpScreen(
             viewModel.onEvent(
                 RegistrationFormEvent.Submit
             )
-        }
+        },
+
     )
 
 }
@@ -79,7 +80,6 @@ fun SignUpScreen(
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SignUpScreenContent(
-    navController: NavController,
     uiState: SignUpFormState,
     eventFlow: SharedFlow<UiEvent>,
     onChangeFullName: (String) -> Unit,
@@ -88,6 +88,9 @@ fun SignUpScreenContent(
     onChangePassword: (String) -> Unit,
     onChangeRepeatedPassword: (String) -> Unit,
     onSubmit: () -> Unit,
+
+    navigateToLoginScreen: () -> Unit,
+
 
     ) {
     val scaffoldState = rememberScaffoldState()
@@ -104,7 +107,7 @@ fun SignUpScreenContent(
                 }
 
                 is UiEvent.Navigate -> {
-                    navController.navigate(route = event.route)
+
                 }
             }
         }
@@ -259,7 +262,7 @@ fun SignUpScreenContent(
                     .fillMaxWidth()
                     .height(50.dp),
                 onClick = {
-                    navController.navigate(route = Screens.LOGIN_SCREEN)
+                    navigateToLoginScreen()
                 }) {
                 Text(text = "Login")
             }

@@ -27,5 +27,5 @@ The app has 3 types of modules
 
 ## Backend Application
 The backend application is built on node.js with the Express.js (Typescript) framework to store and 
-retrieve information of the application.The database used is Postgres SQL
+retrieve information of the application.The database used is MySQL
 

@@ -38,8 +38,8 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SelectPostMediaScreen(
-    bottomNavController: NavController,
-    navHostController: NavController,
+    navigateToConfirmPostScreen:() ->Unit,
+    navigateToFeedScreen:() -> Unit,
     viewModel: CreatePostScreenViewModel = hiltViewModel()
 
 ) {
@@ -60,14 +60,15 @@ fun SelectPostMediaScreen(
                 onPicked = { assets ->
                     val mediaAssets = assets.map { it.toMediaAsset() }
                     viewModel.setMediaAssets(mediaAssetsState = mediaAssets)
-                    navHostController.navigate(Screens.CONFIRM_POST_MEDIA_SCREEN)
+                    navigateToConfirmPostScreen()
+
 
                 },
                 onClose = {
                     scope.launch {
                         viewModel.clearMediaAssets()
                     }
-                    bottomNavController.navigate(Screens.FEED_SCREEN)
+                    navigateToFeedScreen()
 
                 },
             )
