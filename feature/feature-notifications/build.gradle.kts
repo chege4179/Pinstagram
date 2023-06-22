@@ -19,6 +19,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
+    id("pinstagram.android.core.modules")
 }
 
 android {
@@ -48,11 +49,6 @@ android {
 }
 
 dependencies {
-
-    implementation(project(":core:core-common"))
-    implementation(project(":core:core-model"))
-    implementation(project(":core:core-datastore"))
-    implementation(project(":core:core-network"))
 
 
 
