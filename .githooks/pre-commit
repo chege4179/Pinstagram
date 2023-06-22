@@ -1,5 +1,0 @@
-
-    #!/bin/bash
-    echo "Running spotless check"
-    ./gradlew spotlessApply
-    exit 0
