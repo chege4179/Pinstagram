@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         gradlePluginPortal()
         google()
@@ -44,3 +45,4 @@ include(":core:core-room")
 include(":core:core-ui")
 include(":core:core-work")
 include(":feature:feature-comments")
+

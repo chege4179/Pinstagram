@@ -19,6 +19,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
+    id("pinstagram.android.core.modules")
 
 }
 buildscript{
@@ -51,14 +52,8 @@ android {
 
 dependencies {
 
-    implementation(project(":core:core-common"))
-    implementation(project(":core:core-model"))
-    implementation(project(":core:core-room"))
-    implementation(project(":core:core-network"))
-    implementation(project(":core:core-datastore"))
     implementation(project(":compose-image-picker"))
-    implementation(project(":core:core-ui"))
-    implementation(project(":core:core-work"))
+
 
 
     implementation(libs.android.coreKtx)

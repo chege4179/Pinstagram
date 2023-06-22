@@ -20,6 +20,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
     //id ("dagger.hilt.android.plugin")
+    id("pinstagram.android.core.modules")
 }
 
 android {
@@ -51,10 +52,7 @@ android {
 
 dependencies {
 
-    implementation(project(":core:core-common"))
-    implementation(project(":core:core-network"))
-    implementation(project(":core:core-ui"))
-    implementation(project(":core:core-model"))
+
 
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)

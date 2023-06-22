@@ -1,5 +1,5 @@
 [versions]
-accompanistPermissions = "0.28.0"
+accompanistPermissions = "0.30.1"
 coilGif = "2.3.0"
 coilVideo = "2.2.2"
 compose = "1.4.3"
@@ -8,9 +8,10 @@ coroutines = "1.7.1"
 espresso = "3.5.1"
 gradle = "8.0.2"
 gradleplugin = "7.1.3"
-hilt = "2.45"
+hilt = "2.46.1"
 junit = "1.1.5"
 kotlin = "1.8.20"
+ksp = "1.8.20-1.0.11"
 kotlinGradlePlugin = "1.8.20"
 kotlinSerialization = "1.8.21"
 leakcanaryAndroid = "2.10"
@@ -23,10 +24,15 @@ splash = "1.1.0-alpha01"
 hiltExt = "1.0.0"
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "1.0.0"
-okhttp = "4.10.0"
+okhttp = "4.11.0"
 kotlinSerializationJson = "1.8.0"
 materialIconsExtended="1.5.0-beta01"
 org-jetbrains-kotlin-jvm = "1.8.21"
+
+
+androidGradlePlugin = "8.0.2"
+firebaseCrashlyticsPlugin = "2.9.5"
+firebasePerfPlugin = "1.4.2"
 
 [libraries]
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanistPermissions" }
@@ -59,7 +65,7 @@ coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coilGif" }
 coil-video = { module = "io.coil-kt:coil-video", version.ref = "coilVideo" }
 compose-activity = "androidx.activity:activity-compose:1.7.2"
 compose-compiler = "androidx.compose.compiler:compiler:1.4.7"
-compose-material = "androidx.compose.material:material:1.5.0-beta01"
+compose-material = "androidx.compose.material:material:1.5.0-beta02"
 compose-materialIcons = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 compose-runtimeLivedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
@@ -76,6 +82,12 @@ androidx-compose-foundation-layout = { group = "androidx.compose.foundation", na
 
 
 
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
+firebase-performance-gradlePlugin = { group = "com.google.firebase", name = "perf-plugin", version.ref = "firebasePerfPlugin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 
 
 
@@ -85,7 +97,7 @@ hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-p
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
 
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
+
 kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlinSerialization" }
 
 
@@ -95,12 +107,12 @@ lifecycle-runtimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", ve
 lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 
-lottie-compose = "com.airbnb.android:lottie-compose:5.0.3"
+lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 
 
 paging-common = "androidx.paging:paging-common-ktx:3.1.1"
-paging-compose = "androidx.paging:paging-compose:1.0.0-alpha20"
-navigation-compose = "androidx.navigation:navigation-compose:2.5.3"
+paging-compose = "androidx.paging:paging-compose:3.2.0-beta01"
+navigation-compose = "androidx.navigation:navigation-compose:2.6.0"
 
 retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
@@ -130,7 +142,7 @@ chucker-release = "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 
 
 test-robolectric = "org.robolectric:robolectric:4.10.2"
-test-navigation = "androidx.navigation:navigation-testing:2.5.3"
+test-navigation = "androidx.navigation:navigation-testing:2.6.0"
 
 compose-ui-test-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 android-hilt-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
