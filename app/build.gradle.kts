@@ -17,21 +17,18 @@
 
 
 plugins {
-    id ("com.android.application")
-    id ("org.jetbrains.kotlin.android")
-    id ("kotlin-kapt")
-    id ("dagger.hilt.android.plugin")
-
+    id("pinstagram.android.application")
+    id("pinstagram.android.compose")
+    id("pinstagram.android.hilt")
+    id("pinstagram.android.core.modules")
 }
 
 android {
     namespace = "com.peterchege.pinstagram"
-    compileSdk = 33
+
 
     defaultConfig {
         applicationId = "com.peterchege.pinstagram"
-        minSdk = 21
-        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -50,20 +47,7 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
-    }
-    packagingOptions {
+    packaging {
         resources {
             excludes.add("/META-INF/**")
         }
@@ -76,12 +60,6 @@ configurations {
     }
 }
 dependencies {
-    implementation(project(":core:core-datastore"))
-    implementation(project(":core:core-common"))
-    implementation(project(":core:core-model"))
-    implementation(project(":core:core-network"))
-    implementation(project(":core:core-room"))
-
 
     implementation(project(":feature:feature-auth"))
     implementation(project(":feature:feature-feed"))
@@ -92,43 +70,23 @@ dependencies {
     implementation(project(":feature:feature-comments"))
 
 
-    implementation(libs.android.coreKtx)
-    implementation(libs.android.appCompat)
-    implementation(libs.android.material)
+
 
 
     testImplementation(libs.test.junit4)
     androidTestImplementation(libs.android.test.junit4)
     androidTestImplementation(libs.android.test.espresso)
-    //compose
-    implementation(libs.compose.activity)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material)
-    implementation(libs.compose.compiler)
-    implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.compose.ui.tooling)
-    implementation(libs.navigation.compose)
-
-    //lifecycle
-
-    implementation(libs.lifecycle.runtimeKtx)
-    implementation(libs.lifecycle.viewmodel.compose)
-    implementation(libs.lifecycle.livedataKtx)
-    implementation(libs.lifecycle.runtime.compose)
-    implementation(libs.android.hilt.navigation.compose)
 
 
+    ksp(libs.android.hilt.compiler)
     //work
     implementation(libs.work.runtime)
-    implementation(libs.android.hilt.ext.work)
 
-    implementation(libs.android.dagger.hilt)
-    kapt(libs.android.hilt.compiler)
     debugImplementation (libs.leakcanary.android)
     debugImplementation(libs.compose.ui.test.manifest)
-    androidTestImplementation(libs.dagger.hilt.android.testing)
+
     androidTestImplementation(libs.android.test.compose)
-    kaptAndroidTest (libs.android.hilt.compiler)
+
     testImplementation(libs.test.junit4)
     androidTestImplementation(libs.android.test.junit4)
     androidTestImplementation(libs.android.test.espresso)

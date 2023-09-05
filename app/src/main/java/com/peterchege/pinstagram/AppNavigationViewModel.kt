@@ -15,29 +15,23 @@
  */
 package com.peterchege.pinstagram
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewModelScope
-import com.peterchege.pinstagram.core.core_model.external_models.User
-import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
-import com.peterchege.pinstagram.feature.feature_auth.domain.repository.AuthRepository
 //import com.peterchege.pinstagram.feature.feature_auth.data.AuthRepositoryImpl
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.peterchege.pinstagram.feature.feature_auth.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 
 @HiltViewModel
 class AppNavigationViewModel @Inject constructor(
     private val authRepository: AuthRepository
-):ViewModel() {
+) : ViewModel() {
 
 
-    val loggedInUser  = authRepository.getLoggedInUser()
+    val loggedInUser = authRepository.getLoggedInUser()
         .stateIn(
             scope = viewModelScope,
             initialValue = null,

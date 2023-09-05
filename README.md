@@ -2,7 +2,7 @@
 
 This is a fully modularized android application built with Jetpack Compose.The purpose 
 of this project was to learn how to implement a multi-module architecture in android
-development
+development.The project also implements convention plugins
 
 
 ## ⚠️⚠️⚠️ The App is under constant development and most of it features are not finished
@@ -23,6 +23,7 @@ The app has 3 types of modules
 7. Cloudinary for storing images and retrieving them via URL
 8. MVVM Clean architecture
 9. DataStore to store user login info
+10. 
 
 
 ## Backend Application

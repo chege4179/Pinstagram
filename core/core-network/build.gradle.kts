@@ -14,28 +14,12 @@
  * limitations under the License.
  */
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id ("kotlin-kapt")
+    id("pinstagram.android.library")
+    id("pinstagram.android.hilt")
 }
 
 android {
     namespace = "com.peterchege.pinstagram.core.core_network"
-    compileSdk = 33
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 33
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-
 
 }
 
@@ -54,9 +38,6 @@ dependencies {
     implementation(libs.kotlin.coroutines.android)
     implementation(libs.kotlin.serialization.json)
 
-    implementation(libs.android.dagger.hilt)
-
-    kapt(libs.android.hilt.compiler)
 
     debugImplementation(libs.chucker.debug)
     releaseImplementation(libs.chucker.release)

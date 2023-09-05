@@ -14,52 +14,22 @@
  * limitations under the License.
  */
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-
-}
-buildscript{
-
+    id("pinstagram.android.library")
+    id("pinstagram.android.library.compose")
 }
 android {
     namespace = "com.peterchege.compose_image_picker"
-    compileSdk = 33
-
-    buildFeatures {
-        compose = true
-    }
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 33
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 }
 
 dependencies {
     implementation(project(":core:core-model"))
+    implementation(libs.androidx.material3)
 
-    implementation (libs.android.coreKtx)
-    implementation (libs.android.appCompat)
-    implementation (libs.androidx.material3)
-    implementation (libs.compose.ui)
 
-    implementation (libs.accompanist.pager)
-    implementation (libs.accompanist.pager.indicator)
     implementation (libs.accompanist.navigation.animation)
     implementation (libs.accompanist.permissions)
 
-    implementation (libs.navigation.compose)
+
     implementation (libs.coil.compose)
     implementation (libs.coil.video)
     implementation (libs.coil.gif)
@@ -67,10 +37,4 @@ dependencies {
     implementation (libs.exoplayer.core)
     implementation (libs.exoplayer.ui)
 
-
-    testImplementation( libs.test.junit4)
-    androidTestImplementation (libs.androidx.junit)
-    androidTestImplementation (libs.android.test.espresso)
-
-    
 }

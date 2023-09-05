@@ -48,6 +48,34 @@ gradlePlugin {
             id = "pinstagram.android.core.modules"
             implementationClass = "AndroidCoreModulesConventionPlugin"
         }
+        register("androidRoom") {
+            id = "pinstagram.android.room"
+            implementationClass = "AndroidRoomConventionPlugin"
+        }
+        register("androidHilt") {
+            id = "pinstagram.android.hilt"
+            implementationClass = "AndroidHiltConventionPlugin"
+        }
+        register("androidApplication") {
+            id = "pinstagram.android.application"
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
+        register("androidApplicationCompose") {
+            id = "pinstagram.android.compose"
+            implementationClass = "AndroidApplicationComposeConventionPlugin"
+        }
+        register("androidLibrary") {
+            id = "pinstagram.android.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
+        register("androidLibraryCompose") {
+            id = "pinstagram.android.library.compose"
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
+        register("androidFeature") {
+            id = "pinstagram.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
 
     }
 }

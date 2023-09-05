@@ -19,10 +19,6 @@ import com.peterchege.pinstagram.core.core_common.Resource
 import com.peterchege.pinstagram.core.core_model.response_models.GetUserByIdResponse
 import com.peterchege.pinstagram.core.core_network.util.NetworkResult
 import com.peterchege.pinstagram.feature.feature_profile.domain.repository.ProfileRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 
 class GetUserProfileUseCase @Inject constructor(

@@ -14,68 +14,21 @@
  * limitations under the License.
  */
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("pinstagram.android.library")
+    id("pinstagram.android.library.compose")
+
 }
 
 android {
     namespace = "com.peterchege.pinstagram.core.core_ui"
-    compileSdk = 33
 
     defaultConfig {
-        minSdk = 21
-        targetSdk = 33
+
     }
-
-    buildFeatures {
-        compose = true
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
-    }
-
-
-
-
 }
 
 dependencies {
     implementation(project(":core:core-model"))
-
-    implementation(libs.android.coreKtx)
-    implementation(libs.android.appCompat)
-    implementation(libs.android.material)
-    testImplementation(libs.test.junit4)
-    androidTestImplementation(libs.android.test.junit4)
-    androidTestImplementation(libs.android.test.espresso)
-
-    //compose
-    implementation(libs.compose.activity)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material)
-    implementation(libs.compose.compiler)
-    implementation(libs.compose.materialIcons)
-    implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.compose.ui.tooling)
-    implementation(libs.navigation.compose)
-
-    implementation(libs.androidx.compose.foundation)
-    implementation(libs.androidx.compose.foundation.layout)
-
-    implementation(libs.coil.compose)
-
-    //pager
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pager.indicator)
-
 
     // exoplayer
     implementation(libs.exoplayer.ui)

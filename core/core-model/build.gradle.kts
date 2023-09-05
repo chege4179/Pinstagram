@@ -14,32 +14,15 @@
  * limitations under the License.
  */
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("pinstagram.android.library")
+
     id("org.jetbrains.kotlin.plugin.serialization")
 
 }
 
-//apply (plugin = "kotlinx-serialization")
-//buildscript{
-//    dependencies {
-//        classpath ("org.jetbrains.kotlin:kotlin-serialization:1.8.0")
-//    }
-//}
 android {
     namespace = "com.peterchege.pinstagram.core.core_model"
-    compileSdk = 33
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 33
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+
 
 }
 

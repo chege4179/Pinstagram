@@ -26,7 +26,6 @@ import com.peterchege.pinstagram.feature.feature_profile.domain.repository.Profi
 import kotlinx.coroutines.flow.*
 
 import okio.IOException
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
@@ -38,44 +37,10 @@ class ProfileRepositoryImpl @Inject constructor(
         return api.getUserById(userId = userId)
 
     }
-    val TAG = "PROFILE_REPOSITORY"
 
-    override fun getLoggedInUserById(): Flow<Resource<GetUserByIdResponse>> =
-        channelFlow {
-            send(Resource.Loading())
-            try {
-                val userFlow = userDataStoreRepository.getLoggedInUser()
-                userFlow.collectLatest { user ->
-                    Log.e(TAG,"Fetched user ${user.toString()}")
-                    send(
-                        Resource.Success(
-                            data = GetUserByIdResponse(
-                                msg = "User fetched from datastore",
-                                success = true,
-                                user = user!!,
-                                posts = emptyList(),
-                            )
-                        )
-                    )
-                    val response = api.getUserById(user.userId)
-                    when(response){
-                        is NetworkResult.Error -> {
-                            send(Resource.Error(message = response.message ?:"An exception occurred"))
-                        }
-                        is NetworkResult.Success -> {
-                            send(Resource.Success(data = response.data))
-                        }
-                        is NetworkResult.Exception -> {
-                            send(Resource.Error(message = response.e.message ?:"An exception occurred"))
-                        }
-                    }
-                }
+    override fun getLoggedInUserById(): Flow<Resource<GetUserByIdResponse>> {
+        TODO()
+    }
 
-            } catch (e: HttpException) {
-                send(Resource.Error(message = e.localizedMessage ?: "An unexpected error occurred"))
-            } catch (e: IOException) {
-                send(Resource.Error(message = e.localizedMessage ?: "An unexpected error occurred"))
-            }
-        }
 
 }

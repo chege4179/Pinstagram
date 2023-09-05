@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
+//    id ("com.android.application") version "7.3.1" apply false
+//    id ("com.android.library") version "7.3.1" apply false
+//    id ("org.jetbrains.kotlin.android") version "1.9.10" apply false
+//    id("org.jetbrains.kotlin.jvm") version "1.9.10" apply false
 plugins {
-    id ("com.android.application") version "7.3.1" apply false
-    id ("com.android.library") version "7.3.1" apply false
-    id ("org.jetbrains.kotlin.android") version "1.7.20" apply false
-    id("com.diffplug.spotless") version "5.3.0"
-    alias(libs.plugins.org.jetbrains.kotlin.jvm) apply false
 
+    id("com.diffplug.spotless") version "5.3.0"
+
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.android.application) apply false
 
 }
 buildscript {
@@ -30,8 +35,7 @@ buildscript {
         classpath (libs.kotlin.gradle.plugin)
         classpath (libs.hilt.android.gradle.plugin)
         classpath (libs.kotlin.serialization)
-
-
+        classpath (libs.hilt.android.gradle.plugin)
     }
 }
 

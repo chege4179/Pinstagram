@@ -30,19 +30,21 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Pinstagram"
 include (":app")
+
 include(":core:core-common")
 include(":core:core-model")
-include(":feature:feature-auth")
 include(":core:core-network")
 include(":core:core-datastore")
+include(":core:core-room")
+include(":core:core-ui")
+include(":core:core-work")
+include(":compose-image-picker")
+
 include(":feature:feature-feed")
 include(":feature:feature-create-post")
 include(":feature:feature-search")
 include(":feature:feature-notifications")
 include(":feature:feature-profile")
-include(":compose-image-picker")
-include(":core:core-room")
-include(":core:core-ui")
-include(":core:core-work")
 include(":feature:feature-comments")
+include(":feature:feature-auth")
 

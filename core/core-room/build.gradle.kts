@@ -15,30 +15,19 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("pinstagram.android.library")
+    id("pinstagram.android.room")
+    id("pinstagram.android.hilt")
+
 }
 
 android {
     namespace = "com.peterchege.pinstagram.core.core_room"
-    compileSdk = 33
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 33
-    }
-    kapt {
-        arguments {
-            arg("room.schemaLocation", "$projectDir/schemas")
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+
+//    ksp {
+//        arg("room.schemaLocation", "$projectDir/schemas")
+//    }
+
 
 }
 
@@ -47,26 +36,5 @@ dependencies {
     implementation(project(":core:core-model"))
     implementation(project(":core:core-common"))
 
-
-
-    implementation(libs.android.coreKtx)
-
-
-    kapt(libs.room.compiler)
-    implementation(libs.room.ktx)
-    implementation(libs.room.paging)
-    api(libs.room.runtime)
-
-    implementation(libs.android.dagger.hilt)
-
-    kapt(libs.android.hilt.compiler)
-
-    debugImplementation(libs.compose.ui.test.manifest)
-    androidTestImplementation(libs.dagger.hilt.android.testing)
-    androidTestImplementation(libs.android.test.compose)
-    kaptAndroidTest (libs.android.hilt.compiler)
-    testImplementation(libs.test.junit4)
-    androidTestImplementation(libs.android.test.junit4)
-    androidTestImplementation(libs.android.test.espresso)
 
 }
